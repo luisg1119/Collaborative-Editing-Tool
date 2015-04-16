@@ -13,6 +13,9 @@ import java.awt.Color;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.text.DefaultEditorKit;
+import javax.swing.text.Highlighter;
+import javax.swing.text.html.HTMLDocument;
+import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
@@ -128,10 +131,22 @@ public class MainGUI extends JFrame {
 		
 		fontComboBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
 				String fontStr = (String) fontComboBox.getSelectedItem();
 				int fontSize = (int) sizeComboBox.getSelectedItem();
 				if (fontStr.equals("Times New Roman")){
-					editorPane.setFont(new Font("Times New Roman", Font.PLAIN, fontSize));
+					String text = editorPane.getSelectedText();
+					//editorPane.setFont(new Font("Times New Roman", 0, fontSize));
+				    editorPane.setText(text);
+				    editorPane.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
+				    editorPane.setFont(new Font("Times New Roman", 0, fontSize));
+					
+				}
+				else if (fontStr.equals("Arial")){
+					String text = editorPane.getSelectedText();
+					editorPane.setText(text);
+				    editorPane.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
+				    editorPane.setFont(new Font("Arial", 0, fontSize));
 				}
 			}
 		});
