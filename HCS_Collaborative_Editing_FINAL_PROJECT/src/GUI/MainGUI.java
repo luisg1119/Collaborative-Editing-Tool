@@ -12,10 +12,19 @@ import java.awt.Color;
 
 import javax.swing.border.BevelBorder;
 import javax.swing.border.LineBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.text.DefaultEditorKit;
+import javax.swing.text.Document;
 import javax.swing.text.Highlighter;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
+import javax.swing.text.StyledEditorKit;
+import javax.swing.text.StyledEditorKit.FontSizeAction;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
+import javax.swing.Action;
+import javax.swing.DefaultListModel;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
@@ -31,8 +40,11 @@ import javax.swing.JMenu;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import java.awt.font.TextAttribute;
+import java.util.Calendar;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -43,12 +55,29 @@ import javax.swing.JEditorPane;
 import javax.swing.JTextArea;
 import javax.swing.JScrollBar;
 
+import Chat.ChatClientStart;
+import Chat.ChatPanelDesigner;
+import Model.LoginWindow;
+import Model.RevisionDocument;
+import Model.User;
+
 import java.awt.ScrollPane;
 
-public class MainGUI extends JFrame {
+import javax.swing.JList;
 
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
+
+public class MainGUI extends JFrame {
 	private JPanel mainPanel;
 	private static final String defaultComboBoxText = "Fonts";
+	private JButton italicToggleButton_1;
+	private JButton underlineToggleButton_1;
+	static String username;
+	static String password;
 
 	/**
 	 * Launch the application.
@@ -57,8 +86,8 @@ public class MainGUI extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					MainGUI frame = new MainGUI();
-					frame.setVisible(true);
+					Model.LoginWindow loginWindow = new LoginWindow();
+					loginWindow.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -77,151 +106,291 @@ public class MainGUI extends JFrame {
 		mainPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(mainPanel);
 		mainPanel.setLayout(null);
-		
-		JPanel revisionPanel = new JPanel();
-		revisionPanel.setForeground(Color.LIGHT_GRAY);
-		revisionPanel.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
-		revisionPanel.setBounds(952, 23, 232, 632);
-		mainPanel.add(revisionPanel);
-		
-		JPanel chatPanel = new JPanel();
-		chatPanel.setBounds(0, 23, 137, 632);
-		mainPanel.add(chatPanel);
-		chatPanel.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
-		chatPanel.setForeground(Color.LIGHT_GRAY);
-		
+
+		ChatClientStart chat= new ChatClientStart("localhost",9001,username);
+		JPanel chatPane = new ChatPanelDesigner(username, chat.returnOutput());
+		chatPane.setForeground(Color.LIGHT_GRAY);
+		chatPane.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null,
+				null, null));
+		chatPane.setBounds(954, 23, 230, 632);
+		mainPanel.add(chatPane);
+
+		JPanel revisionPane = new JPanel();
+		revisionPane.setBounds(0, 23, 137, 632);
+		mainPanel.add(revisionPane);
+		revisionPane.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null,
+				null, null));
+		revisionPane.setForeground(Color.LIGHT_GRAY);
+
+
 		JPanel docPanel = new JPanel();
-		docPanel.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		docPanel.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null,
+				null, null));
 		docPanel.setBounds(137, 23, 805, 632);
 		mainPanel.add(docPanel);
-		
-		
-		String [] fonts = {"Arial","Times New Roman","Impact","Cambria"};
+
 		docPanel.setLayout(null);
-		
-		
-		
+
 		JToolBar toolBar = new JToolBar();
-		toolBar.setBounds(27, 7, 324, 28);
+		toolBar.setBounds(27, 7, 568, 28);
 		toolBar.setFloatable(false);
 		docPanel.add(toolBar);
-		
+
 		final JEditorPane editorPane = new JEditorPane();
 		JScrollPane scrollPane = new JScrollPane(editorPane);
 		scrollPane.setBounds(10, 41, 785, 580);
-		
+
 		editorPane.setContentType("text/html");
-		editorPane.setFont(new Font("Arial",0,10));
+
+		editorPane.setEditorKit(new HTMLEditorKit());
+
 		docPanel.add(scrollPane);
 		
-		final JComboBox fontComboBox = new JComboBox(fonts);
+		/*
+		 * Attempt at Saving Document
+		 * */
+		//Document docum = (Document) editorPane;
+		//docum.addDocumentListener(event);
+		//StyledEditorKit newKit = new StyledEditorKit();
+		//newKit = (StyledEditorKit) editorPane.getDocument();
+		//System.out.println(newKit);
 		
-		
-		
-		toolBar.add(fontComboBox);
-		fontComboBox.setToolTipText("Fonts");
-		
-		
-		final JComboBox sizeComboBox = new JComboBox();
-		for(int i = 10; i < 51; i+=2){
-			sizeComboBox.addItem(i);
-			
+
+		/*
+		 * Sets the default fonts for user to use
+		 */
+		final String[] font = { "Arial", "Calibri", "Century", "Courrier New",
+				"Georgia", "Impact", "Serif", "Times New Roman", "Trebuchet MS" };
+		final JComboBox fontComboBox = new JComboBox(font);
+
+		final Action[] fontAction = new Action[font.length];
+		for (int i = 0; i < fontAction.length; i++) {
+			fontAction[i] = new StyledEditorKit.FontFamilyAction(font[i],
+					font[i]);
+
 		}
-		toolBar.add(sizeComboBox);
-		sizeComboBox.setToolTipText("Font Size");
-		
 		fontComboBox.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-				String fontStr = (String) fontComboBox.getSelectedItem();
-				int fontSize = (int) sizeComboBox.getSelectedItem();
-				if (fontStr.equals("Times New Roman")){
-					
-					String selectedText = editorPane.getSelectedText();
-					String allText = editorPane.getText();
-					
-					//editorPane.setText(selectedText);
-				    editorPane.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
-				    editorPane.setFont(new Font("Times New Roman", 0, fontSize));
-					
-				    
-				    
-				    if (!(selectedText == null)){
-				    	
-				    	int index = allText.indexOf(selectedText);
-				    	String front = allText.substring(0, index);
-						String back = allText.substring(index+selectedText.length());
-						
-						//selectedText = editorPane.getText();
-					    //editorPane.replaceSelection(front + selectedText + back);
-						
+			public void actionPerformed(ActionEvent event) {
+				for (int i = 0; i < fontAction.length; i++) {
+					if (font[i].equals((String) fontComboBox.getSelectedItem())) {
+						fontAction[i].actionPerformed(event);
+						break;
 					}
-				    
-					
-				}
-				else if (fontStr.equals("Arial")){
-					String text = editorPane.getSelectedText();
-					//editorPane.setText(text);
-				    editorPane.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
-				    editorPane.setFont(new Font("Arial", 0, fontSize));
 				}
 			}
 		});
-		
-		JToggleButton boldToggleButton = new JToggleButton("B");
-		toolBar.add(boldToggleButton);
-		boldToggleButton.setToolTipText("Bold");
-		boldToggleButton.setFont(new Font("Tahoma", Font.BOLD, 12));
-		
-		JToggleButton italicToggleButton = new JToggleButton("I");
-		italicToggleButton.setToolTipText("Bold");
-		italicToggleButton.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 12));
-		toolBar.add(italicToggleButton);
-		
-		
-		String underlineLabel = "<html><a style='text-decoration:underline'>U</a></html>";
-		JToggleButton underlineToggleButton = new JToggleButton(underlineLabel);
-		
-		underlineToggleButton.setToolTipText("Bold");
+
+		toolBar.add(fontComboBox);
+		fontComboBox.setToolTipText("Fonts");
+
+		/*
+		 * Sets the default sizes for user to use
+		 */
+		final String[] sizes = new String[51];
+
+		for (int i = 0; i < sizes.length - 1; i++) {
+			sizes[i] = "" + i;
+
+		}
+
+		int[] sizesInt = new int[51];
+
+		for (int i = 0; i < sizesInt.length - 1; i++) {
+			sizesInt[i] = i;
+
+		}
+
+		final JComboBox sizeComboBox = new JComboBox(sizes);
+
+		final Action[] fontSizeAction = new Action[sizes.length];
+		for (int i = 0; i < fontSizeAction.length; i++) {
+			fontSizeAction[i] = new StyledEditorKit.FontSizeAction(sizes[i],
+					sizesInt[i]);
+
+		}
+		sizeComboBox.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+				for (int i = 0; i < fontSizeAction.length; i++) {
+					if (sizes[i].equals((String) sizeComboBox.getSelectedItem())) {
+						fontSizeAction[i].actionPerformed(event);
+						break;
+					}
+				}
+			}
+		});
+
+		toolBar.add(sizeComboBox);
+		sizeComboBox.setToolTipText("Font Size");
+
+		/*
+		 * Bold Button
+		 */
+		JButton btnB = toolBar.add(new StyledEditorKit.BoldAction());
+		btnB.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnB.setToolTipText("Bold");
+		btnB.setText("B");
+
+		/*
+		 * Italic Button
+		 */
+		italicToggleButton_1 = toolBar.add(new StyledEditorKit.ItalicAction());
+		italicToggleButton_1.setText("I");
+		italicToggleButton_1.setToolTipText("Italic");
+		italicToggleButton_1.setFont(new Font("Tahoma",
+				Font.BOLD | Font.ITALIC, 12));
+
+		/*
+		 * Underline Button
+		 */
+		JButton underlineToggleButton = new JButton("Underline");
+
+		underlineToggleButton.setToolTipText("Underline");
 		underlineToggleButton.setFont(new Font("Tahoma", Font.BOLD, 12));
-		toolBar.add(underlineToggleButton);
-		
-		String strikeLabel = "<html><a style='text-decoration:line-through'>abc</a></html>";
-		JToggleButton strikethroughToggleButton = new JToggleButton(strikeLabel);
-		strikethroughToggleButton.setFont(new Font("Tahoma", Font.BOLD, 11));
-		toolBar.add(strikethroughToggleButton);
-		
+		underlineToggleButton_1 = toolBar
+				.add(new StyledEditorKit.UnderlineAction());
+		underlineToggleButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+			}
+		});
+
+		underlineToggleButton_1.setText("U");
+		underlineToggleButton_1.setFont(new Font("Tahoma", Font.BOLD, 12));
+		underlineToggleButton_1.setToolTipText("Underline");
+		toolBar.add(underlineToggleButton_1);
+
+		/*
+		 * Left-Alignment Button
+		 */
+		JButton leftAlign = new JButton(new StyledEditorKit.AlignmentAction(
+				"Align Left", StyleConstants.ALIGN_LEFT));
+		toolBar.add(leftAlign);
+
+		/*
+		 * Center-Alignment Button
+		 */
+		JButton centerAlign = new JButton(new StyledEditorKit.AlignmentAction(
+				"Align Center", StyleConstants.ALIGN_CENTER));
+		toolBar.add(centerAlign);
+
+		/*
+		 * Right-Alignment Button
+		 */
+		JButton rightAlignment = new JButton(
+				new StyledEditorKit.AlignmentAction("Align Right",
+						StyleConstants.ALIGN_RIGHT));
+		toolBar.add(rightAlignment);
+
+		/*
+		 * Paint Button
+		 */
 		JButton paintButton = new JButton("Paint");
 		paintButton.setBounds(701, 7, 94, 28);
 		docPanel.add(paintButton);
-		
-		
+
+		JButton btnMyAccount = new JButton("My Account");
+		btnMyAccount.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				User userPanel = new User(username, password);
+				userPanel.setVisible(true);
+			}
+		});
+		btnMyAccount.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		btnMyAccount.setBounds(605, 7, 96, 28);
+		docPanel.add(btnMyAccount);
+
 		JMenuBar menuBar = new JMenuBar();
 		menuBar.setBorderPainted(false);
 		menuBar.setBounds(0, 0, 1184, 24);
 		mainPanel.add(menuBar);
-		
+
 		JMenu file = new JMenu("File");
 		menuBar.add(file);
-		
+
 		JMenuItem newDoc = new JMenuItem("New");
 		file.add(newDoc);
-		
+
 		JMenuItem openDoc = new JMenuItem("Open");
 		file.add(openDoc);
 		
-		JMenuItem saveDoc = new JMenuItem("Save");
-		file.add(saveDoc);
 		
+		final DefaultListModel<RevisionDocument> model = new DefaultListModel();
+//		final Thread updater = new Thread() { // another thread to update the
+//		private RevisionDocument currRevListDoc;
+//
+//
+//		/*
+//		 * JList for saved documents
+//		 */
+//			// model
+//			/*
+//			 * (non-Javadoc)
+//			 * 
+//			 * @see java.lang.Thread#run()
+//			 */
+//			@Override
+//			public void run() {
+//					model.addElement(currRevListDoc);
+//					try {
+//						Thread.sleep(0);
+//					} catch (InterruptedException e) {
+//						throw new RuntimeException(e);
+//					}
+//				}
+//		};
+//		updater.start();
+		revisionPane.setLayout(null);
+		final JList list = new JList(model);
+		
+		list.addListSelectionListener(new ListSelectionListener() {
+
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				if (!e.getValueIsAdjusting()){
+					RevisionDocument thisRevision = (RevisionDocument)list.getSelectedValue();
+					editorPane.setDocument(thisRevision.doc);
+				}
+			}
+			
+		});
+		list.setBounds(0, 0, 137, 632);
+		revisionPane.add(list); // adds list to revisionPane
+		
+		
+		/*
+		 * Save Button - to save a document to revision history
+		 */
+		JMenuItem saveDoc = new JMenuItem("Save");
+		saveDoc.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				Document thisDoc = editorPane.getDocument();
+				Calendar cal = Calendar.getInstance();
+				RevisionDocument newRevisedDocument = new RevisionDocument(cal,thisDoc,username);
+				model.addElement(newRevisedDocument);
+				//System.out.println(editorPane.getDocument().toString());
+//				Writer writer;
+//				try {
+//					writer = new FileWriter("C:\\Users\\Maverick\\Desktop\\GUI_Test");
+//					writer.write(thisDoc.toString());
+//					writer.close();
+//				} catch (IOException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
+				
+				
+			}
+		});
+		file.add(saveDoc);
+
 		JMenuItem saveAsDoc = new JMenuItem("Save As...");
 		file.add(saveAsDoc);
-		
+
 		JMenuItem importDoc = new JMenuItem("Import...");
 		file.add(importDoc);
-		
+
 		JMenuItem exportDoc = new JMenuItem("Export...");
 		file.add(exportDoc);
-		
+
 		JMenuItem quitDoc = new JMenuItem("Quit");
 		quitDoc.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -229,10 +398,10 @@ public class MainGUI extends JFrame {
 			}
 		});
 		file.add(quitDoc);
-		
+
 		JMenu edit = new JMenu("Edit");
 		menuBar.add(edit);
-		
+
 		JMenuItem selectAllDoc = new JMenuItem("Select All");
 		selectAllDoc.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -240,8 +409,7 @@ public class MainGUI extends JFrame {
 			}
 		});
 		edit.add(selectAllDoc);
-		
-		
+
 		JMenuItem cutDoc = new JMenuItem(new DefaultEditorKit.CutAction());
 		cutDoc.setText("Cut");
 		cutDoc.setMnemonic(KeyEvent.VK_T);
@@ -256,18 +424,28 @@ public class MainGUI extends JFrame {
 		pasteDoc.setText("Paste");
 		pasteDoc.setMnemonic(KeyEvent.VK_P);
 		edit.add(pasteDoc);
-		
+
 		JMenu help = new JMenu("Help");
 		menuBar.add(help);
-		
+
 		JMenuItem aboutDoc = new JMenuItem("About");
 		aboutDoc.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(null, "HCS: Collaborative Editing Tool"
-						+ "\nMade By: Siddharth Sharma, Maverick Tudisco-Guntert, "
-						+ "Chintan Patel, Luis Guerrero\n", "About", JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane
+						.showMessageDialog(
+								null,
+								"HCS: Collaborative Editing Tool"
+										+ "\nMade By: Siddharth Sharma, Maverick Tudisco-Guntert, "
+										+ "Chintan Patel, Luis Guerrero\n",
+								"About", JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
 		help.add(aboutDoc);
+
+	}
+
+	public static void usernameRetrieval(String name, String pword) {
+		username = name;
+		password = pword;
 	}
 }
