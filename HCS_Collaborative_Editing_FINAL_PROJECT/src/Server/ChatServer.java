@@ -40,7 +40,7 @@ public class ChatServer {
 			
 			// Begin Accepting Chat Clients
 			new Thread(new ClientAccepterChat()).start();
-			ChatClientStart chatWindow = new ChatClientStart(host,chatPort, clientName);
+			//ChatClientStart chatWindow = new ChatClientStart(host,chatPort, clientName);
 			
 
 		}

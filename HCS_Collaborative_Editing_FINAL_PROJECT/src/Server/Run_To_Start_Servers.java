@@ -2,18 +2,35 @@ package Server;
 
 import javax.swing.JOptionPane;
 
-public class Run_To_Start_Servers {
-	public static void main (String[] args){
-		//Get user to import port Numbers and then start the Servers. 
-		String host = JOptionPane.showInputDialog("Enter a Host Address: ");
-		String portString = JOptionPane.showInputDialog("Enter a Port Address: ");
-		String userName = JOptionPane.showInputDialog("Enter a User Name: ");
+import GUI.MainGUI;
 
-		int port = Integer.parseInt(portString);
+public class Run_To_Start_Servers {
+	private String host;
+	private String userName;
+	private int port;
+	
+	public Run_To_Start_Servers(String newHost, String portString, String newUserName){
+		//Get user to import port Numbers and then start the Servers. 
+		//String portString = //JOptionPane.showInputDialog("Enter a Port Address: ");
+		if (newHost == null || portString == null){
+			host = "localhost";
+			port = 9001;
+		}
+		else{
+			host = newHost;//JOptionPane.showInputDialog("Enter a Host Address: ");
+			userName = newUserName;//JOptionPane.showInputDialog("Enter a User Name: ");
+			port = Integer.parseInt(portString);
+		}
+		
+		new ChatServer(host,port, userName);
+		MainGUI frame = new MainGUI();
+		frame.setVisible(true);
 		
 		// new CollaborativeEditingServer(port)		
-		new ChatServer(host,port, userName);
+
 		//new PaintServer(port);
+		
+
 		
 		//Print out Friendly User Warning on console. There are checks that will not allow, just a friendly reminder
 		System.out.println("------------------------------------------------¡WARNING!------------------------------------------------");

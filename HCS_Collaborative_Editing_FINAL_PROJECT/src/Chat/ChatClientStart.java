@@ -70,6 +70,7 @@ public class ChatClientStart extends JFrame {
 			});	
 			
 		// start a thread for handling server events
+		setGUI();
 		new Thread(new ServerHandler()).start();
 		
 		}catch(Exception e){
@@ -99,16 +100,11 @@ public class ChatClientStart extends JFrame {
 	}
 	
 	public void setGUI(){
-//		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//		this.setBounds(100, 100, 400, 400);
-//		chatPane = new JPanel();
-//		chatPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-//		chatPane.setLayout(new BorderLayout(0, 0));
-//		setContentPane(chatPane);
-//		
-//		chat = new ChatPanelDesigner(clientName, output);
-//		getContentPane().add(chat);
-//		this.setVisible(true);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setBounds(100, 100, 400, 400);
+		chat = new ChatPanelDesigner(clientName, output);
+		this.add(chat);
+		this.setVisible(true);
 	}
 	
 	public void update(List<String> messages) {

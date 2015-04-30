@@ -113,13 +113,20 @@ public class MainGUI extends JFrame {
 		setContentPane(mainPanel);
 		mainPanel.setLayout(null);
 
-//		 ChatClientStart chatPane = new ChatClientStart(LoginWindow.getHost(), Integer.parseInt(LoginWindow.getPort()), username);
-//		 chatPane.setBounds(954, 23, 230, 632);
-//		 chatPane.setForeground(Color.LIGHT_GRAY);
-//		 mainPanel.add(chatPane);
+		// if (newHost == null || portString == null){
+		// host = "localhost";
+		// port = 9001;
+		// }
 
-		//ChatClientStart chatWindow = new ChatClientStart(host,chatPort, clientName);
-
+		// JPanel chatPane = new
+		// ChatClientStart(LoginWindow.getHost(),Integer.parseInt(LoginWindow.getPort()),LoginWindow.getUsername());
+		// chatPane = new ChatPanelDesigner(username, chat.returnOutput());
+		// chatPane.setForeground(Color.LIGHT_GRAY);
+		// chatPane.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null,
+		// null, null));
+		// chatPane.setBounds(954, 23, 230, 632);
+		// chatPane.add(chat.setGUI());
+		// mainPanel.add(chat);
 
 		JPanel revisionPane = new JPanel();
 		revisionPane.setBounds(0, 23, 137, 632);
@@ -366,7 +373,7 @@ public class MainGUI extends JFrame {
 				try {
 					FileWriter out = new FileWriter(new File(System
 							.getProperty("user.dir") + "/SavedDocuments",
-							thisDoc.toString() + ".rtf"));
+							thisDoc.toString() + ".txt"));
 					out.write(styleDoc.getText(0, styleDoc.getLength()));
 					out.close();
 				} catch (IOException e) {
@@ -441,18 +448,18 @@ public class MainGUI extends JFrame {
 		});
 		help.add(aboutDoc);
 
-//		JButton btnNewButton = new JButton("Run Chat Client");
-//		btnNewButton.setFont(new Font("Menlo", Font.PLAIN, 24));
-//		btnNewButton.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent e) {
-//				ChatClientStart chat = new ChatClientStart(LoginWindow
-//						.getHost(), Integer.parseInt(LoginWindow.getPort()),
-//						LoginWindow.getUsername());
-//				chat.setGUI();
-//			}
-//		});
-//		btnNewButton.setBounds(944, 28, 240, 644);
-//		mainPanel.add(btnNewButton);
+		JButton btnNewButton = new JButton("Run Chat Client");
+		btnNewButton.setFont(new Font("Menlo", Font.PLAIN, 24));
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ChatClientStart chat = new ChatClientStart(LoginWindow
+						.getHost(), Integer.parseInt(LoginWindow.getPort()),
+						LoginWindow.getUsername());
+				chat.setGUI();
+			}
+		});
+		btnNewButton.setBounds(944, 28, 240, 644);
+		mainPanel.add(btnNewButton);
 
 	}
 

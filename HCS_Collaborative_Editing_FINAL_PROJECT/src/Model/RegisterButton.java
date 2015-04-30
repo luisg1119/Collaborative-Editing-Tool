@@ -35,6 +35,7 @@ public class RegisterButton extends JFrame {
 		getContentPane().add(passwordLabel);
 
 		usernameField = new JTextField();
+		usernameField.setText("a");
 		usernameField.setBounds(93, 33, 274, 28);
 		getContentPane().add(usernameField);
 		usernameField.setColumns(10);
