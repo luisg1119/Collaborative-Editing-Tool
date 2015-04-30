@@ -113,12 +113,11 @@ public class MainGUI extends JFrame {
 		setContentPane(mainPanel);
 		mainPanel.setLayout(null);
 
-//		 ChatClientStart chatPane = new ChatClientStart(LoginWindow.getHost(), Integer.parseInt(LoginWindow.getPort()), username);
-//		 chatPane.setBounds(954, 23, 230, 632);
-//		 chatPane.setForeground(Color.LIGHT_GRAY);
-//		 mainPanel.add(chatPane);
-
-		//ChatClientStart chatWindow = new ChatClientStart(host,chatPort, clientName);
+		 // why wont this code execute?
+		 ChatClientStart chatPane = new ChatClientStart(LoginWindow.getHost(), Integer.parseInt(LoginWindow.getPort()), username);
+		 chatPane.setBounds(954, 23, 230, 632);
+		 chatPane.setForeground(Color.LIGHT_GRAY);
+		 mainPanel.add(chatPane);
 
 
 		JPanel revisionPane = new JPanel();
