@@ -26,7 +26,6 @@ import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.Action;
 import javax.swing.DefaultListModel;
-import javax.swing.JComponent;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
@@ -46,7 +45,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseListener;
 import java.awt.font.TextAttribute;
 import java.util.Calendar;
 import java.util.Map;
@@ -71,22 +69,11 @@ import javax.swing.JList;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-<<<<<<< HEAD
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-=======
-import java.io.File;
->>>>>>> origin/master
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.awt.Button;
-<<<<<<< HEAD
-import java.awt.FlowLayout;
-=======
->>>>>>> origin/master
 
 public class MainGUI extends JFrame {
 	private JPanel mainPanel;
@@ -95,9 +82,6 @@ public class MainGUI extends JFrame {
 	private JButton underlineToggleButton_1;
 	static String username;
 	static String password;
-	public int filename = 0;
-
-	// public JPanel chatPane;
 
 	// public JPanel chatPane;
 
@@ -116,15 +100,7 @@ public class MainGUI extends JFrame {
 			}
 		});
 	}
-	
-<<<<<<< HEAD
-	public MainGUI(String userName){
-		username = userName;
-		MainGUI window = new MainGUI();
-	}
-=======
-	
->>>>>>> origin/master
+
 	/**
 	 * Create the frame.
 	 */
@@ -132,41 +108,25 @@ public class MainGUI extends JFrame {
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1200, 700);
-<<<<<<< HEAD
-		getContentPane().setLayout(new BorderLayout());
-=======
-		setLayout(new BorderLayout());
->>>>>>> origin/master
 		mainPanel = new JPanel();
 		mainPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
-		//setContentPane(mainPanel);
+		setContentPane(mainPanel);
 		mainPanel.setLayout(null);
 
-<<<<<<< HEAD
-		 //Instantiate a new ChatClient 
-		 ChatClientStart chatPane = new ChatClientStart(LoginWindow.getHost(), Integer.parseInt(LoginWindow.getPort()), username);
-		 //Instantiate the bounds
-		 chatPane.setBounds(954, 23, 230, 632);
-		 
-		 chatPane.setForeground(Color.LIGHT_GRAY);
-		 //Put color on the gui to know what is the Chat Windows
-		 chatPane.setBackground(Color.RED);
-		 //Position the Chat Client in the correct location in the GUI 
-		 getContentPane().add(chatPane, BorderLayout.CENTER);
-		 getContentPane().add(mainPanel, BorderLayout.CENTER);
+		// if (newHost == null || portString == null){
+		// host = "localhost";
+		// port = 9001;
+		// }
 
-=======
-		 // why wont this code execute?
-		 ChatClientStart chatPane = new ChatClientStart(LoginWindow.getHost(), Integer.parseInt(LoginWindow.getPort()), username);
-		 chatPane.setBounds(954, 23, 230, 632);
-		 chatPane.setForeground(Color.LIGHT_GRAY);
-		 chatPane.setBackground(Color.RED);
-		// mainPanel.add(chatPane);
-
-		 chatPane.setVisible(true);
-		 this.add(chatPane, BorderLayout.EAST);
-		 this.add(mainPanel, BorderLayout.CENTER);
->>>>>>> origin/master
+		// JPanel chatPane = new
+		// ChatClientStart(LoginWindow.getHost(),Integer.parseInt(LoginWindow.getPort()),LoginWindow.getUsername());
+		// chatPane = new ChatPanelDesigner(username, chat.returnOutput());
+		// chatPane.setForeground(Color.LIGHT_GRAY);
+		// chatPane.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null,
+		// null, null));
+		// chatPane.setBounds(954, 23, 230, 632);
+		// chatPane.add(chat.setGUI());
+		// mainPanel.add(chat);
 
 		JPanel revisionPane = new JPanel();
 		revisionPane.setBounds(0, 23, 137, 632);
@@ -342,7 +302,7 @@ public class MainGUI extends JFrame {
 
 		JMenuBar menuBar = new JMenuBar();
 		menuBar.setBorderPainted(false);
-		menuBar.setBounds(0, 0, 1200, 22);
+		menuBar.setBounds(0, 0, 1184, 24);
 		mainPanel.add(menuBar);
 
 		JMenu file = new JMenu("File");
@@ -402,110 +362,31 @@ public class MainGUI extends JFrame {
 		 */
 		JMenuItem saveDoc = new JMenuItem("Save");
 		saveDoc.addActionListener(new ActionListener() {
-			
-
 			public void actionPerformed(ActionEvent arg0) {
 				Document thisDoc = textPane.getDocument();
 				Calendar cal = Calendar.getInstance();
 				RevisionDocument newRevisedDocument = new RevisionDocument(cal,
 						thisDoc, username);
 				model.addElement(newRevisedDocument);
-<<<<<<< HEAD
-				
-				try {
-					FileWriter out = new FileWriter(new File(System
-							.getProperty("user.dir") + "/SavedDocuments",
-							"edit_" + filename + ".html")); // thisDoc.toString() "edit_" + filename
-					filename++;
-					out.write(textPane.getText()); 
-=======
 
 				StyledDocument styleDoc = textPane.getStyledDocument();
 				try {
 					FileWriter out = new FileWriter(new File(System
 							.getProperty("user.dir") + "/SavedDocuments",
-							thisDoc.toString() + ".rtf"));
+							thisDoc.toString() + ".txt"));
 					out.write(styleDoc.getText(0, styleDoc.getLength()));
->>>>>>> origin/master
 					out.close();
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-<<<<<<< HEAD
-				} 
-=======
 				} catch (BadLocationException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
->>>>>>> origin/master
 
 			}
 		});
 		file.add(saveDoc);
-		
-		/*
-		 * Double-click event on JList element
-		 * */
-		
-//		ListSelectionListener listSelectionListener = new ListSelectionListener(){
-//
-//			@Override
-//			public void valueChanged(ListSelectionEvent listSelectionEvent) {
-//				// TODO Auto-generated method stub
-//				System.out.println("Test");
-//				boolean adjust = listSelectionEvent.getValueIsAdjusting();
-//				System.out.println(adjust);
-//			
-//				if(!adjust){
-//					JList list = (JList)listSelectionEvent.getSource();
-//					String selection = list.getName();
-//					System.out.println(selection);
-//				}
-//			}
-//			
-//		};
-//		list.addListSelectionListener(listSelectionListener);
-		
-		MouseListener mouseListener = new MouseAdapter(){
-			public void mouseClicked(MouseEvent mouseEvent){
-				JList theList = (JList)mouseEvent.getSource();
-				if(mouseEvent.getClickCount() == 2){
-					int index = theList.locationToIndex(mouseEvent.getPoint());
-					
-					if(index >= 0){
-						Object o = theList.getModel().getElementAt(index);
-						//System.out.println("Double-clicked on: " + o.toString());
-//						int len = model.getSize();
-//						for(int i =0; i<len; i++){
-//							System.out.println(model.getElementAt(i));
-//						}
-						//System.out.println("index: " + theList.locationToIndex(mouseEvent.getPoint()) + "length: " + model.size());
-						
-						try {
-							FileReader fr = new FileReader("C:\\Users\\Maverick\\Dropbox\\335 Code\\HCS_Collaborative_Editing_FINAL_PROJECT\\SavedDocuments\\" + "edit_" + (model.getSize()-(theList.locationToIndex(mouseEvent.getPoint()))-1) + ".html"); // incase anyone fucks this up - "C:\\Users\\Maverick\\Dropbox\\335 Code\\HCS_Collaborative_Editing_FINAL_PROJECT\\SavedDocuments\\" + "edit_" + (model.getSize()-(theList.locationToIndex(mouseEvent.getPoint()))-1) + ".html"
-							BufferedReader br = new BufferedReader(fr);
-							StringBuilder content = new StringBuilder(1024);
-							String str = br.readLine();
-							while((str = br.readLine()) != null){
-								content.append(str);
-							}
-							//System.out.println(content);
-							textPane.setText("<html> " + content);
-							br.close();
-							fr.close();
-						} catch (FileNotFoundException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-					}
-				}
-			}
-		};
-		list.addMouseListener(mouseListener);
 
 		JMenuItem saveAsDoc = new JMenuItem("Save As...");
 		file.add(saveAsDoc);
@@ -567,18 +448,18 @@ public class MainGUI extends JFrame {
 		});
 		help.add(aboutDoc);
 
-//		JButton btnNewButton = new JButton("Run Chat Client");
-//		btnNewButton.setFont(new Font("Menlo", Font.PLAIN, 24));
-//		btnNewButton.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent e) {
-//				ChatClientStart chat = new ChatClientStart(LoginWindow
-//						.getHost(), Integer.parseInt(LoginWindow.getPort()),
-//						LoginWindow.getUsername());
-//				chat.setGUI();
-//			}
-//		});
-//		btnNewButton.setBounds(944, 28, 240, 644);
-//		mainPanel.add(btnNewButton);
+		JButton btnNewButton = new JButton("Run Chat Client");
+		btnNewButton.setFont(new Font("Menlo", Font.PLAIN, 24));
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ChatClientStart chat = new ChatClientStart(LoginWindow
+						.getHost(), Integer.parseInt(LoginWindow.getPort()),
+						LoginWindow.getUsername());
+				chat.setGUI();
+			}
+		});
+		btnNewButton.setBounds(944, 28, 240, 644);
+		mainPanel.add(btnNewButton);
 
 	}
 
