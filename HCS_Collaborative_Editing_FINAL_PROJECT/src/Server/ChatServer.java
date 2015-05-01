@@ -8,14 +8,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import Chat.Command;
-import Chat.DisconnectChat;
-import Chat.UpdateChat;
+import Chat.ChatCommand;
+import Chat.DisconnectChatCommand;
+import Chat.UpdateActiveTextCommand;
+import Chat.UpdateChatCommand;
 import Chat.ChatClientStart;
 
 public class ChatServer {
 	private ServerSocket chatSocket; // the server socket
 	private List<String> messages;	// the chat log
+	private String userWriting;
 	private HashMap<String, ObjectOutputStream> chatOutputs; // map of all connected users' output streams
 	//private ObjectInputStream input; // the input stream from the client
 	private String clientName;
@@ -27,6 +29,7 @@ public class ChatServer {
 		this.clientName = clientName;
 		this.host = host;
 		//Initialize the Chat Lists
+		this.userWriting = "";
 		this.messages = new ArrayList<String>(); // create the chat log
 		this.chatOutputs = new HashMap<String, ObjectOutputStream>(); // setup the map
 		
@@ -40,7 +43,7 @@ public class ChatServer {
 			
 			// Begin Accepting Chat Clients
 			new Thread(new ClientAccepterChat()).start();
-			ChatClientStart chatWindow = new ChatClientStart(host,chatPort, clientName);
+			//ChatClientStart chatWindow = new ChatClientStart(host,chatPort, clientName);
 			
 
 		}
@@ -63,11 +66,11 @@ public class ChatServer {
 			try{
 				while(true){
 					// read a command from the client, execute on the server
-					Command<ChatServer> command = (Command<ChatServer>)input.readObject();
+					ChatCommand<ChatServer> command = (ChatCommand<ChatServer>)input.readObject();
 					command.execute(ChatServer.this);
 					
 					// terminate if client is disconnecting
-					if (command instanceof DisconnectChat){
+					if (command instanceof DisconnectChatCommand){
 						input.close();
 						return;
 					}
@@ -113,10 +116,25 @@ public class ChatServer {
 		messages.add(message);
 		updateClientsChat();
 	}
+	public void changeTextStatus(String message){
+		userWriting = message;
+		updateClientsChatText();
+	}
+	
+	public void updateClientsChatText(){
+		UpdateActiveTextCommand update = new UpdateActiveTextCommand(userWriting);
+		try{
+			for (ObjectOutputStream out : chatOutputs.values())
+				out.writeObject(update);
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+	}
 	
 	public void updateClientsChat() {
 		// make an UpdateClientCommmand, write to all connected users
-		UpdateChat update = new UpdateChat(messages); //this is a new class in model 
+		UpdateChatCommand update = new UpdateChatCommand(messages); //this is a new class in model 
 		try{
 			for (ObjectOutputStream out : chatOutputs.values())
 				out.writeObject(update);

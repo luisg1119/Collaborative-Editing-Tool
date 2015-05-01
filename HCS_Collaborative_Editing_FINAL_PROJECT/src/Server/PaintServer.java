@@ -139,7 +139,7 @@ public class PaintServer {
 	}
 	
 	public void updateClientsPaint(){
-		UpdateCommand update = new UpdateCommand("server", paintObjects.toArray(new PaintObject[paintObjects.size()]));
+		UpdateEditorCommand update = new UpdateEditorCommand("server", paintObjects.toArray(new PaintObject[paintObjects.size()]));
 		for (ObjectOutputStream out: paintOutputs.values())
 			try{
 				out.writeObject(update);

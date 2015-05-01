@@ -14,6 +14,7 @@ import javax.swing.border.BevelBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultEditorKit;
 import javax.swing.text.Document;
 import javax.swing.text.Highlighter;
@@ -25,10 +26,12 @@ import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.Action;
 import javax.swing.DefaultListModel;
+import javax.swing.JComponent;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
+import javax.swing.JTextPane;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 import javax.swing.JButton;
@@ -43,6 +46,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseListener;
 import java.awt.font.TextAttribute;
 import java.util.Calendar;
 import java.util.Map;
@@ -51,7 +55,7 @@ import java.util.Scanner;
 import javax.swing.JPopupMenu;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
-import javax.swing.JEditorPane;
+import javax.swing.JTextPane;
 import javax.swing.JTextArea;
 import javax.swing.JScrollBar;
 
@@ -67,9 +71,15 @@ import javax.swing.JList;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.awt.Button;
+import java.awt.FlowLayout;
 
 public class MainGUI extends JFrame {
 	private JPanel mainPanel;
@@ -78,6 +88,9 @@ public class MainGUI extends JFrame {
 	private JButton underlineToggleButton_1;
 	static String username;
 	static String password;
+	public int filename = 0;
+
+	// public JPanel chatPane;
 
 	/**
 	 * Launch the application.
@@ -94,7 +107,11 @@ public class MainGUI extends JFrame {
 			}
 		});
 	}
-
+	
+	public MainGUI(String userName){
+		username = userName;
+		MainGUI window = new MainGUI();
+	}
 	/**
 	 * Create the frame.
 	 */
@@ -102,18 +119,24 @@ public class MainGUI extends JFrame {
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1200, 700);
+		getContentPane().setLayout(new BorderLayout());
 		mainPanel = new JPanel();
 		mainPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(mainPanel);
+		//setContentPane(mainPanel);
 		mainPanel.setLayout(null);
 
-		ChatClientStart chat= new ChatClientStart("localhost",9001,username);
-		JPanel chatPane = new ChatPanelDesigner(username, chat.returnOutput());
-		chatPane.setForeground(Color.LIGHT_GRAY);
-		chatPane.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null,
-				null, null));
-		chatPane.setBounds(954, 23, 230, 632);
-		mainPanel.add(chatPane);
+		 //Instantiate a new ChatClient 
+		 ChatClientStart chatPane = new ChatClientStart(LoginWindow.getHost(), Integer.parseInt(LoginWindow.getPort()), username);
+		 //Instantiate the bounds
+		 chatPane.setBounds(954, 23, 230, 632);
+		 
+		 chatPane.setForeground(Color.LIGHT_GRAY);
+		 //Put color on the gui to know what is the Chat Windows
+		 chatPane.setBackground(Color.RED);
+		 //Position the Chat Client in the correct location in the GUI 
+		 getContentPane().add(chatPane, BorderLayout.CENTER);
+		 getContentPane().add(mainPanel, BorderLayout.CENTER);
+
 
 		JPanel revisionPane = new JPanel();
 		revisionPane.setBounds(0, 23, 137, 632);
@@ -121,7 +144,6 @@ public class MainGUI extends JFrame {
 		revisionPane.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null,
 				null, null));
 		revisionPane.setForeground(Color.LIGHT_GRAY);
-
 
 		JPanel docPanel = new JPanel();
 		docPanel.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null,
@@ -136,25 +158,15 @@ public class MainGUI extends JFrame {
 		toolBar.setFloatable(false);
 		docPanel.add(toolBar);
 
-		final JEditorPane editorPane = new JEditorPane();
-		JScrollPane scrollPane = new JScrollPane(editorPane);
+		final JTextPane textPane = new JTextPane();
+		JScrollPane scrollPane = new JScrollPane(textPane);
 		scrollPane.setBounds(10, 41, 785, 580);
 
-		editorPane.setContentType("text/html");
+		textPane.setContentType("text/html");
 
-		editorPane.setEditorKit(new HTMLEditorKit());
+		textPane.setEditorKit(new HTMLEditorKit());
 
 		docPanel.add(scrollPane);
-		
-		/*
-		 * Attempt at Saving Document
-		 * */
-		//Document docum = (Document) editorPane;
-		//docum.addDocumentListener(event);
-		//StyledEditorKit newKit = new StyledEditorKit();
-		//newKit = (StyledEditorKit) editorPane.getDocument();
-		//System.out.println(newKit);
-		
 
 		/*
 		 * Sets the default fonts for user to use
@@ -300,7 +312,7 @@ public class MainGUI extends JFrame {
 
 		JMenuBar menuBar = new JMenuBar();
 		menuBar.setBorderPainted(false);
-		menuBar.setBounds(0, 0, 1184, 24);
+		menuBar.setBounds(0, 0, 1200, 22);
 		mainPanel.add(menuBar);
 
 		JMenu file = new JMenu("File");
@@ -311,76 +323,142 @@ public class MainGUI extends JFrame {
 
 		JMenuItem openDoc = new JMenuItem("Open");
 		file.add(openDoc);
-		
-		
+
 		final DefaultListModel<RevisionDocument> model = new DefaultListModel();
-//		final Thread updater = new Thread() { // another thread to update the
-//		private RevisionDocument currRevListDoc;
-//
-//
-//		/*
-//		 * JList for saved documents
-//		 */
-//			// model
-//			/*
-//			 * (non-Javadoc)
-//			 * 
-//			 * @see java.lang.Thread#run()
-//			 */
-//			@Override
-//			public void run() {
-//					model.addElement(currRevListDoc);
-//					try {
-//						Thread.sleep(0);
-//					} catch (InterruptedException e) {
-//						throw new RuntimeException(e);
-//					}
-//				}
-//		};
-//		updater.start();
+		// final Thread updater = new Thread() { // another thread to update the
+		// private RevisionDocument currRevListDoc;
+		//
+		//
+		// /*
+		// * JList for saved documents
+		// */
+		// // model
+		// /*
+		// * (non-Javadoc)
+		// *
+		// * @see java.lang.Thread#run()
+		// */
+		// @Override
+		// public void run() {
+		// model.addElement(currRevListDoc);
+		// try {
+		// Thread.sleep(0);
+		// } catch (InterruptedException e) {
+		// throw new RuntimeException(e);
+		// }
+		// }
+		// };
+		// updater.start();
 		revisionPane.setLayout(null);
 		final JList list = new JList(model);
-		
+
 		list.addListSelectionListener(new ListSelectionListener() {
 
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
-				if (!e.getValueIsAdjusting()){
-					RevisionDocument thisRevision = (RevisionDocument)list.getSelectedValue();
-					editorPane.setDocument(thisRevision.doc);
+				if (!e.getValueIsAdjusting()) {
+					RevisionDocument thisRevision = (RevisionDocument) list
+							.getSelectedValue();
+					textPane.setDocument(thisRevision.doc);
 				}
 			}
-			
+
 		});
 		list.setBounds(0, 0, 137, 632);
 		revisionPane.add(list); // adds list to revisionPane
-		
-		
+
 		/*
 		 * Save Button - to save a document to revision history
 		 */
 		JMenuItem saveDoc = new JMenuItem("Save");
 		saveDoc.addActionListener(new ActionListener() {
+			
+
 			public void actionPerformed(ActionEvent arg0) {
-				Document thisDoc = editorPane.getDocument();
+				Document thisDoc = textPane.getDocument();
 				Calendar cal = Calendar.getInstance();
-				RevisionDocument newRevisedDocument = new RevisionDocument(cal,thisDoc,username);
+				RevisionDocument newRevisedDocument = new RevisionDocument(cal,
+						thisDoc, username);
 				model.addElement(newRevisedDocument);
-				//System.out.println(editorPane.getDocument().toString());
-//				Writer writer;
-//				try {
-//					writer = new FileWriter("C:\\Users\\Maverick\\Desktop\\GUI_Test");
-//					writer.write(thisDoc.toString());
-//					writer.close();
-//				} catch (IOException e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				}
 				
-				
+				try {
+					FileWriter out = new FileWriter(new File(System
+							.getProperty("user.dir") + "/SavedDocuments",
+							"edit_" + filename + ".html")); // thisDoc.toString() "edit_" + filename
+					filename++;
+					out.write(textPane.getText()); 
+					out.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} 
+
 			}
 		});
 		file.add(saveDoc);
+		
+		/*
+		 * Double-click event on JList element
+		 * */
+		
+//		ListSelectionListener listSelectionListener = new ListSelectionListener(){
+//
+//			@Override
+//			public void valueChanged(ListSelectionEvent listSelectionEvent) {
+//				// TODO Auto-generated method stub
+//				System.out.println("Test");
+//				boolean adjust = listSelectionEvent.getValueIsAdjusting();
+//				System.out.println(adjust);
+//			
+//				if(!adjust){
+//					JList list = (JList)listSelectionEvent.getSource();
+//					String selection = list.getName();
+//					System.out.println(selection);
+//				}
+//			}
+//			
+//		};
+//		list.addListSelectionListener(listSelectionListener);
+		
+		MouseListener mouseListener = new MouseAdapter(){
+			public void mouseClicked(MouseEvent mouseEvent){
+				JList theList = (JList)mouseEvent.getSource();
+				if(mouseEvent.getClickCount() == 2){
+					int index = theList.locationToIndex(mouseEvent.getPoint());
+					
+					if(index >= 0){
+						Object o = theList.getModel().getElementAt(index);
+						//System.out.println("Double-clicked on: " + o.toString());
+//						int len = model.getSize();
+//						for(int i =0; i<len; i++){
+//							System.out.println(model.getElementAt(i));
+//						}
+						//System.out.println("index: " + theList.locationToIndex(mouseEvent.getPoint()) + "length: " + model.size());
+						
+						try {
+							FileReader fr = new FileReader("C:\\Users\\Maverick\\Dropbox\\335 Code\\HCS_Collaborative_Editing_FINAL_PROJECT\\SavedDocuments\\" + "edit_" + (model.getSize()-(theList.locationToIndex(mouseEvent.getPoint()))-1) + ".html"); // incase anyone fucks this up - "C:\\Users\\Maverick\\Dropbox\\335 Code\\HCS_Collaborative_Editing_FINAL_PROJECT\\SavedDocuments\\" + "edit_" + (model.getSize()-(theList.locationToIndex(mouseEvent.getPoint()))-1) + ".html"
+							BufferedReader br = new BufferedReader(fr);
+							StringBuilder content = new StringBuilder(1024);
+							String str = br.readLine();
+							while((str = br.readLine()) != null){
+								content.append(str);
+							}
+							//System.out.println(content);
+							textPane.setText("<html> " + content);
+							br.close();
+							fr.close();
+						} catch (FileNotFoundException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+				}
+			}
+		};
+		list.addMouseListener(mouseListener);
 
 		JMenuItem saveAsDoc = new JMenuItem("Save As...");
 		file.add(saveAsDoc);
@@ -405,7 +483,7 @@ public class MainGUI extends JFrame {
 		JMenuItem selectAllDoc = new JMenuItem("Select All");
 		selectAllDoc.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				editorPane.selectAll();
+				textPane.selectAll();
 			}
 		});
 		edit.add(selectAllDoc);
@@ -441,6 +519,19 @@ public class MainGUI extends JFrame {
 			}
 		});
 		help.add(aboutDoc);
+
+//		JButton btnNewButton = new JButton("Run Chat Client");
+//		btnNewButton.setFont(new Font("Menlo", Font.PLAIN, 24));
+//		btnNewButton.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent e) {
+//				ChatClientStart chat = new ChatClientStart(LoginWindow
+//						.getHost(), Integer.parseInt(LoginWindow.getPort()),
+//						LoginWindow.getUsername());
+//				chat.setGUI();
+//			}
+//		});
+//		btnNewButton.setBounds(944, 28, 240, 644);
+//		mainPanel.add(btnNewButton);
 
 	}
 

@@ -13,7 +13,7 @@ import javax.swing.text.Document;
 *@version Initial Wednesday April 15, 2015 
 */
 public class RevisionDocument {
-	public Calendar cal;
+	public Calendar cal; //FIXME make all 3 private
 	public Document doc;
 	public String username;
 
@@ -24,7 +24,7 @@ public class RevisionDocument {
 	}
 	@Override
 	public String toString(){
-		return username + ": " + cal.getTime().toString();
+		return cal.getTime().toString(); //add username maybe?
 		
 	}
 }

@@ -25,6 +25,7 @@ import javax.swing.JOptionPane;
 import javax.swing.text.JTextComponent;
 
 import GUI.MainGUI;
+import Server.Run_To_Start_Servers;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -42,12 +43,12 @@ import java.awt.Font;
  */
 
 public class LoginWindow extends JFrame {
-	public static JTextField textField;
+	public static JTextField txtA;
 	private JPasswordField passwordField;
 	private boolean isSuccesful = false;
 	static LoginServer server = new LoginServer();
-	private JTextField portField;
-	private JTextField hostField;
+	private static JTextField portField;
+	private static JTextField hostField;
 
 	public LoginWindow() {
 		setTitle("Login: HCS Document Editor\n");
@@ -59,10 +60,11 @@ public class LoginWindow extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		
-		textField = new JTextField();
-		textField.setBounds(94, 41, 277, 28);
-		getContentPane().add(textField);
-		textField.setColumns(10);
+		txtA = new JTextField();
+		txtA.setText("a");
+		txtA.setBounds(94, 41, 277, 28);
+		getContentPane().add(txtA);
+		txtA.setColumns(10);
 
 		passwordField = new JPasswordField();
 		passwordField.setBounds(94, 78, 277, 28);
@@ -83,7 +85,7 @@ public class LoginWindow extends JFrame {
 		JButton btnLogin = new JButton("Login");
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String username = textField.getText();
+				String username = txtA.getText();
 				String password = String.valueOf(passwordField.getPassword());
 				if (username.equals("") || password.equals("")){
 					JOptionPane.showMessageDialog(null, "Please enter a valid username and password");
@@ -101,8 +103,9 @@ public class LoginWindow extends JFrame {
 					MainGUI.usernameRetrieval(username,password);
 					dispose();
 					//We dispose of the Login screen and now we generate the MainGUI
-					MainGUI frame = new MainGUI();
-					frame.setVisible(true);
+					//MainGUI frame = new MainGUI();
+					Run_To_Start_Servers run = new Run_To_Start_Servers(getHost(), getPort(), getUsername());
+					//frame.setVisible(true);
 				}
 				
 			}
@@ -129,11 +132,13 @@ public class LoginWindow extends JFrame {
 		getContentPane().add(portNumber);
 		
 		portField = new JTextField();
+		portField.setText("9001");
 		portField.setColumns(10);
 		portField.setBounds(254, 118, 117, 25);
 		getContentPane().add(portField);
 		
 		hostField = new JTextField();
+		hostField.setText("localhost");
 		hostField.setColumns(10);
 		hostField.setBounds(94, 118, 117, 25);
 		getContentPane().add(hostField);
@@ -162,10 +167,10 @@ public class LoginWindow extends JFrame {
 	}
 
 	public static String getUsername() {
-		return textField.getText().trim();
+		return txtA.getText().trim();
 	}
 	
-	public String getPort(){
+	public static String getPort(){
 		if(portField.equals("")){
 			return null;
 		}
@@ -174,7 +179,7 @@ public class LoginWindow extends JFrame {
 		}
 	}
 	
-	public String getHost(){
+	public static String getHost(){
 		if(hostField.equals("")){
 			return null;
 		}
