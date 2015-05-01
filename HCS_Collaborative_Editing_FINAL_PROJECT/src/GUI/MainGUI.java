@@ -26,6 +26,7 @@ import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.Action;
 import javax.swing.DefaultListModel;
+import javax.swing.JComponent;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
@@ -100,7 +101,8 @@ public class MainGUI extends JFrame {
 			}
 		});
 	}
-
+	
+	
 	/**
 	 * Create the frame.
 	 */
@@ -108,17 +110,22 @@ public class MainGUI extends JFrame {
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1200, 700);
+		setLayout(new BorderLayout());
 		mainPanel = new JPanel();
 		mainPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(mainPanel);
+		//setContentPane(mainPanel);
 		mainPanel.setLayout(null);
 
 		 // why wont this code execute?
 		 ChatClientStart chatPane = new ChatClientStart(LoginWindow.getHost(), Integer.parseInt(LoginWindow.getPort()), username);
 		 chatPane.setBounds(954, 23, 230, 632);
 		 chatPane.setForeground(Color.LIGHT_GRAY);
-		 mainPanel.add(chatPane);
+		 chatPane.setBackground(Color.RED);
+		// mainPanel.add(chatPane);
 
+		 chatPane.setVisible(true);
+		 this.add(chatPane, BorderLayout.EAST);
+		 this.add(mainPanel, BorderLayout.CENTER);
 
 		JPanel revisionPane = new JPanel();
 		revisionPane.setBounds(0, 23, 137, 632);

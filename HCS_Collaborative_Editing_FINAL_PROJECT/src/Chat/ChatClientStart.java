@@ -16,7 +16,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-public class ChatClientStart extends JFrame {
+public class ChatClientStart extends JPanel {
 	//private static final long serialVersionUID = 2577057661457057225L;
 	private String clientName; // user name of the client
 	private String host;
@@ -32,8 +32,8 @@ public class ChatClientStart extends JFrame {
 	
 	
 	public ChatClientStart(String host, int port, String name) {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 200, 800);
+		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//setBounds(100, 100, 200, 800);
 
 		//this.host = JOptionPane.showInputDialog("Host address:");
 		//this.clientName = JOptionPane.showInputDialog("Please Enter a Username:");
@@ -57,7 +57,7 @@ public class ChatClientStart extends JFrame {
 			output.writeObject(clientName);
 			
 			// add a listener that sends a disconnect command to when closing
-			this.addWindowListener(new WindowAdapter(){
+			/*this.addWindowListener(new WindowAdapter(){
 				public void windowClosing(WindowEvent arg0) {
 					try {
 						output.writeObject(new DisconnectChat(clientName));
@@ -67,7 +67,7 @@ public class ChatClientStart extends JFrame {
 						e.printStackTrace();
 					}
 				}
-			});	
+			});*/	
 			
 		// start a thread for handling server events
 		setGUI();
@@ -100,11 +100,13 @@ public class ChatClientStart extends JFrame {
 	}
 	
 	public void setGUI(){
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setBounds(100, 100, 400, 400);
+		//this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//this.setBounds(100, 100, 400, 400);
 		chat = new ChatPanelDesigner(clientName, output);
-		this.add(chat);
+		this.setLayout(new BorderLayout());
+		this.add(chat, BorderLayout.CENTER);
 		this.setVisible(true);
+		this.setSize(200, 600);
 	}
 	
 	public void update(List<String> messages) {
