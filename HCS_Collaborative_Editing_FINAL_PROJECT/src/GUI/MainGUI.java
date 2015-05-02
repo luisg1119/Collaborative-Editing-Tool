@@ -71,22 +71,15 @@ import javax.swing.JList;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-<<<<<<< HEAD
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-=======
-import java.io.File;
->>>>>>> origin/master
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.awt.Button;
-<<<<<<< HEAD
 import java.awt.FlowLayout;
-=======
->>>>>>> origin/master
 
 public class MainGUI extends JFrame {
 	private JPanel mainPanel;
@@ -96,8 +89,6 @@ public class MainGUI extends JFrame {
 	static String username;
 	static String password;
 	public int filename = 0;
-
-	// public JPanel chatPane;
 
 	// public JPanel chatPane;
 
@@ -117,14 +108,10 @@ public class MainGUI extends JFrame {
 		});
 	}
 	
-<<<<<<< HEAD
 	public MainGUI(String userName){
 		username = userName;
 		MainGUI window = new MainGUI();
 	}
-=======
-	
->>>>>>> origin/master
 	/**
 	 * Create the frame.
 	 */
@@ -132,17 +119,12 @@ public class MainGUI extends JFrame {
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1200, 700);
-<<<<<<< HEAD
 		getContentPane().setLayout(new BorderLayout());
-=======
-		setLayout(new BorderLayout());
->>>>>>> origin/master
 		mainPanel = new JPanel();
 		mainPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		//setContentPane(mainPanel);
 		mainPanel.setLayout(null);
 
-<<<<<<< HEAD
 		 //Instantiate a new ChatClient 
 		 ChatClientStart chatPane = new ChatClientStart(LoginWindow.getHost(), Integer.parseInt(LoginWindow.getPort()), username);
 		 //Instantiate the bounds
@@ -155,18 +137,6 @@ public class MainGUI extends JFrame {
 		 getContentPane().add(chatPane, BorderLayout.CENTER);
 		 getContentPane().add(mainPanel, BorderLayout.CENTER);
 
-=======
-		 // why wont this code execute?
-		 ChatClientStart chatPane = new ChatClientStart(LoginWindow.getHost(), Integer.parseInt(LoginWindow.getPort()), username);
-		 chatPane.setBounds(954, 23, 230, 632);
-		 chatPane.setForeground(Color.LIGHT_GRAY);
-		 chatPane.setBackground(Color.RED);
-		// mainPanel.add(chatPane);
-
-		 chatPane.setVisible(true);
-		 this.add(chatPane, BorderLayout.EAST);
-		 this.add(mainPanel, BorderLayout.CENTER);
->>>>>>> origin/master
 
 		JPanel revisionPane = new JPanel();
 		revisionPane.setBounds(0, 23, 137, 632);
@@ -410,7 +380,6 @@ public class MainGUI extends JFrame {
 				RevisionDocument newRevisedDocument = new RevisionDocument(cal,
 						thisDoc, username);
 				model.addElement(newRevisedDocument);
-<<<<<<< HEAD
 				
 				try {
 					FileWriter out = new FileWriter(new File(System
@@ -418,27 +387,11 @@ public class MainGUI extends JFrame {
 							"edit_" + filename + ".html")); // thisDoc.toString() "edit_" + filename
 					filename++;
 					out.write(textPane.getText()); 
-=======
-
-				StyledDocument styleDoc = textPane.getStyledDocument();
-				try {
-					FileWriter out = new FileWriter(new File(System
-							.getProperty("user.dir") + "/SavedDocuments",
-							thisDoc.toString() + ".rtf"));
-					out.write(styleDoc.getText(0, styleDoc.getLength()));
->>>>>>> origin/master
 					out.close();
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-<<<<<<< HEAD
 				} 
-=======
-				} catch (BadLocationException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
->>>>>>> origin/master
 
 			}
 		});
