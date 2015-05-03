@@ -7,11 +7,10 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import Chat.ChatClientStart;
-import Chat.ChatCommand;
-import Chat.DisconnectChatCommand;
-import Chat.UpdateChatCommand;
-import EditorConnect.EditorClientStart;
+import Editor.DisconnectEditorCommand;
+import Editor.EditorCommand;
+import Editor.UpdateEditorCommand;
+import Editor.EditorClientStart;
 
 public class EditorServer {
 	
@@ -40,7 +39,7 @@ public class EditorServer {
 			System.out.println("The Collaborative Editing Server was started on port: " + collaborativePort);
 			
 			new Thread(new ClientAccepterEditor()).start();
-			EditorClientStart chatWindow = new EditorClientStart(collaborativePort, host, clientName);
+			EditorClientStart editWindow = new EditorClientStart(collaborativePort, host, clientName);
 
 		}
 		catch(Exception e){
@@ -88,7 +87,7 @@ public class EditorServer {
 				try{
 					while(true){
 						// read a command from the client, execute on the server
-						ChatCommand<EditorServer> command = (ChatCommand<EditorServer>)input.readObject();
+						EditorCommand<EditorServer> command = (EditorCommand<EditorServer>)input.readObject();
 						command.execute(EditorServer.this);
 						
 						// terminate if client is disconnecting
@@ -107,12 +106,12 @@ public class EditorServer {
 		
 		public void addText(String text){
 			texts.add(text);
-			updateClientsChat();
+			updateClientsEditor();
 		}
 		
-		public void updateClientsChat() {
+		public void updateClientsEditor() {
 			// make an UpdateClientCommmand, write to all connected users
-			UpdateChatCommand update = new UpdateChatCommand(texts); //this is a new class in model 
+			UpdateEditorCommand update = new UpdateEditorCommand(texts); //this is a new class in model 
 			try{
 				for (ObjectOutputStream out : editorOutput.values())
 					out.writeObject(update);
@@ -122,7 +121,7 @@ public class EditorServer {
 			}
 		}
 		
-		public void disconnectChat(String clientName) {
+		public void disconnectEditor(String clientName) {
 			try{
 				editorOutput.get(clientName).close(); // close output stream
 				editorOutput.remove(clientName); // remove from map

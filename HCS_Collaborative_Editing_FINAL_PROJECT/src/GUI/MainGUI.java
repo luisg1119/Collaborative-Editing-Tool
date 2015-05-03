@@ -61,6 +61,7 @@ import javax.swing.JScrollBar;
 
 import Chat.ChatClientStart;
 import Chat.ChatPanelDesigner;
+import Editor.MainTextPane;
 import Model.LoginWindow;
 import Model.RevisionDocument;
 import Model.User;
@@ -91,7 +92,22 @@ public class MainGUI extends JFrame {
 	public int filename = 0;
 
 	// public JPanel chatPane;
-
+	
+	//*******We Need to add this code to wherever the an event listener that
+	//closes the gui*****************
+	// add a listener that sends a disconnect command to when closing
+	/*this.addWindowListener(new WindowAdapter(){
+		public void windowClosing(WindowEvent arg0) {
+			try {
+			//Make sure to add diconnect Chat and Paint later on
+				output.writeObject(new DisconnectChat(clientName));
+				output.close();
+				input.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	});*/	
 	/**
 	 * Launch the application.
 	 */
@@ -158,15 +174,8 @@ public class MainGUI extends JFrame {
 		toolBar.setFloatable(false);
 		docPanel.add(toolBar);
 
-		final JTextPane textPane = new JTextPane();
-		JScrollPane scrollPane = new JScrollPane(textPane);
-		scrollPane.setBounds(10, 41, 785, 580);
-
-		textPane.setContentType("text/html");
-
-		textPane.setEditorKit(new HTMLEditorKit());
-
-		docPanel.add(scrollPane);
+		final MainTextPane textPane = new MainTextPane();
+		docPanel.add(textPane.getScroll());
 
 		/*
 		 * Sets the default fonts for user to use

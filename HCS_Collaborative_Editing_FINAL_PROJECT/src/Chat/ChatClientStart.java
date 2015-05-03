@@ -98,13 +98,13 @@ public class ChatClientStart extends JPanel {
 		chat.updateActiveUser(message);
 	}
 	
-	public ObjectOutputStream returnOutput(){
-		return output;	
-	}
-	
-	public ObjectInputStream returnInput(){
-		return input;	
-	}
+//	public ObjectOutputStream returnOutput(){
+//		return output;	
+//	}
+//	
+//	public ObjectInputStream returnInput(){
+//		return input;	
+//	}
 	
 	
 }

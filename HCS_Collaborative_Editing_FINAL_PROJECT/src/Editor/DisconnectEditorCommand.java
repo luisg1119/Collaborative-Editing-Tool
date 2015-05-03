@@ -19,7 +19,7 @@ public class DisconnectEditorCommand extends EditorCommand<EditorServer>{
 		@Override
 		public void execute(EditorServer executeOn) {
 			// disconnect client
-			executeOn.disconnectChat(clientName);
+			executeOn.disconnectEditor(clientName);
 		}
 	
 	
