@@ -71,6 +71,7 @@ public class RegisterButton extends JFrame {
 				System.out.println(server.loginMap.keySet());
 				System.out.println(server.loginMap.get(username));
 				dispose();
+				server.loginMap.put(username, password);
 			}
 		});
 

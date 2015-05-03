@@ -31,6 +31,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowEvent;
 import java.awt.Font;
+import java.util.HashMap;
 
 /**
  * Description of LoginWindow: This is a class for logging in and creating a new
@@ -49,8 +50,10 @@ public class LoginWindow extends JFrame {
 	static LoginServer server = new LoginServer();
 	private static JTextField portField;
 	private static JTextField hostField;
+	private static HashMap<String, String> tempHashMap;
 
 	public LoginWindow() {
+		tempHashMap = new HashMap<String, String>();
 		setTitle("Login: HCS Document Editor\n");
 		setResizable(false);
 		getContentPane().setBackground(new Color(238, 238, 238));
@@ -87,26 +90,43 @@ public class LoginWindow extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				String username = txtA.getText();
 				String password = String.valueOf(passwordField.getPassword());
+				
 				if (username.equals("") || password.equals("")){
 					JOptionPane.showMessageDialog(null, "Please enter a valid username and password");
 					return;
 				}
-				//Calls the server's hashmap and sees if username already exists
-				if(LoginServer.loginMap.containsKey(username) == false){
+				//Calls the server's hashmap and checks if username already exists
+				if(server.loginMap.containsKey(username) == false){
 					messageLabel.setText("User not found! ");
+				
+//					//If username doesnt exist, it's created and added to the server
+//					if(server.login(username, password) == true){
+//						LoginServer.loginMap.put(username, password);
+//						messageLabel.setText("Succesfully logged in " + username);
+//						isSuccesful = true;
+//						//We send username and password details so we can display this info in main gui.
+//						MainGUI.usernameRetrieval(username,password);
+//						dispose();
+//						//We dispose of the Login screen and now we generate the MainGUI
+//						//MainGUI frame = new MainGUI();
+//						Run_To_Start_Servers run = new Run_To_Start_Servers(getHost(), getPort(), getUsername());
+//						//frame.setVisible(true);
+//					}
 				}
-				//If username doesnt exist, it's created and added to the server
-				if(server.login(username, password) == true){
-					messageLabel.setText("Succesfully logged in " + username);
-					isSuccesful = true;
-					//We send username and password details so we can display this info in main gui.
-					MainGUI.usernameRetrieval(username,password);
-					dispose();
-					//We dispose of the Login screen and now we generate the MainGUI
-					//MainGUI frame = new MainGUI();
-					Run_To_Start_Servers run = new Run_To_Start_Servers(getHost(), getPort(), getUsername());
-					//frame.setVisible(true);
-				}
+				
+					System.out.println(server.loginMap.toString());
+					//If username doesnt exist, it's created and added to the server
+					if(server.login(username, password) == true){
+						messageLabel.setText("Succesfully logged in " + username);
+						isSuccesful = true;
+						//We send username and password details so we can display this info in main gui.
+						MainGUI.usernameRetrieval(username,password);
+						dispose();
+						//We dispose of the Login screen and now we generate the MainGUI
+						//MainGUI frame = new MainGUI();
+						Run_To_Start_Servers run = new Run_To_Start_Servers(getHost(), getPort(), getUsername());
+						//frame.setVisible(true);
+					}
 				
 			}
 		});

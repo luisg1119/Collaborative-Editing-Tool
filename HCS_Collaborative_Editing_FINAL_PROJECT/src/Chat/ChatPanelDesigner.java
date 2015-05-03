@@ -16,11 +16,14 @@ import javax.swing.JButton;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.text.JTextComponent;
 
 import java.awt.ScrollPane;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.SystemColor;
+
+import javax.swing.JLabel;
 
 public class ChatPanelDesigner extends JPanel {
 	private static final long serialVersionUID = -8673566206025843968L;
@@ -30,7 +33,8 @@ public class ChatPanelDesigner extends JPanel {
 	
 	private ObjectOutputStream output; // output stream to server
 	private String clientName;
-	private JTextField activeUserText;
+	//private JTextField activeUserText2;
+	private JTextField activeUserText;//JLabel activeUserText;
 
 
 	private class EnterListener implements ActionListener {
@@ -38,6 +42,7 @@ public class ChatPanelDesigner extends JPanel {
 			String s = textSend.getText();
 			try{
 				if (s.isEmpty()){
+					//activeUserText.setText("");
 					return;
 				}
 				output.writeObject(new AddMessageCommand(clientName + ":  " + s));
@@ -55,7 +60,9 @@ public class ChatPanelDesigner extends JPanel {
 				String s = "";
 				output.writeObject(new UserTextStatusCommand(s));
 			}
-			output.writeObject(new UserTextStatusCommand(clientName));
+			else{
+				output.writeObject(new UserTextStatusCommand(clientName));
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -85,17 +92,21 @@ public class ChatPanelDesigner extends JPanel {
 		add(panel, BorderLayout.SOUTH);
 		panel.setLayout(new BorderLayout(0, 0));
 		
+		//The Send Button for the chat client
 		JButton sendButton = new JButton("Send");
 		panel.add(sendButton, BorderLayout.EAST);
 		
+		//Creates JTextField that will be used for user Chat 
 		textSend = new JTextField();
 		panel.add(textSend, BorderLayout.CENTER);
 		
-		//Used for the currently typing notification
+		// Creates  a JText Field that will tell if someone is currently typing
 		activeUserText = new JTextField();
 		activeUserText.setEditable(false);
+		//Take border off JText Field
 		activeUserText.setBorder(javax.swing.BorderFactory.createEmptyBorder());
 		panel.add(activeUserText, BorderLayout.NORTH);
+		//Set The font and size of the default text
 		activeUserText.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 		activeUserText.setForeground(Color.GRAY);
 		activeUserText.setBackground(SystemColor.window);
@@ -128,8 +139,11 @@ public class ChatPanelDesigner extends JPanel {
 	}
 	
 	public void updateActiveUser(String user){
-		if (textSend.getText().isEmpty()){
-			activeUserText.setText("");
+		if (user.isEmpty()){
+			activeUserText.setText("");//textSend.getText());
+			if(!textSend.getText().isEmpty()){
+				textListener();
+			}
 			repaint();
 		}
 		else{
@@ -137,7 +151,6 @@ public class ChatPanelDesigner extends JPanel {
 			activeUserText.setText(s);
 			repaint();
 		}
-		
 	}
 	
 	public void update(List<String> messages) {

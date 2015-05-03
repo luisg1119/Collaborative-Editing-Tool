@@ -384,7 +384,7 @@ public class MainGUI extends JFrame {
 				try {
 					FileWriter out = new FileWriter(new File(System
 							.getProperty("user.dir") + "/SavedDocuments",
-							"edit_" + filename + ".html")); // thisDoc.toString() "edit_" + filename
+							"edit_" + filename + ".html")); 
 					filename++;
 					out.write(textPane.getText()); 
 					out.close();
@@ -428,22 +428,15 @@ public class MainGUI extends JFrame {
 					
 					if(index >= 0){
 						Object o = theList.getModel().getElementAt(index);
-						//System.out.println("Double-clicked on: " + o.toString());
-//						int len = model.getSize();
-//						for(int i =0; i<len; i++){
-//							System.out.println(model.getElementAt(i));
-//						}
-						//System.out.println("index: " + theList.locationToIndex(mouseEvent.getPoint()) + "length: " + model.size());
 						
 						try {
-							FileReader fr = new FileReader("C:\\Users\\Maverick\\Dropbox\\335 Code\\HCS_Collaborative_Editing_FINAL_PROJECT\\SavedDocuments\\" + "edit_" + (model.getSize()-(theList.locationToIndex(mouseEvent.getPoint()))-1) + ".html"); // incase anyone fucks this up - "C:\\Users\\Maverick\\Dropbox\\335 Code\\HCS_Collaborative_Editing_FINAL_PROJECT\\SavedDocuments\\" + "edit_" + (model.getSize()-(theList.locationToIndex(mouseEvent.getPoint()))-1) + ".html"
+							FileReader fr = new FileReader(System.getProperty("user.dir") + "/SavedDocuments" + "/edit_" + (model.getSize()-(theList.locationToIndex(mouseEvent.getPoint()))-1) + ".html"); // incase anyone fucks this up - "C:\\Users\\Maverick\\Dropbox\\335 Code\\HCS_Collaborative_Editing_FINAL_PROJECT\\SavedDocuments\\" + "edit_" + (model.getSize()-(theList.locationToIndex(mouseEvent.getPoint()))-1) + ".html"
 							BufferedReader br = new BufferedReader(fr);
 							StringBuilder content = new StringBuilder(1024);
 							String str = br.readLine();
 							while((str = br.readLine()) != null){
 								content.append(str);
 							}
-							//System.out.println(content);
 							textPane.setText("<html> " + content);
 							br.close();
 							fr.close();
