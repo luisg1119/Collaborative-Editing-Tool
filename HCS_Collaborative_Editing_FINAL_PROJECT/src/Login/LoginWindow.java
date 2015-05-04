@@ -1,4 +1,4 @@
-package Model;
+package Login;
 
 import javax.swing.JFrame;
 
@@ -93,13 +93,14 @@ public class LoginWindow extends JFrame {
 				
 				if (username.equals("") || password.equals("")){
 					JOptionPane.showMessageDialog(null, "Please enter a valid username and password");
-					return;
+					throw new InvalidUsernameException();
+//					return; commented out because of exception
 				}
 				//Calls the server's hashmap and checks if username already exists
 				server.populateMap();
 				if(server.loginMap.containsKey(username) == false){
 					messageLabel.setText("User not found! ");
-				
+					throw new InvalidUsernameException();
 				}
 				
 					//System.out.println(server.loginMap.toString());

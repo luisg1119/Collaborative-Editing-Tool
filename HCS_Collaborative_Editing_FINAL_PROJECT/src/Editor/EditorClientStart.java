@@ -47,18 +47,6 @@ public class EditorClientStart extends JPanel{
 			setGUI();
 			new Thread(new ServerHandler()).start();
 			
-//			// add a listener that sends a disconnect command to when closing
-//			this.addWindowListener(new WindowAdapter(){
-//				public void windowClosing(WindowEvent arg0) {
-//					try {
-//						output.writeObject(new DisconnectChat(clientName));
-//						output.close();
-//						input.close();
-//					} catch (IOException e) {
-//						e.printStackTrace();
-//					}
-//				}
-//			});	
 		}catch(Exception e){
 			e.printStackTrace();
 		}	
@@ -91,12 +79,7 @@ public class EditorClientStart extends JPanel{
 		this.add(edit, BorderLayout.CENTER);
 		this.setVisible(true);
 		//this.setSize(800,600);
-		this.setBorder((new BevelBorder(BevelBorder.LOWERED, null, null,null, null)));
-//		this.setLayout(new BorderLayout());
-//		this.add(chat, BorderLayout.CENTER);
-//		this.setVisible(true);
-//		this.setSize(200, 600);
-		
+		this.setBorder((new BevelBorder(BevelBorder.LOWERED, null, null,null, null)));		
 	}
 	
 	public void update(String text){//(List<String> text) {
