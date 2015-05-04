@@ -96,25 +96,13 @@ public class LoginWindow extends JFrame {
 					return;
 				}
 				//Calls the server's hashmap and checks if username already exists
+				server.populateMap();
 				if(server.loginMap.containsKey(username) == false){
 					messageLabel.setText("User not found! ");
 				
-//					//If username doesnt exist, it's created and added to the server
-//					if(server.login(username, password) == true){
-//						LoginServer.loginMap.put(username, password);
-//						messageLabel.setText("Succesfully logged in " + username);
-//						isSuccesful = true;
-//						//We send username and password details so we can display this info in main gui.
-//						MainGUI.usernameRetrieval(username,password);
-//						dispose();
-//						//We dispose of the Login screen and now we generate the MainGUI
-//						//MainGUI frame = new MainGUI();
-//						Run_To_Start_Servers run = new Run_To_Start_Servers(getHost(), getPort(), getUsername());
-//						//frame.setVisible(true);
-//					}
 				}
 				
-					System.out.println(server.loginMap.toString());
+					//System.out.println(server.loginMap.toString());
 					//If username doesnt exist, it's created and added to the server
 					if(server.login(username, password) == true){
 						messageLabel.setText("Succesfully logged in " + username);

@@ -11,9 +11,12 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.util.List;
 
+import javax.swing.JPanel;
+import javax.swing.border.BevelBorder;
+
 import GUI.MainGUI;
 
-public class EditorClientStart {
+public class EditorClientStart extends JPanel{
 	
 	private String clientName; // user name of the client
 	private String host;
@@ -23,8 +26,8 @@ public class EditorClientStart {
 	//private MainGUI chat;
 
 	private Socket server; // connection to server
-	private ObjectOutputStream output; // output stream
-	private ObjectInputStream input; // input stream
+	public ObjectOutputStream output; // output stream
+	public ObjectInputStream input; // input stream
 	
 	public EditorClientStart(int port1, String host1, String name){
 		
@@ -83,7 +86,12 @@ public class EditorClientStart {
 	}
 	
 	public void setGUI(){
-		edit = new MainTextPane();//(output); //should pass in??
+		edit = new MainTextPane(clientName,output); 
+		this.setLayout(new BorderLayout());
+		this.add(edit, BorderLayout.CENTER);
+		this.setVisible(true);
+		//this.setSize(800,600);
+		this.setBorder((new BevelBorder(BevelBorder.LOWERED, null, null,null, null)));
 //		this.setLayout(new BorderLayout());
 //		this.add(chat, BorderLayout.CENTER);
 //		this.setVisible(true);
@@ -91,17 +99,17 @@ public class EditorClientStart {
 		
 	}
 	
-	public void update(List<String> text) {
-		edit.update(text);
+	public void update(String text){//(List<String> text) {
+		edit.updateDocument(text);
 	}
 	
-//	public ObjectOutputStream returnOutput(){
-//		return output;	
-//	}
-//	
-//	public ObjectInputStream returnInput(){
-//		return input;	
-//	}
+	public ObjectOutputStream returnOutput(){
+		return output;	
+	}
+	
+	public ObjectInputStream returnInput(){
+		return input;	
+	}
 			
 
 }

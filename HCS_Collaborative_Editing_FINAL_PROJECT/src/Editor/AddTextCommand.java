@@ -7,13 +7,15 @@ import Server.EditorServer;
 public class AddTextCommand extends EditorCommand<EditorServer>{
 		private static final long serialVersionUID = -4786261013473386911L;
 		private String text; // message from client
+		private String clientName;
 		
 		/**
 		 * Creates an AddMessageCommand with the given message
 		 * 
 		 * @param message	message to add to log
 		 */
-		public AddTextCommand(String text){
+		public AddTextCommand(String name ,String text){
+			this.clientName = name;
 			this.text = text;
 		}
 		

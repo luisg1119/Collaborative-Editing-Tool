@@ -27,12 +27,13 @@ import javax.swing.JLabel;
 
 public class ChatPanelDesigner extends JPanel {
 	private static final long serialVersionUID = -8673566206025843968L;
-	private JTextField textSend;
+	public JTextField textSend;
 	private JTextArea textArea; // chat log displayed here
 	private JTextField textField; // field where user enters text
 	
 	private ObjectOutputStream output; // output stream to server
 	private String clientName;
+	private String updatedText;
 	//private JTextField activeUserText2;
 	private JTextField activeUserText;//JLabel activeUserText;
 

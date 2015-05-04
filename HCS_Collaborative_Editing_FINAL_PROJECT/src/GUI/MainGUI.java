@@ -47,6 +47,8 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.font.TextAttribute;
 import java.util.Calendar;
 import java.util.Map;
@@ -61,10 +63,15 @@ import javax.swing.JScrollBar;
 
 import Chat.ChatClientStart;
 import Chat.ChatPanelDesigner;
+import Chat.DisconnectChatCommand;
+import Editor.DisconnectEditorCommand;
+import Editor.EditorClientStart;
 import Editor.MainTextPane;
+import Model.DisconnectChat;
 import Model.LoginWindow;
 import Model.RevisionDocument;
 import Model.User;
+import Server.ChatServer;
 
 import java.awt.ScrollPane;
 
@@ -78,6 +85,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Writer;
 import java.awt.Button;
 import java.awt.FlowLayout;
@@ -90,24 +99,12 @@ public class MainGUI extends JFrame {
 	static String username;
 	static String password;
 	public int filename = 0;
+	private ChatClientStart chatPane;
+	private EditorClientStart docPanel;
 
 	// public JPanel chatPane;
-	
-	//*******We Need to add this code to wherever the an event listener that
-	//closes the gui*****************
-	// add a listener that sends a disconnect command to when closing
-	/*this.addWindowListener(new WindowAdapter(){
-		public void windowClosing(WindowEvent arg0) {
-			try {
-			//Make sure to add diconnect Chat and Paint later on
-				output.writeObject(new DisconnectChat(clientName));
-				output.close();
-				input.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-	});*/	
+
+
 	/**
 	 * Launch the application.
 	 */
@@ -128,6 +125,53 @@ public class MainGUI extends JFrame {
 		username = userName;
 		MainGUI window = new MainGUI();
 	}
+	
+	//window event listener for closing chat window effectively
+	private void closeChat(){
+		// add a listener that sends a disconnect command to everything when closing
+		this.addWindowListener(new WindowAdapter(){
+			public void windowClosing(WindowEvent arg0) {
+				try {
+				//Make sure to add disconnect Chat and editor 
+					ObjectOutputStream tempOutput = chatPane.returnOutput();
+					ObjectInputStream tempInput = chatPane.returnInput();
+					//if the Person Logging out has text that they did not send
+					//erase the text before the window closes to get
+					//rid of the "(x) is currently typing" message
+					if(!chatPane.chat.textSend.getText().isEmpty()){
+						chatPane.chat.textSend.setText("");
+					}
+					tempOutput.writeObject(new DisconnectChatCommand(username));
+					tempOutput.close();
+					tempInput.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+	
+
+	//window event listener for closing Editor window effectively
+	private void closeEditor(){
+		// add a listener that sends a disconnect command to everything when closing
+		this.addWindowListener(new WindowAdapter(){
+			public void windowClosing(WindowEvent arg0) {
+				try {
+				//Make sure to add disconnect Chat and editor 
+					ObjectOutputStream tempOutput = docPanel.returnOutput();
+					ObjectInputStream tempInput = docPanel.returnInput();
+					tempOutput.writeObject(new DisconnectEditorCommand(username));
+					tempOutput.close();
+					tempInput.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+	
+	
 	/**
 	 * Create the frame.
 	 */
@@ -142,7 +186,7 @@ public class MainGUI extends JFrame {
 		mainPanel.setLayout(null);
 
 		 //Instantiate a new ChatClient 
-		 ChatClientStart chatPane = new ChatClientStart(LoginWindow.getHost(), Integer.parseInt(LoginWindow.getPort()), username);
+		 chatPane = new ChatClientStart(LoginWindow.getHost(), Integer.parseInt(LoginWindow.getPort()), username);
 		 //Instantiate the bounds
 		 chatPane.setBounds(954, 23, 230, 632);
 		 
@@ -152,7 +196,7 @@ public class MainGUI extends JFrame {
 		 //Position the Chat Client in the correct location in the GUI 
 		 getContentPane().add(chatPane, BorderLayout.CENTER);
 		 getContentPane().add(mainPanel, BorderLayout.CENTER);
-
+		 closeChat();
 
 		JPanel revisionPane = new JPanel();
 		revisionPane.setBounds(0, 23, 137, 632);
@@ -161,21 +205,36 @@ public class MainGUI extends JFrame {
 				null, null));
 		revisionPane.setForeground(Color.LIGHT_GRAY);
 
-		JPanel docPanel = new JPanel();
-		docPanel.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null,
-				null, null));
-		docPanel.setBounds(137, 23, 805, 632);
-		mainPanel.add(docPanel);
+		
+		
+		//Started adding from here
+		
+		 //Instantiate a new EditorClient
+		 docPanel = new EditorClientStart(Integer.parseInt(LoginWindow.getPort()), LoginWindow.getHost(), username);
+		 docPanel.setBounds(137, 23, 805, 632);
+		 docPanel.setForeground(Color.LIGHT_GRAY);
+		 //Blue is the middle panel
+		 //docPanel.setBackground(Color.BLUE);
+		 getContentPane().add(docPanel, BorderLayout.CENTER);
+		 getContentPane().add(mainPanel,BorderLayout.CENTER);
+		 closeEditor();
+				 
+		//Old Stuff		 
+//		JPanel docPanel = new JPanel();
+//		docPanel.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null,
+//				null, null));
+//		docPanel.setBounds(137, 23, 805, 632);
+//		mainPanel.add(docPanel);
 
-		docPanel.setLayout(null);
+//		docPanel.setLayout(null);
 
 		JToolBar toolBar = new JToolBar();
 		toolBar.setBounds(27, 7, 568, 28);
 		toolBar.setFloatable(false);
-		docPanel.add(toolBar);
+		//docPanel.add(toolBar);
 
-		final MainTextPane textPane = new MainTextPane();
-		docPanel.add(textPane.getScroll());
+		//final MainTextPane textPane = new MainTextPane();
+		//docPanel.add(textPane.getScroll());
 
 		/*
 		 * Sets the default fonts for user to use
@@ -306,8 +365,10 @@ public class MainGUI extends JFrame {
 		 */
 		JButton paintButton = new JButton("Paint");
 		paintButton.setBounds(701, 7, 94, 28);
-		docPanel.add(paintButton);
+		toolBar.add(paintButton);
+		//docPanel.add(paintButton);
 
+		//My Account button
 		JButton btnMyAccount = new JButton("My Account");
 		btnMyAccount.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -317,7 +378,8 @@ public class MainGUI extends JFrame {
 		});
 		btnMyAccount.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		btnMyAccount.setBounds(605, 7, 96, 28);
-		docPanel.add(btnMyAccount);
+		toolBar.add(btnMyAccount);
+//		docPanel.add(btnMyAccount);
 
 		JMenuBar menuBar = new JMenuBar();
 		menuBar.setBorderPainted(false);
@@ -368,7 +430,8 @@ public class MainGUI extends JFrame {
 				if (!e.getValueIsAdjusting()) {
 					RevisionDocument thisRevision = (RevisionDocument) list
 							.getSelectedValue();
-					textPane.setDocument(thisRevision.doc);
+					
+					//textPane.setDocument(thisRevision.doc);
 				}
 			}
 
@@ -384,18 +447,18 @@ public class MainGUI extends JFrame {
 			
 
 			public void actionPerformed(ActionEvent arg0) {
-				Document thisDoc = textPane.getDocument();
+				//Document thisDoc = textPane.getDocument();
 				Calendar cal = Calendar.getInstance();
-				RevisionDocument newRevisedDocument = new RevisionDocument(cal,
-						thisDoc, username);
-				model.addElement(newRevisedDocument);
+				//RevisionDocument newRevisedDocument = new RevisionDocument(cal,
+					//	thisDoc, username);
+				//model.addElement(newRevisedDocument);
 				
 				try {
 					FileWriter out = new FileWriter(new File(System
 							.getProperty("user.dir") + "/SavedDocuments",
 							"edit_" + filename + ".html")); 
 					filename++;
-					out.write(textPane.getText()); 
+					//out.write(textPane.getText()); 
 					out.close();
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
@@ -446,7 +509,7 @@ public class MainGUI extends JFrame {
 							while((str = br.readLine()) != null){
 								content.append(str);
 							}
-							textPane.setText("<html> " + content);
+							//textPane.setText("<html> " + content);
 							br.close();
 							fr.close();
 						} catch (FileNotFoundException e) {
@@ -485,7 +548,7 @@ public class MainGUI extends JFrame {
 		JMenuItem selectAllDoc = new JMenuItem("Select All");
 		selectAllDoc.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				textPane.selectAll();
+			//	textPane.selectAll();
 			}
 		});
 		edit.add(selectAllDoc);

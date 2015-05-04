@@ -8,9 +8,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import Editor.DisconnectEditorCommand;
+import Editor.EditorClientStart;
 import Editor.EditorCommand;
 import Editor.UpdateEditorCommand;
-import Editor.EditorClientStart;
 
 public class EditorServer {
 	
@@ -19,30 +19,33 @@ public class EditorServer {
 	private int collaborativePort;
 	private String host;
 	private String clientName;
+	public  String updatedText; //static?
 	private ArrayList<String> texts;
 
 	
-	public EditorServer(int collaborativePort, String host, String clientName){
+	public EditorServer(String host, int collaborativePort, String clientName){
 		
 		this.texts = new ArrayList<String>();
 		this.collaborativePort = collaborativePort;
 		this.host = host;
 		this.clientName = clientName;
+		this.updatedText = "";
 		
 		this.editorOutput = new HashMap<String, ObjectOutputStream>();
 		
 		try{
 			//this.revisions = new ArrayList<RevisionList>;
 			
-			//Start Collaborative Editing tools Sockets
+			//Start Collaborative Editing Sockets on its own port
 			this.CollaborativeSocket = new ServerSocket(collaborativePort);
 			System.out.println("The Collaborative Editing Server was started on port: " + collaborativePort);
 			
+			//begin accepting editor clients
 			new Thread(new ClientAccepterEditor()).start();
-			EditorClientStart editWindow = new EditorClientStart(collaborativePort, host, clientName);
 
 		}
 		catch(Exception e){
+			//new ClientAccepterEditor();
 			System.err.println("Error creating Collaborative Server:");
 			e.printStackTrace();
 		}
@@ -52,6 +55,7 @@ public class EditorServer {
 			public void run() {
 				try{
 					while(true){
+						//System.out.println("We are in client acetor editor ");
 						// accept a new client, get output & input streams
 						Socket s = CollaborativeSocket.accept();
 						
@@ -67,6 +71,8 @@ public class EditorServer {
 						
 						// spawn a thread to handle communication with this client
 						new Thread(new ClientHandlerEditor(input)).start();
+						//Put default text on newly opened window if there is any
+						addText(updatedText);
 
 					}
 				}
@@ -105,13 +111,18 @@ public class EditorServer {
 		}
 		
 		public void addText(String text){
-			texts.add(text);
+			//texts.add(text); //put this when we save
+			updatedText = text;
 			updateClientsEditor();
 		}
 		
+//		public static String getText(){
+//			return updatedText;
+//		}
+		
 		public void updateClientsEditor() {
 			// make an UpdateClientCommmand, write to all connected users
-			UpdateEditorCommand update = new UpdateEditorCommand(texts); //this is a new class in model 
+			UpdateEditorCommand update = new UpdateEditorCommand(updatedText); //this is a new class in model 
 			try{
 				for (ObjectOutputStream out : editorOutput.values())
 					out.writeObject(update);

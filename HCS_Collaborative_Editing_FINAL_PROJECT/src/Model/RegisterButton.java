@@ -8,7 +8,13 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import GUI.MainGUI;
+
 import java.awt.GridLayout;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JPasswordField;
@@ -59,19 +65,36 @@ public class RegisterButton extends JFrame {
 				String aPassword = String.valueOf(passwordField.getPassword());
 				if (aUsername.equals("") || aPassword.equals("")) {
 					JOptionPane.showMessageDialog(null, "Enter Valid data");
-				} else {
+				}else {
+					
 					username = aUsername;
 					password = aPassword;
-				}
-				messageLabel.setText(server.createUser(aUsername, aPassword));
-				if (messageLabel.getText().contains("Succesful")) {
-					MainGUI.usernameRetrieval(username, password);
+					
+					messageLabel.setText(server.createUser(aUsername, aPassword));
+					if (messageLabel.getText().contains("Succesful")) {
+						MainGUI.usernameRetrieval(username, password);
+						
+						try {
+							FileWriter out = new FileWriter((System
+									.getProperty("user.dir") + "/SavedDocuments/usernamesAndPasswords.txt"), true);
+									
+							out.write(username + "," + server.loginMap.get(password) + "\n");  
+								
+							out.close();
+						}catch (IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+					}else{
+						JOptionPane.showMessageDialog(null, "Username already exists. Please try again.");
+					}
+
+					System.out.println(server.loginMap.keySet());
+					System.out.println(server.loginMap.get(username));
+					dispose();
 				}
 
-				System.out.println(server.loginMap.keySet());
-				System.out.println(server.loginMap.get(username));
 				dispose();
-				server.loginMap.put(username, password);
 			}
 		});
 

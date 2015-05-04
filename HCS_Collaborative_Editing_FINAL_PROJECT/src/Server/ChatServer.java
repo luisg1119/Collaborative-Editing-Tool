@@ -34,7 +34,7 @@ public class ChatServer {
 		this.chatOutputs = new HashMap<String, ObjectOutputStream>(); // setup the map
 		
 		//Create the port we will be using for ChatServer
-		chatPort = port; //+ 1;		
+		chatPort = port + 1;		
 		
 		try{
 			//Start Chat Sockets
@@ -43,8 +43,6 @@ public class ChatServer {
 			
 			// Begin Accepting Chat Clients
 			new Thread(new ClientAccepterChat()).start();
-			//ChatClientStart chatWindow = new ChatClientStart(host,chatPort, clientName);
-			
 
 		}
 		catch(Exception e){
@@ -148,7 +146,7 @@ public class ChatServer {
 		try{
 			chatOutputs.get(clientName).close(); // close output stream
 			chatOutputs.remove(clientName); // remove from map
-			
+
 			// add notification message
 			addMessage(clientName + " disconnected");
 		} 

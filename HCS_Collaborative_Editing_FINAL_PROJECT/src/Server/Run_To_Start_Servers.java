@@ -48,6 +48,7 @@ public class Run_To_Start_Servers {
 			host = "localhost";
 			port = 9001;
 			
+			new EditorServer(host, port, userName);
 			new ChatServer(host,port, userName);
 			MainGUI frame = new MainGUI();
 			frame.setVisible(true);
@@ -59,6 +60,7 @@ public class Run_To_Start_Servers {
 			userName = newUserName;//JOptionPane.showInputDialog("Enter a User Name: ");
 			port = Integer.parseInt(portString);
 			
+			new EditorServer(host, port, userName);
 			new ChatServer(host,port, userName);
 			MainGUI frame = new MainGUI();
 			frame.setVisible(true);

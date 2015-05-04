@@ -17,7 +17,7 @@ public class ChatClientStart extends JPanel {
 	private String host;
 	private int port;
 	
-	private ChatPanelDesigner chat;
+	public ChatPanelDesigner chat;
 	
 	private Socket server; // connection to server
 	private ObjectOutputStream output; // output stream
@@ -28,7 +28,7 @@ public class ChatClientStart extends JPanel {
 	public ChatClientStart(String host1, int port1, String name) {
 	    this.clientName = name;
 		this.host = host1;
-		this.port = port1;
+		this.port = port1+1;
 		
 		try{
 			// Open a connection to the server
@@ -38,20 +38,7 @@ public class ChatClientStart extends JPanel {
 			
 			// write out the name of this client
 			output.writeObject(clientName);
-			
-			// add a listener that sends a disconnect command to when closing
-			/*this.addWindowListener(new WindowAdapter(){
-				public void windowClosing(WindowEvent arg0) {
-					try {
-						output.writeObject(new DisconnectChat(clientName));
-						output.close();
-						input.close();
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-				}
-			});*/	
-			
+						
 		// start a thread for handling server events
 		setGUI();
 		new Thread(new ServerHandler()).start();
@@ -98,13 +85,13 @@ public class ChatClientStart extends JPanel {
 		chat.updateActiveUser(message);
 	}
 	
-//	public ObjectOutputStream returnOutput(){
-//		return output;	
-//	}
-//	
-//	public ObjectInputStream returnInput(){
-//		return input;	
-//	}
+	public ObjectOutputStream returnOutput(){
+		return output;	
+	}
+	
+	public ObjectInputStream returnInput(){
+		return input;	
+	}
 	
 	
 }
