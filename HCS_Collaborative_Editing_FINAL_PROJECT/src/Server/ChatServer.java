@@ -14,6 +14,13 @@ import Chat.UpdateActiveTextCommand;
 import Chat.UpdateChatCommand;
 import Chat.ChatClientStart;
 
+/** Description of ChatServer:
+* This class is called ChatServer and it creates a ServerSocket that is related to the chat where messages get sent through a list.
+* This class also has a String associated with the users writing and it has a HashMap that contains the output stream from all the users.
+* It also has a client name associated with the chat sent, and a chatPort and a String name of host.
+*@author HCS Group: Siddharth Sharma, Luis Guerrero, Maverick Tudisco, Chintan Patel
+*@version Final Version: May 6th, 2015
+*/
 public class ChatServer {
 	private ServerSocket chatSocket; // the server socket
 	private List<String> messages;	// the chat log

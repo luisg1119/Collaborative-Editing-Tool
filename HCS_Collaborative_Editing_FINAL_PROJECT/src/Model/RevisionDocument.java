@@ -7,11 +7,12 @@ import java.util.Date;
 
 import javax.swing.text.Document;
 
-/** Description of Document:
-* This is a class that interacts with the user and creates an initial document under their profile allowing the user to edit using text editor and let revisions exist.
-*@author Group HCS
-*@version Initial Wednesday April 15, 2015 
+/** Description of RevisionDocument:
+* This class is called RevisionDocument and it creates 3 things that are included in revisions, Calendar, Document, and a username.
+*@author HCS Group: Siddharth Sharma, Luis Guerrero, Maverick Tudisco, Chintan Patel
+*@version Final Version: May 6th, 2015
 */
+
 public class RevisionDocument {
 	public Calendar cal; //FIXME make all 3 private
 	public Document doc;

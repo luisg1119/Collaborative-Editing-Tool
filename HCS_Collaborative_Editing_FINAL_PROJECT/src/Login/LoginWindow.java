@@ -33,15 +33,11 @@ import java.awt.event.WindowEvent;
 import java.awt.Font;
 import java.util.HashMap;
 
-/**
- * Description of LoginWindow: This is a class for logging in and creating a new
- * user. This class also has the functionality to retrieve a forgotten password
- * and also shows the profile of a user. LoginWindow has an aggregation to user,
- * but can exist independently.
- *
- * @author Group HCS
- * @version Initial Wednesday April 15, 2015
- */
+/** Description of LoginWindow:
+* This class is called LoginWindow and it creates the LoginWindow for a user to type in their information, this connects to the server and lets a user edit etc.
+*@author HCS Group: Siddharth Sharma, Luis Guerrero, Maverick Tudisco, Chintan Patel
+*@version Final Version: May 6th, 2015
+*/
 
 public class LoginWindow extends JFrame {
 	public static JTextField txtA;

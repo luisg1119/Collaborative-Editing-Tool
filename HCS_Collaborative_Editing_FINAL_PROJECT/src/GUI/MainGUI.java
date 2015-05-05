@@ -1,7 +1,6 @@
 package GUI;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -11,35 +10,17 @@ import javax.swing.border.EmptyBorder;
 import java.awt.Color;
 
 import javax.swing.border.BevelBorder;
-import javax.swing.border.LineBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultEditorKit;
-import javax.swing.text.Document;
-import javax.swing.text.Highlighter;
-import javax.swing.text.StyleConstants;
-import javax.swing.text.StyledDocument;
-import javax.swing.text.StyledEditorKit;
-import javax.swing.text.StyledEditorKit.FontSizeAction;
-import javax.swing.text.html.HTMLDocument;
-import javax.swing.text.html.HTMLEditorKit;
-import javax.swing.Action;
 import javax.swing.DefaultListModel;
-import javax.swing.JComponent;
+import javax.swing.JFileChooser;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-import javax.swing.JScrollPane;
-import javax.swing.JTextPane;
-import javax.swing.JToggleButton;
-import javax.swing.JToolBar;
 import javax.swing.JButton;
-import javax.swing.UIManager;
-
-import java.awt.Font;
-
 import javax.swing.JMenu;
+import javax.swing.JTextField;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -49,17 +30,11 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.font.TextAttribute;
-import java.util.Calendar;
-import java.util.Map;
-import java.util.Scanner;
 
-import javax.swing.JPopupMenu;
-import javax.swing.JComboBox;
-import javax.swing.JLabel;
-import javax.swing.JTextPane;
-import javax.swing.JTextArea;
-import javax.swing.JScrollBar;
+
+
+
+
 
 import Chat.ChatClientStart;
 import Chat.ChatPanelDesigner;
@@ -80,15 +55,20 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.BufferedReader;
 import java.io.File;
+//import java.swing.filechooser.*;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Writer;
+import java.util.ArrayList;
 import java.awt.Button;
 import java.awt.FlowLayout;
+
+import javax.swing.JLabel;
 
 public class MainGUI extends JFrame {
 	private JPanel mainPanel;
@@ -97,10 +77,15 @@ public class MainGUI extends JFrame {
 	private JButton underlineToggleButton_1;
 	public static String username;
 	public static String password;
-	public int filename = 0;
 	private ChatClientStart chatPane;
-	private EditorClient docPanel;
-
+	private int counter;
+	public static EditorClient docPanel;
+	public static JMenuItem saveDoc;
+	public static JLabel lastUpdatedLabel;
+	static JPanel revisionPane;
+	ArrayList<Line> lines = new ArrayList<Line>();
+	private JTextField filename = new JTextField(), dir=new JTextField();
+	
 	// public JPanel chatPane;
 
 
@@ -197,12 +182,8 @@ public class MainGUI extends JFrame {
 		 getContentPane().add(mainPanel, BorderLayout.CENTER);
 		 closeChat();
 
-		JPanel revisionPane = new JPanel();
-		revisionPane.setBounds(0, 23, 137, 632);
+		revisionPane = new JPanel();
 		mainPanel.add(revisionPane);
-		revisionPane.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null,
-				null, null));
-		revisionPane.setForeground(Color.LIGHT_GRAY);
 
 		
 		
@@ -270,51 +251,56 @@ public class MainGUI extends JFrame {
 		// }
 		// };
 		// updater.start();
+		
 		revisionPane.setLayout(null);
 		final JList list = new JList(model);
+		counter = 0;
 
 		list.addListSelectionListener(new ListSelectionListener() {
 
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
 				if (!e.getValueIsAdjusting()) {
-					RevisionDocument thisRevision = (RevisionDocument) list
+					RevisionDocument revisionPaneRevision = (RevisionDocument) list
 							.getSelectedValue();
-					
-					//textPane.setDocument(thisRevision.doc);
+
+					// textPane.setDocument(revisionPaneRevision.doc);
 				}
 			}
 
 		});
 		list.setBounds(0, 0, 137, 632);
-		revisionPane.add(list); // adds list to revisionPane
+		revisionPane.add(list);
 
-		/*
-		 * Save Button - to save a document to revision history
-		 */
-		JMenuItem saveDoc = new JMenuItem("Save");
+		revisionPane.setBounds(0, 23, 137, 632);
+		revisionPane.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null,
+				null));
+		revisionPane.setForeground(Color.LIGHT_GRAY);
+		saveDoc = new JMenuItem("Save");
+
 		saveDoc.addActionListener(new ActionListener() {
-			
-
 			public void actionPerformed(ActionEvent arg0) {
-				
-				model.addElement(docPanel.getRevisionDocument());
-				
+
+				model.addElement(MainGUI.docPanel.getRevisionDocument());
+
 				try {
 					FileWriter out = new FileWriter(new File(System
 							.getProperty("user.dir") + "/SavedDocuments",
-							"edit_" + filename + ".html")); 
-					filename++;
-					System.out.println(docPanel.getTextContent());
-					out.write(docPanel.getTextContent());
+							"edit_" + counter + ".html"));
+					counter++;
+					// System.out.println(Editor.MainTextPane.edit.getText());
+					out.write(Editor.MainTextPane.edit.getText());
 					out.close();
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				} 
+				}
 
 			}
 		});
+		/*
+		 * Save Button - to save a document to revision history
+		 */
 		file.add(saveDoc);
 		
 		/*
@@ -357,7 +343,7 @@ public class MainGUI extends JFrame {
 							while((str = br.readLine()) != null){
 								content.append(str);
 							}
-							docPanel.setNewText("<html> " + content);
+							Editor.MainTextPane.edit.setText("" + content);
 							br.close();
 							fr.close();
 						} catch (FileNotFoundException e) {
@@ -372,9 +358,25 @@ public class MainGUI extends JFrame {
 			}
 		};
 		list.addMouseListener(mouseListener);
-
+		
+		/*
+		 * Save As... Button
+		 * */
 		JMenuItem saveAsDoc = new JMenuItem("Save As...");
+		saveAsDoc.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				try {
+					saveMap();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}});
 		file.add(saveAsDoc);
+		
+	
+		
+		
 
 		JMenuItem importDoc = new JMenuItem("Import...");
 		file.add(importDoc);
@@ -432,6 +434,10 @@ public class MainGUI extends JFrame {
 			}
 		});
 		help.add(aboutDoc);
+		
+		lastUpdatedLabel = new JLabel("");
+		lastUpdatedLabel.setBounds(151, 663, 289, 15);
+		mainPanel.add(lastUpdatedLabel);
 
 //		JButton btnNewButton = new JButton("Run Chat Client");
 //		btnNewButton.setFont(new Font("Menlo", Font.PLAIN, 24));
@@ -452,4 +458,23 @@ public class MainGUI extends JFrame {
 		username = name;
 		password = pword;
 	}
+	
+	public void save(File choosenFile) throws FileNotFoundException, IOException {
+		FileOutputStream fileOutputStream = new FileOutputStream(choosenFile);
+		ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+		objectOutputStream.writeObject(this.lines);
+		objectOutputStream.close();
+	}
+	public void saveMap() throws IOException {
+	    String sb = Editor.MainTextPane.edit.getText();
+	    JFileChooser chooser = new JFileChooser();
+	    chooser.setCurrentDirectory(new File("/home/me/Documents"));
+	    int retrival = chooser.showSaveDialog(null);
+	    if (retrival == JFileChooser.APPROVE_OPTION) {
+	    	try(FileWriter fw = new FileWriter(chooser.getSelectedFile())) {
+	    	    fw.write(sb.toString());
+	    	}
+	    }
+	}
+
 }

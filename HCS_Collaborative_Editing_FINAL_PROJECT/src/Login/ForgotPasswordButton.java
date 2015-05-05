@@ -7,6 +7,12 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+/** Description of ForgotPasswordButton:
+* This class is called ForgotPasswordButton and it contain the functionality for a user to change their password.
+*@author HCS Group: Siddharth Sharma, Luis Guerrero, Maverick Tudisco, Chintan Patel
+*@version Final Version: May 6th, 2015
+*/
+
 public class ForgotPasswordButton extends JFrame {
 	private JTextField textField;
 

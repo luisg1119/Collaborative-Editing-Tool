@@ -29,6 +29,11 @@ import GUI.MainGUI;
 import Model.RevisionDocument;
 import Model.User;
 
+/** Description of EditorClientStart:
+* This class is called EditorClientStart that is a client that launches the editor panel.
+*@author HCS Group: Siddharth Sharma, Luis Guerrero, Maverick Tudisco, Chintan Patel
+*@version Final Version: May 6th, 2015
+*/
 public class EditorClient extends JPanel{
 	
 	private String clientName; // user name of the client
@@ -251,8 +256,12 @@ public class EditorClient extends JPanel{
 		this.setBorder((new BevelBorder(BevelBorder.LOWERED, null, null,null, null)));		
 	}
 	
-	public void update(String text){//(List<String> text) {
-		edit.updateDocument(text);
+	public void update(String text, String name){
+		edit.updateDocument(text, name);
+	}
+	
+	public void updateSave(List<String> texts){
+		edit.updateSave(texts);
 	}
 	
 	public ObjectOutputStream returnOutput(){
@@ -272,11 +281,10 @@ public class EditorClient extends JPanel{
 	}
 	
 	public String getTextContent(){
-		System.out.println(edit.getText());
 		return edit.getText();
 	}
 	
-	public void setNewText(String text){
+	public void setTextContent(String text){
 		edit.setText(text);
 	}
 	

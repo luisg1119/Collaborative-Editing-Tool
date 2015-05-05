@@ -2,6 +2,11 @@ package Editor;
 
 import Server.EditorServer;
 
+/** Description of DisconnectEditorCommand:
+* This class is called DisconnectEditorCommand and it extends EditorCommand<EditorServer>, it has a serialVersionUID that has a disconnect command that disconnects the user from the editor pane.
+*@author HCS Group: Siddharth Sharma, Luis Guerrero, Maverick Tudisco, Chintan Patel
+*@version Final Version: May 6th, 2015
+*/
 
 public class DisconnectEditorCommand extends EditorCommand<EditorServer>{
 		private static final long serialVersionUID = -5459574209300377477L;

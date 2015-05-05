@@ -4,6 +4,12 @@ import javax.swing.JOptionPane;
 
 import GUI.MainGUI;
 
+/** Description of Run_To_Start_Servers:
+* This is what runs the servers and starts their commands. 
+*@author HCS Group: Siddharth Sharma, Luis Guerrero, Maverick Tudisco, Chintan Patel
+*@version Final Version: May 6th, 2015
+*/
+
 public class Run_To_Start_Servers {
 	private String host;
 	private String userName;

@@ -1,0 +1,23 @@
+import java.awt.Color;
+import java.awt.Point;
+import java.io.Serializable;
+import java.util.ArrayList;
+
+
+public class Line implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5109719347545330388L;
+	ArrayList<Point> points;
+	Color colors;
+	int lineSize;
+	double lineScaleX,lineScaleY;
+	public Line(ArrayList<Point> point, Color color, int Size, double lineX, double lineY ) {
+		this.points=new ArrayList<Point>(point);
+		this.colors= color;
+		this.lineSize = Size;
+		this.lineScaleX = lineX;
+		this.lineScaleY = lineY;
+	}
+}

@@ -8,14 +8,12 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.AbstractListModel;
 
-/**
- * Description of User: This is the class where a user profile exists. This
- * contains a username, password, and all documents associated with the user
- * account. It interacts with Document, ChatServer and LoginWindow.
- *
- * @author Group HCS
- * @version Initial Wednesday April 15, 2015
- */
+/** Description of User:
+* 
+*@author HCS Group: Siddharth Sharma, Luis Guerrero, Maverick Tudisco, Chintan Patel
+*@version Final Version: May 6th, 2015
+*/
+
 public class User extends JFrame {
 	public User(String username, String password) {
 		getContentPane().setLayout(null);

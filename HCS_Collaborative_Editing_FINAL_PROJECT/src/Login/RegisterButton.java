@@ -19,6 +19,12 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JPasswordField;
 
+/** Description of RegisterButton:
+* This class is called RegisterButton and it creates the button for a user to create his or her given profile and it creates the button with input to do so.
+*@author HCS Group: Siddharth Sharma, Luis Guerrero, Maverick Tudisco, Chintan Patel
+*@version Final Version: May 6th, 2015
+*/
+
 public class RegisterButton extends JFrame {
 	private JTextField usernameField;
 	private JPasswordField passwordField;

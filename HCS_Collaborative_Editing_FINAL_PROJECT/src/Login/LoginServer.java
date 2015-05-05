@@ -12,13 +12,12 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
 
-/**
- * Description of LoginServer: This class is just the initial login connecting
- * to the server for the collaborative editing tool.
- *
- * @author Group HCS
- * @version Initial Wednesday April 15, 2015
- */
+/** Description of LoginServer:
+* This class is called LoginServer and this is the class that is responsible for updates that occur in this window using a static HashMap to store username etc.
+*@author HCS Group: Siddharth Sharma, Luis Guerrero, Maverick Tudisco, Chintan Patel
+*@version Final Version: May 6th, 2015
+*/
+
 public class LoginServer {
 	static HashMap<String, String> loginMap;
 

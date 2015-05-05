@@ -3,19 +3,24 @@ package Editor;
 import java.util.LinkedList;
 import java.util.List;
 
+/** Description of UpdateEditorCommand:
+* This class called UpdateEditorCommand extends EditorCommand<EditorClientStart> and Updates the users editor commands.
+*@author HCS Group: Siddharth Sharma, Luis Guerrero, Maverick Tudisco, Chintan Patel
+*@version Final Version: May 6th, 2015
+*/
 
 public class UpdateEditorCommand extends EditorCommand<EditorClient> {
 		private static final long serialVersionUID = -8023276704073306322L;
 		private String text;
-		private List<String> texts; // the message log from the server
+		private String name;
 			
-		public UpdateEditorCommand(String text){//List<String> texts){
+		public UpdateEditorCommand(String text, String name){
 			this.text = text;
-			//this.texts = new LinkedList<String>(texts); // note: we are making a copy of the given list
+			this.name = name;
 		}
 		
 		public void execute(EditorClient executeOn) {
-			executeOn.update(text);//(texts);
+			executeOn.update(text,name);
 		}
 	
 }

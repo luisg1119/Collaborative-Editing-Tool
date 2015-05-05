@@ -2,6 +2,12 @@ package Chat;
 
 import Server.ChatServer;
 
+/** Description of UserTextStatusCommand:
+* This class shows when the user may be typing right above the message bar.
+*@author HCS Group: Siddharth Sharma, Luis Guerrero, Maverick Tudisco, Chintan Patel
+*@version Final Version: May 6th, 2015
+*/
+
 public class UserTextStatusCommand extends ChatCommand<ChatServer>{
 	private static final long serialVersionUID = 7298275904352724414L;
 	private String message; // message from client

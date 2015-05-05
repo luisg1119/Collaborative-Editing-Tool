@@ -6,12 +6,19 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import Editor.DisconnectEditorCommand;
 import Editor.EditorClient;
 import Editor.EditorCommand;
 import Editor.UpdateEditorCommand;
-
+import Editor.UpdateEditorSaveCommand;
+/** Description of EditorServer:
+* This class creates a EditorServer that contains a ServerSocket called "CollaborativeSocket", this is the server that sends all the collabrative things that users can do together.
+* It contains a collaborativePort, String name of Host, String name of clientName, and an arraylist of texts. 
+*@author HCS Group: Siddharth Sharma, Luis Guerrero, Maverick Tudisco, Chintan Patel
+*@version Final Version: May 6th, 2015
+*/
 public class EditorServer {
 	
 	private ServerSocket CollaborativeSocket;	
@@ -20,7 +27,8 @@ public class EditorServer {
 	private String host;
 	private String clientName;
 	public  String updatedText; //static?
-	private ArrayList<String> texts;
+	private List<String> texts;
+	private String tempName;
 
 	
 	public EditorServer(String host, int collaborativePort, String clientName){
@@ -30,6 +38,7 @@ public class EditorServer {
 		this.host = host;
 		this.clientName = clientName;
 		this.updatedText = "";
+		this.tempName ="";
 		
 		this.editorOutput = new HashMap<String, ObjectOutputStream>();
 		
@@ -72,7 +81,7 @@ public class EditorServer {
 						// spawn a thread to handle communication with this client
 						new Thread(new ClientHandlerEditor(input)).start();
 						//Put default text on newly opened window if there is any
-						addText(updatedText);
+						addText(updatedText, tempName);
 
 					}
 				}
@@ -110,10 +119,19 @@ public class EditorServer {
 			}
 		}
 		
-		public void addText(String text){
-			//texts.add(text); //put this when we save
+		public void addText(String text, String name){
 			updatedText = text;
+			tempName = name;
 			updateClientsEditor();
+		}
+		
+		public void saveText(String text){
+			texts.add(text);
+			updateClients();
+		}
+		
+		public void updateClients(){
+			UpdateEditorSaveCommand update = new UpdateEditorSaveCommand(texts);
 		}
 		
 //		public static String getText(){
@@ -122,7 +140,7 @@ public class EditorServer {
 		
 		public void updateClientsEditor() {
 			// make an UpdateClientCommmand, write to all connected users
-			UpdateEditorCommand update = new UpdateEditorCommand(updatedText); //this is a new class in model 
+			UpdateEditorCommand update = new UpdateEditorCommand(updatedText, tempName); //this is a new class in model 
 			try{
 				for (ObjectOutputStream out : editorOutput.values())
 					out.writeObject(update);
