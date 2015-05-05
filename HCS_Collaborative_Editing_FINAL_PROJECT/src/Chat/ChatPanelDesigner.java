@@ -25,6 +25,12 @@ import java.awt.SystemColor;
 
 import javax.swing.JLabel;
 
+/** Description of ChatPanelDesigner:
+* This class extend JPanel and it designs the ChatPanel, it contains a serialVersionUID and many components of a GUI.
+*@author HCS Group: Siddharth Sharma, Luis Guerrero, Maverick Tudisco, Chintan Patel
+*@version Final Version: May 6th, 2015
+*/
+
 public class ChatPanelDesigner extends JPanel {
 	private static final long serialVersionUID = -8673566206025843968L;
 	public JTextField textSend;

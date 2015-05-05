@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import Editor.DisconnectEditorCommand;
-import Editor.EditorClientStart;
+import Editor.EditorClient;
 import Editor.EditorCommand;
 import Editor.UpdateEditorCommand;
 

@@ -10,6 +10,11 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
+/** Description of ChatClientStart:
+* This is where the ChatClientStart is launched using the information of the client name, host, and port number. It is launched in a JPanel.
+*@author HCS Group: Siddharth Sharma, Luis Guerrero, Maverick Tudisco, Chintan Patel
+*@version Final Version: May 6th, 2015
+*/
 
 public class ChatClientStart extends JPanel {
 	//private static final long serialVersionUID = 2577057661457057225L;

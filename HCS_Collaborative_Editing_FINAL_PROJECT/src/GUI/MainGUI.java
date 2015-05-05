@@ -65,7 +65,7 @@ import Chat.ChatClientStart;
 import Chat.ChatPanelDesigner;
 import Chat.DisconnectChatCommand;
 import Editor.DisconnectEditorCommand;
-import Editor.EditorClientStart;
+import Editor.EditorClient;
 import Editor.MainTextPane;
 import Model.DisconnectChat;
 import Model.RevisionDocument;
@@ -95,11 +95,11 @@ public class MainGUI extends JFrame {
 	private static final String defaultComboBoxText = "Fonts";
 	private JButton italicToggleButton_1;
 	private JButton underlineToggleButton_1;
-	static String username;
-	static String password;
+	public static String username;
+	public static String password;
 	public int filename = 0;
 	private ChatClientStart chatPane;
-	private EditorClientStart docPanel;
+	private EditorClient docPanel;
 
 	// public JPanel chatPane;
 
@@ -209,14 +209,17 @@ public class MainGUI extends JFrame {
 		//Started adding from here
 		
 		 //Instantiate a new EditorClient
-		 docPanel = new EditorClientStart(Integer.parseInt(Login.LoginWindow.getPort()), Login.LoginWindow.getHost(), username);
+		 docPanel = new EditorClient(Integer.parseInt(Login.LoginWindow.getPort()), Login.LoginWindow.getHost(), username);
 		 docPanel.setBounds(137, 23, 805, 632);
 		 docPanel.setForeground(Color.LIGHT_GRAY);
 		 //Blue is the middle panel
 		 //docPanel.setBackground(Color.BLUE);
-		 getContentPane().add(docPanel, BorderLayout.CENTER);
-		 getContentPane().add(mainPanel,BorderLayout.CENTER);
+		 getContentPane().add(docPanel);
+		 getContentPane().add(mainPanel);
 		 closeEditor();
+		 //scroll enabled
+		 docPanel.add(EditorClient.edit.getScroll());
+
 				 
 		//Old Stuff		 
 //		JPanel docPanel = new JPanel();
@@ -227,158 +230,6 @@ public class MainGUI extends JFrame {
 
 //		docPanel.setLayout(null);
 
-		JToolBar toolBar = new JToolBar();
-		toolBar.setBounds(27, 7, 568, 28);
-		toolBar.setFloatable(false);
-		//docPanel.add(toolBar);
-
-		//final MainTextPane textPane = new MainTextPane();
-		//docPanel.add(textPane.getScroll());
-
-		/*
-		 * Sets the default fonts for user to use
-		 */
-		final String[] font = { "Arial", "Calibri", "Century", "Courrier New",
-				"Georgia", "Impact", "Serif", "Times New Roman", "Trebuchet MS" };
-		final JComboBox fontComboBox = new JComboBox(font);
-
-		final Action[] fontAction = new Action[font.length];
-		for (int i = 0; i < fontAction.length; i++) {
-			fontAction[i] = new StyledEditorKit.FontFamilyAction(font[i],
-					font[i]);
-
-		}
-		fontComboBox.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent event) {
-				for (int i = 0; i < fontAction.length; i++) {
-					if (font[i].equals((String) fontComboBox.getSelectedItem())) {
-						fontAction[i].actionPerformed(event);
-						break;
-					}
-				}
-			}
-		});
-
-		toolBar.add(fontComboBox);
-		fontComboBox.setToolTipText("Fonts");
-
-		/*
-		 * Sets the default sizes for user to use
-		 */
-		final String[] sizes = new String[51];
-
-		for (int i = 0; i < sizes.length - 1; i++) {
-			sizes[i] = "" + i;
-
-		}
-
-		int[] sizesInt = new int[51];
-
-		for (int i = 0; i < sizesInt.length - 1; i++) {
-			sizesInt[i] = i;
-
-		}
-
-		final JComboBox sizeComboBox = new JComboBox(sizes);
-
-		final Action[] fontSizeAction = new Action[sizes.length];
-		for (int i = 0; i < fontSizeAction.length; i++) {
-			fontSizeAction[i] = new StyledEditorKit.FontSizeAction(sizes[i],
-					sizesInt[i]);
-
-		}
-		sizeComboBox.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent event) {
-				for (int i = 0; i < fontSizeAction.length; i++) {
-					if (sizes[i].equals((String) sizeComboBox.getSelectedItem())) {
-						fontSizeAction[i].actionPerformed(event);
-						break;
-					}
-				}
-			}
-		});
-
-		toolBar.add(sizeComboBox);
-		sizeComboBox.setToolTipText("Font Size");
-
-		/*
-		 * Bold Button
-		 */
-		JButton btnB = toolBar.add(new StyledEditorKit.BoldAction());
-		btnB.setFont(new Font("Tahoma", Font.BOLD, 12));
-		btnB.setToolTipText("Bold");
-		btnB.setText("B");
-
-		/*
-		 * Italic Button
-		 */
-		italicToggleButton_1 = toolBar.add(new StyledEditorKit.ItalicAction());
-		italicToggleButton_1.setText("I");
-		italicToggleButton_1.setToolTipText("Italic");
-		italicToggleButton_1.setFont(new Font("Tahoma",
-				Font.BOLD | Font.ITALIC, 12));
-
-		/*
-		 * Underline Button
-		 */
-		JButton underlineToggleButton = new JButton("Underline");
-
-		underlineToggleButton.setToolTipText("Underline");
-		underlineToggleButton.setFont(new Font("Tahoma", Font.BOLD, 12));
-		underlineToggleButton_1 = toolBar
-				.add(new StyledEditorKit.UnderlineAction());
-		underlineToggleButton_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-			}
-		});
-
-		underlineToggleButton_1.setText("U");
-		underlineToggleButton_1.setFont(new Font("Tahoma", Font.BOLD, 12));
-		underlineToggleButton_1.setToolTipText("Underline");
-		toolBar.add(underlineToggleButton_1);
-
-		/*
-		 * Left-Alignment Button
-		 */
-		JButton leftAlign = new JButton(new StyledEditorKit.AlignmentAction(
-				"Align Left", StyleConstants.ALIGN_LEFT));
-		toolBar.add(leftAlign);
-
-		/*
-		 * Center-Alignment Button
-		 */
-		JButton centerAlign = new JButton(new StyledEditorKit.AlignmentAction(
-				"Align Center", StyleConstants.ALIGN_CENTER));
-		toolBar.add(centerAlign);
-
-		/*
-		 * Right-Alignment Button
-		 */
-		JButton rightAlignment = new JButton(
-				new StyledEditorKit.AlignmentAction("Align Right",
-						StyleConstants.ALIGN_RIGHT));
-		toolBar.add(rightAlignment);
-
-		/*
-		 * Paint Button
-		 */
-		JButton paintButton = new JButton("Paint");
-		paintButton.setBounds(701, 7, 94, 28);
-		toolBar.add(paintButton);
-		//docPanel.add(paintButton);
-
-		//My Account button
-		JButton btnMyAccount = new JButton("My Account");
-		btnMyAccount.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				User userPanel = new User(username, password);
-				userPanel.setVisible(true);
-			}
-		});
-		btnMyAccount.setFont(new Font("Tahoma", Font.PLAIN, 11));
-		btnMyAccount.setBounds(605, 7, 96, 28);
-		toolBar.add(btnMyAccount);
-//		docPanel.add(btnMyAccount);
 
 		JMenuBar menuBar = new JMenuBar();
 		menuBar.setBorderPainted(false);
@@ -446,18 +297,16 @@ public class MainGUI extends JFrame {
 			
 
 			public void actionPerformed(ActionEvent arg0) {
-				//Document thisDoc = textPane.getDocument();
-				Calendar cal = Calendar.getInstance();
-				//RevisionDocument newRevisedDocument = new RevisionDocument(cal,
-					//	thisDoc, username);
-				//model.addElement(newRevisedDocument);
+				
+				model.addElement(docPanel.getRevisionDocument());
 				
 				try {
 					FileWriter out = new FileWriter(new File(System
 							.getProperty("user.dir") + "/SavedDocuments",
 							"edit_" + filename + ".html")); 
 					filename++;
-					//out.write(textPane.getText()); 
+					System.out.println(docPanel.getTextContent());
+					out.write(docPanel.getTextContent());
 					out.close();
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
@@ -508,7 +357,7 @@ public class MainGUI extends JFrame {
 							while((str = br.readLine()) != null){
 								content.append(str);
 							}
-							//textPane.setText("<html> " + content);
+							docPanel.setNewText("<html> " + content);
 							br.close();
 							fr.close();
 						} catch (FileNotFoundException e) {

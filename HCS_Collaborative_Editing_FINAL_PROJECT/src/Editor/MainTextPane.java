@@ -1,6 +1,7 @@
 package Editor;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.List;
@@ -18,7 +19,7 @@ import javax.swing.text.html.HTMLEditorKit;
 import Chat.AddMessageCommand;
 import Chat.UserTextStatusCommand;
 
-public class MainTextPane extends JPanel{//JTextPane{
+public class MainTextPane extends JTextPane{//JTextPane{
 	private JScrollPane mainScroll;
 	//private JTextPane textPane;
 	private Timer timer;
@@ -41,10 +42,10 @@ public class MainTextPane extends JPanel{//JTextPane{
 		setLayout(new BorderLayout(0, 0));
 		
 		
-		JScrollPane scroll = new JScrollPane(edit);
-		scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-		this.add(scroll, BorderLayout.CENTER);
+		mainScroll = new JScrollPane(edit);
+		mainScroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		mainScroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		this.add(mainScroll, BorderLayout.CENTER);
 		
 		//mainScroll = new JScrollPane(this);
 		//mainScroll.setBounds(10, 41, 785, 580);
@@ -172,6 +173,10 @@ public class MainTextPane extends JPanel{//JTextPane{
 			//	e.printStackTrace();
 			//}
 	    }
+	}
+
+	public Component getScroll() {
+		return mainScroll;
 	}
 	
 }
