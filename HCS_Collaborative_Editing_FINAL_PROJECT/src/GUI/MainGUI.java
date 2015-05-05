@@ -68,7 +68,6 @@ import Editor.DisconnectEditorCommand;
 import Editor.EditorClientStart;
 import Editor.MainTextPane;
 import Model.DisconnectChat;
-import Model.LoginWindow;
 import Model.RevisionDocument;
 import Model.User;
 import Server.ChatServer;
@@ -112,7 +111,7 @@ public class MainGUI extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Model.LoginWindow loginWindow = new LoginWindow();
+					Login.LoginWindow loginWindow = new Login.LoginWindow();
 					loginWindow.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -186,7 +185,7 @@ public class MainGUI extends JFrame {
 		mainPanel.setLayout(null);
 
 		 //Instantiate a new ChatClient 
-		 chatPane = new ChatClientStart(LoginWindow.getHost(), Integer.parseInt(LoginWindow.getPort()), username);
+		 chatPane = new ChatClientStart(Login.LoginWindow.getHost(), Integer.parseInt(Login.LoginWindow.getPort()), username);
 		 //Instantiate the bounds
 		 chatPane.setBounds(954, 23, 230, 632);
 		 
@@ -210,7 +209,7 @@ public class MainGUI extends JFrame {
 		//Started adding from here
 		
 		 //Instantiate a new EditorClient
-		 docPanel = new EditorClientStart(Integer.parseInt(LoginWindow.getPort()), LoginWindow.getHost(), username);
+		 docPanel = new EditorClientStart(Integer.parseInt(Login.LoginWindow.getPort()), Login.LoginWindow.getHost(), username);
 		 docPanel.setBounds(137, 23, 805, 632);
 		 docPanel.setForeground(Color.LIGHT_GRAY);
 		 //Blue is the middle panel

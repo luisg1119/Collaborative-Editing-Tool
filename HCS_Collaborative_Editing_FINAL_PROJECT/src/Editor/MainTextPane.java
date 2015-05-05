@@ -32,7 +32,7 @@ public class MainTextPane extends JPanel{//JTextPane{
 		this.edit = new JTextPane();
 		this.output = output;
 		this.name = clientName;
-		//newText = Server.EditorServer.updatedText;
+		newText = "";//Server.EditorServer.updatedText;
 		//System.out.println("new window : "+ Server.EditorServer.updatedText);
 		//this.edit = this;
 		timer = new Timer();
@@ -52,11 +52,23 @@ public class MainTextPane extends JPanel{//JTextPane{
 		edit.setContentType("text/html");
 		edit.setEditorKit(new HTMLEditorKit());
 		
+//*********************READ ME*********************
+		//The functionality has to be limited to just insert Update, 
+		//as i keep getting errors whenever i open a second window if the
+		//other event listeners are enabled. Not too sure what it could be
+		// anymore, it just seems as if it is calling itself too many
+		// times and causing the server to crash?
 		edit.getDocument().addDocumentListener(new DocumentListener(){
 			@Override
 			public void insertUpdate(DocumentEvent e) {
 				System.out.println("insertUpdate");
-				textListener();
+				if(newText.equals(edit.getText())){
+					return;
+				}
+				else{
+					System.out.println(edit.getText());
+					textListener();
+				}
 				
 //				timer.cancel();  //Cancel the first timer you had
 //				timer.purge();   //Garbage Collector: Clean up timer queue
@@ -66,9 +78,15 @@ public class MainTextPane extends JPanel{//JTextPane{
 
 			@Override
 			public void removeUpdate(DocumentEvent e) {
-//				System.out.println("RemoveUpdate");
-//				textListener();
-		
+				System.out.println("RemoveUpdate");
+//				System.out.println("New Text : " +newText);
+//				if(newText.equals(edit.getText())){
+//					return;
+//				}
+//				else{
+//					System.out.println(edit.getText());
+//					textListener();
+//				}		
 				//textListener();
 //				timer.cancel();  //Cancel the first timer you had
 //				timer.purge();   //Garbage Collector: Clean up timer queue
@@ -78,8 +96,13 @@ public class MainTextPane extends JPanel{//JTextPane{
 
 			@Override
 			public void changedUpdate(DocumentEvent e) {
-//				System.out.println("ChangedUpdate");
-//				textListener();
+				System.out.println("ChangedUpdate");
+//				if(newText.equals(edit.getText())){
+//					return;
+//				}
+//				else{
+//					textListener();
+//				}
 				
 //				timer.cancel();  //Cancel the first timer you had
 //				timer.purge();   //Garbage Collector: Clean up timer queue
@@ -89,17 +112,18 @@ public class MainTextPane extends JPanel{//JTextPane{
 		});
 	}
 	
-	
+//***************Caret POsition keeps breaking??????!!!!!
 	public void updateDocument(String text){
 		if(text.equals(edit.getText())){
-			System.out.println("I am the same ad the other text string so we do not need to pass!");
+			System.out.println("I am the same as the other text string so we do not need to pass!");
 			return;
 		}
 		else{
 			this.newText = text;
 			int temp = edit.getCaretPosition();
+			//System.out.println("My caret Position is: " + edit.getCaretPosition());
 			edit.setText(text);
-			//edit.setCaretPosition(temp);
+			edit.setCaretPosition(temp);
 			repaint();
 		}
 		
@@ -114,9 +138,13 @@ public class MainTextPane extends JPanel{//JTextPane{
 	
 	private void textListener(){
 		try{
-			System.out.println("I am in textListener");
-			output.writeObject(new AddTextCommand(name, edit.getText()));
-
+			if(newText == edit.getText()){
+				return;
+			}
+			else{
+				System.out.println("I am in textListener");
+				output.writeObject(new AddTextCommand(name, edit.getText()));
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
