@@ -9,6 +9,13 @@ import javax.swing.JTextPane;
 
 import Editor.UpdateEditorCommand;
 
+/** Description of TimerClass:
+* The timer class is a part that saves a task at the moment of time. It gets the time on the computer and saves.
+* This helps keep track of the revisions that people make to their documents.
+* It has a private instance variable called Timer and it adds it to the schedule and then saves.
+*@author HCS Group: Siddharth Sharma, Luis Guerrero, Maverick Tudisco, Chintan Patel
+*@version Final Version: May 6th, 2015
+*/
 
 public class TimerClass {
 	private Timer timer;

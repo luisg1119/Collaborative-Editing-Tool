@@ -1,5 +1,12 @@
 package Login;
 
+/** Description of ResetButton:
+* This class will reset the information for the username and password.
+* It is opened in a JPanel and extends JFrame.
+*@author HCS Group: Siddharth Sharma, Luis Guerrero, Maverick Tudisco, Chintan Patel
+*@version Final Version: May 6th, 2015
+*/
+
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 

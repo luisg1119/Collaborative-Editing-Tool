@@ -12,14 +12,24 @@ import javax.swing.JPanel;
 
 import Editor.AddTextCommand;
 
+/** Description of PaintPanel:
+* This class called PaintPanel extends JPanel and implements MouseListener and MouseMotionListener.
+* This class contains many instance variables such as the final long serialVersionUID that creates a unique thread.
+* It also has a static int that is called Black and is set to zero so the user chooses this as default.
+* It also has a location for the mouse with x and y cordinates.
+* We have a boolean value that is representing if the mouse is moved or not.
+* We have graphics content that represents the drawing and any new graphics drawn as well as an output stream.
+*@author HCS Group: Siddharth Sharma, Luis Guerrero, Maverick Tudisco, Chintan Patel
+*@version Final Version: May 6th, 2015
+*/
+
 public class PaintPanel extends JPanel implements MouseListener, MouseMotionListener {
 	private static final long serialVersionUID = -4369529014081136664L;
-	private final static int BLACK = 0; 	  // This represents the color the user chooses.
-   // private int defaultColor = BLACK;			// The color that the user chooses.
-    private int locX;        				  // The previous X location of the mouse.
-    private int locY; 						  // The previous Y location of the mouse.	
-    private boolean dragOfMouse;			  // This is set to true while the user is drawing.
-    private Graphics drawingGraphics;	      // A graphics context for the panel that is used to draw the user's curve.
+	private final static int BLACK = 0;									// This represents the color the user chooses.
+    private int locX;													// The previous X location of the mouse.
+    private int locY; 						  							// The previous Y location of the mouse.	
+    private boolean dragOfMouse;			  							// This is set to true while the user is drawing.
+    private Graphics drawingGraphics;	      							// A graphics context for the panel that is used to draw the user's curve.
     private Graphics newGraphic;
     private ObjectOutputStream output;
 
@@ -36,10 +46,10 @@ public class PaintPanel extends JPanel implements MouseListener, MouseMotionList
     
     public void paintComponent(Graphics graphics) {
         
-        super.paintComponent(graphics);  // Fill with background color (white).
+        super.paintComponent(graphics); 								// Fill with background color (white).
         
-        int width = getWidth();    // Width of the panel.
-        int height = getHeight();  // Height of the panel.
+        int width = getWidth(); 										// Width of the panel.
+        int height = getHeight();										// Height of the panel.
         
         graphics.setColor(Color.LIGHT_GRAY);
         graphics.fillRect(width-53,  height-53, 50, 50);
@@ -84,12 +94,13 @@ public class PaintPanel extends JPanel implements MouseListener, MouseMotionList
          drawingGraphics = getGraphics();
      }
      
+     
      public void pressedUpdate(MouseEvent evt){
-    	 int x = evt.getX();   // x-coordinate where the user clicked.
-         int y = evt.getY();   // y-coordinate where the user clicked.
+    	 int x = evt.getX(); 										// x-cord where the user clicked.
+         int y = evt.getY(); 										// y-cord where the user clicked.
          
-         int width = getWidth();    // Width of the panel.
-         int height = getHeight();  // Height of the panel.
+         int width = getWidth(); 									// Width of the panel.
+         int height = getHeight(); 									// Height of the panel.
          
          if (dragOfMouse == true)  // Ignore mouse presses that occur
             return;            //    when user is already drawing a curve.
@@ -125,8 +136,8 @@ public class PaintPanel extends JPanel implements MouseListener, MouseMotionList
          if (dragOfMouse == false)
              return;  // Nothing to do because the user isn't drawing.
           
-          int x = evt.getX();   // x-coordinate of mouse.
-          int y = evt.getY();   // y-coordinate of mouse.
+          int x = evt.getX();   // x-cord of mouse.
+          int y = evt.getY();   // y-cord of mouse.
           
           drawingGraphics.drawLine(locX, locY, x, y);  // Draw the line.
           

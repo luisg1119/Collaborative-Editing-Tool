@@ -25,6 +25,14 @@ import Paint.UpdatePaintDraggedCommand;
 import Paint.UpdatePaintPressedCommand;
 import Paint.UpdatePaintReleasedCommand;
 
+/** Description of PaintServer:
+* This class is called PaintServer and it is the server where the paint commands communicates.
+* It contains an int paintPort and a String with the host, clientName and a paintSocket.
+* It also has a HashMap that stores what is happening in the paint server
+* It has 3 mouse events which are eventPressed, eventDragged, and eventReleased.
+*@author HCS Group: Siddharth Sharma, Luis Guerrero, Maverick Tudisco, Chintan Patel
+*@version Final Version: May 6th, 2015
+*/
 
 public class PaintServer {
 		private int paintPort;

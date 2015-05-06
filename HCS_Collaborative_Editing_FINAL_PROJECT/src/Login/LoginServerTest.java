@@ -4,6 +4,12 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+/** Description of LoginServerTest:
+* These are the test cases make by us to test how much our code coverage is.
+*@author HCS Group: Siddharth Sharma, Luis Guerrero, Maverick Tudisco, Chintan Patel
+*@version Final Version: May 6th, 2015
+*/
+
 public class LoginServerTest {
 
 	@Test

@@ -35,6 +35,8 @@ import java.util.HashMap;
 
 /** Description of LoginWindow:
 * This class is called LoginWindow and it creates the LoginWindow for a user to type in their information, this connects to the server and lets a user edit etc.
+* It initializes a JTextField that lets one write in the GUI and it has a static server as well as a port and host field.
+* It also contains a static HashMap that will store the information that the user inputs.
 *@author HCS Group: Siddharth Sharma, Luis Guerrero, Maverick Tudisco, Chintan Patel
 *@version Final Version: May 6th, 2015
 */

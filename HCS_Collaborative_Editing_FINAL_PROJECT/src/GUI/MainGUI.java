@@ -97,6 +97,7 @@ public class MainGUI extends JFrame {
 	static JPanel revisionPane;
 	private JTextField filename = new JTextField(), dir = new JTextField();
 	private JMenu jMenuFont;
+	private User thisUser;
 	static String docName;
 	public static int paintGuiCount;
 	public static int lengthOfList = 1; // lengthOfList = change number in lengthOfList.txt update in Save
@@ -194,12 +195,14 @@ public class MainGUI extends JFrame {
 	 * Create the frame.
 	 */
 	public MainGUI() {
+		final JFrame thisFrame = this;
 		paintGuiCount = 0;
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1200, 700);
 		getContentPane().setLayout(new BorderLayout());
-		setDocumentName(this);
+		final User thisUser = new User(username,password);
+		setDocumentName(this,thisUser);
 		mainPanel = new JPanel();
 		mainPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		// setContentPane(mainPanel);
@@ -222,7 +225,6 @@ public class MainGUI extends JFrame {
 		mainPanel.add(revisionPane);
 
 		// Started adding from here
-
 		// Instantiate a new EditorClient
 		docPanel = new EditorClient(Integer.parseInt(Login.LoginWindow
 				.getPort()), Login.LoginWindow.getHost(), username);
@@ -458,6 +460,15 @@ public class MainGUI extends JFrame {
 
 		edit.add(selectAllDoc);
 
+		newDoc.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				setDocumentName(thisFrame,thisUser);
+				MainTextPane.edit.setText("");
+				model.clear();
+			}
+			
+		});
 		JMenuItem cutDoc = new JMenuItem(new DefaultEditorKit.CutAction());
 		cutDoc.setText("Cut");
 		cutDoc.setMnemonic(KeyEvent.VK_T);
@@ -535,6 +546,8 @@ public class MainGUI extends JFrame {
 
 		JMenu mnPermissions = new JMenu("Permissions");
 		menuBar.add(mnPermissions);
+		
+		
 
 		JMenuItem addPermissions = new JMenuItem("Add permissions");
 		mnPermissions.add(addPermissions);
@@ -546,10 +559,12 @@ public class MainGUI extends JFrame {
 				String tempUser = JOptionPane.showInputDialog("Please enter username to grant permissions to a user to edit");
 				if(LoginServer.loginMap.containsKey(tempUser)){
 					JOptionPane.showMessageDialog(null, tempUser + " now has permissions to edit your document");
-					
+					thisUser.addToShareList(tempUser);
+					MainTextPane.edit.setEditable(true);
 					}
 				else{
 					JOptionPane.showMessageDialog(null, "Error "+tempUser + " not found");
+					thisUser.addToShareList(tempUser);
 				}
 			}
 			
@@ -559,6 +574,13 @@ public class MainGUI extends JFrame {
 
 		JMenuItem removePermissions = new JMenuItem("Remove permissions");
 		mnPermissions.add(removePermissions);
+		removePermissions.addActionListener( new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				MainTextPane.edit.setEditable(false);
+			}
+		});
 
 	}
 
@@ -579,9 +601,10 @@ public class MainGUI extends JFrame {
 		}
 	}
 
-	public static void setDocumentName(JFrame thisFrame) {
+	public static void setDocumentName(JFrame thisFrame, User thisUser) {
 		docName = JOptionPane.showInputDialog("Please enter a Document Name");
 		thisFrame.setTitle(docName);
+		User.myDocModel.addElement(docName);
 	}
 	
 //	public static void getLengthOfList(JList aList, DefaultListModel model){

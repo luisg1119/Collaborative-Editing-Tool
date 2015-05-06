@@ -15,6 +15,13 @@ import Chat.ChatClientStart;
 import Chat.ChatCommand;
 import GUI.MainGUI;
 
+/** Description of PaintClient:
+* This class is called PaintClient and it contains a String that is clientName as well as a String host and an int that represents port.
+* It also creates a PaintPanel that is called paint and creates a socket.
+* We then create a input and output stream.
+*@author HCS Group: Siddharth Sharma, Luis Guerrero, Maverick Tudisco, Chintan Patel
+*@version Final Version: May 6th, 2015
+*/
 
 public class PaintClient  extends JFrame {
 
@@ -97,7 +104,6 @@ public class PaintClient  extends JFrame {
 	      mainWindow.addWindowListener( new WindowAdapter() {
               @Override
               public void windowClosing(WindowEvent we) {
-            	  System.out.println(MainGUI.paintGuiCount);
             	  MainGUI.paintGuiCount--;
               }
           } );

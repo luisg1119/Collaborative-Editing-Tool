@@ -21,6 +21,7 @@ import Chat.ChatClientStart;
 *@author HCS Group: Siddharth Sharma, Luis Guerrero, Maverick Tudisco, Chintan Patel
 *@version Final Version: May 6th, 2015
 */
+
 public class ChatServer {
 	private ServerSocket chatSocket; // the server socket
 	private List<String> messages;	// the chat log
