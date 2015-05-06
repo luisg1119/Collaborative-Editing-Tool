@@ -11,7 +11,9 @@ import java.util.List;
 import javax.swing.JPanel;
 
 /** Description of ChatClientStart:
-* This is where the ChatClientStart is launched using the information of the client name, host, and port number. It is launched in a JPanel.
+* This is where the ChatClientStart is launched using the information of the client name, host, and port number. 
+* It is launched in a JPanel. We then create a server sock with an output and input stream.
+* It then writes the clientName to the output. This class will update messages and much more features that the ChatClient does.
 *@author HCS Group: Siddharth Sharma, Luis Guerrero, Maverick Tudisco, Chintan Patel
 *@version Final Version: May 6th, 2015
 */

@@ -1,5 +1,6 @@
 package Server;
 
+import java.awt.event.MouseEvent;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
@@ -16,185 +17,174 @@ import java.util.concurrent.LinkedBlockingDeque;
 
 import javax.swing.JOptionPane;
 
+import Editor.DisconnectEditorCommand;
+import Editor.EditorCommand;
+import Paint.DisconnectPaintCommand;
+import Paint.PaintCommand;
+import Paint.UpdatePaintDraggedCommand;
+import Paint.UpdatePaintPressedCommand;
+import Paint.UpdatePaintReleasedCommand;
+
 
 public class PaintServer {
 		private int paintPort;
+		private String host;
+		private String clientName;
 		private ServerSocket paintSocket;
-		private List<PaintObject> paintObjects;
-		//private Map<String, Deque<CommandPaint<Server>>> paintHistories;
-		private Map<String, ObjectInputStream> paintInputs;
-		private Map<String, ObjectOutputStream> paintOutputs;
+		private HashMap<String, ObjectOutputStream> paintOutput;
+		private MouseEvent eventPressed;
+		private MouseEvent eventDragged;
+		private MouseEvent eventReleased;
 			
-	public PaintServer(int port){
+	public PaintServer(String host, int port, String name){
+		this.paintPort = port +2;
+		this.host = host;
+		this.clientName = name;
+		
+		eventPressed = null;
+		eventDragged = null;
+		eventReleased = null;
 		// setup hashmaps to store future information
-		//paintHistories = new ConcurrentHashMap<String, Deque<CommandPaint<Server>>>();
-		paintInputs = new ConcurrentHashMap<String, ObjectInputStream>();
-		paintOutputs = new ConcurrentHashMap<String, ObjectOutputStream>();
-				
-		// create the list for paint objects
-		paintObjects = Collections.synchronizedList(new LinkedList<PaintObject>());
-				
-		this.paintPort = port + 2;
-				
-		try{					
-			//Start Server
-			this.paintSocket = new ServerSocket(paintPort); // create a new server
-				
-			System.out.println("Paint Server started on port: " + paintPort);
-
-			// begin accepting paint clients
+		this.paintOutput =  new HashMap<String, ObjectOutputStream>();
+		
+		try{
+			//Start Paint Editing Sockets on its own port
+			this.paintSocket = new ServerSocket(paintPort);
+			System.out.println("The Paint Server was started on port: " + paintPort);
+			
+			//begin accepting editor clients
 			new Thread(new ClientAccepterPaint()).start();
-		}			
+
+		}
 		catch(Exception e){
-			System.err.println("Error creating paint server:");
+			//new ClientAccepterEditor();
+			System.err.println("Error creating Paint Server:");
 			e.printStackTrace();
 		}
 	}
-			
-	private class ClientHandlerPaint implements Runnable{
-		private String clientId; // name of the client
-		//private Deque<CommandPaint<PaintServer>> paintHistory; // history of executed commands
-		private ObjectInputStream paintInput; // input stream to read command from
-			
-		public ClientHandlerPaint(String id){ //Deque<CommandPaint<Server>> history){
-			this.clientId = id;
-			//this.paintHistory=history;
-			this.paintInput = paintInputs.get(id);
-			
-			//Change this once we implement methods. 
-			System.out.println("New Client " + id + " connected");
-			
-			updateClientsPaint();
-		}
-			
-		public void run() {
-			try{
-				while(true){
-						// read a command from the client, execute on the server
-						//Object ob = paintInput.readObject();
-						//if (ob instanceof CommandPaint<?>){
-					CommandPaint<PaintServer> command = (CommandPaint<PaintServer>)ob; // cast the object // grab a command off the queue
-					command.execute(PaintServer.this); // execute the command on the server
-						
-//						if (!(command instanceof UndoLastCommand)) // undo commands can't be undone
-//							paintHistory.push(command);
-						
-					// terminate if client is disconnecting
-					if (command instanceof DisconnectPaint){ //change disconnectCommand, to disconnect paint once class is made
-						paintInput.close();
-						return;
-					}
-				}
-			}
-			catch(Exception e){
-				//System.err.println("In Client Handler:");
-				e.printStackTrace();
-				break;
-			}
-		}
-	}
-		
-	private class ClientAccepterPaint implements Runnable{
-		public void run() {
-			try{
-				while (true){
-					// accept a new client, get output & input streams
-					Socket s = paintSocket.accept(); // wait for a new client
-						
-					// grab the output and input streams for the new client
-					ObjectOutputStream output = new ObjectOutputStream(s.getOutputStream());
-					ObjectInputStream input = new ObjectInputStream(s.getInputStream());
-					
-					String clientName;
-					//Do while, to reject if already connect, not allow multiple logins.
-					do{
-						// read the client's name
-						clientName = (String)input.readObject();	
-						// if that name is already connected, reject
-						if (paintOutputs.containsKey(clientName)){
-							output.writeObject("reject"); //change to no Later on
-						}
-					}while (paintOutputs.containsKey(clientName));
-							
-					// tell the client their name is accepted
-					output.writeObject("accept");
-							
-					// add the output, input streams to the correct maps
-					paintOutputs.put(clientName, output);
-					paintInputs.put(clientName, input);
-							
-							// create a command history queue for the new client
-							//paintHistories.put(name, new LinkedBlockingDeque<CommandPaint<Server>>());
-							
-					// start a new ClientHandler for this new client
-					new Thread(new ClientHandlerPaint(clientName)).start();//, paintHistories.get(name))).start();
-				}
-			}
-			catch(Exception e){
-				//System.err.println("In Client Accepter:");
-				e.printStackTrace();
-				break;
-			}
-		}
-	}
 	
-	public void updateClientsPaint(){
-		UpdateEditorCommand update = new UpdateEditorCommand("server", paintObjects.toArray(new PaintObject[paintObjects.size()]));
-		for (ObjectOutputStream out: paintOutputs.values())
-			try{
-				out.writeObject(update);
-			}
-			catch(Exception e){
-				e.printStackTrace();
-				//paintOutputs.remove(out); //maybe do not need? opposite commented out?
-			}
-	}
-	
-	//Move to bottom if i add more functionality
-	public void disconnectPaint(String source) {
-		System.out.printf("Client \'%s\' disconnecting\n", source);
+	public void updateClientsPressedPaint() {
+		// make an UpdateClientCommmand, write to all connected users
+		UpdatePaintPressedCommand update = new UpdatePaintPressedCommand(eventPressed); //this is a new class in model 
 		try{
-			paintInputs.remove(source).close();
-			paintOutputs.remove(source).close();
-			//paintHistories.remove(source);
+			for (ObjectOutputStream out : paintOutput.values())
+				out.writeObject(update);
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	
+	public void updateClientsReleasedPaint() {
+		// make an UpdateClientCommmand, write to all connected users
+		UpdatePaintReleasedCommand update = new UpdatePaintReleasedCommand(eventReleased); //this is a new class in model 
+		try{
+			for (ObjectOutputStream out : paintOutput.values())
+				out.writeObject(update);
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	
+	public void updateClientsDraggedPaint() {
+		// make an UpdateClientCommmand, write to all connected users
+		UpdatePaintDraggedCommand update = new UpdatePaintDraggedCommand(eventDragged); //this is a new class in model 
+		try{
+			for (ObjectOutputStream out : paintOutput.values())
+				out.writeObject(update);
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	
+	public void pressedMouse(MouseEvent evt){
+		this.eventPressed = evt;
+		updateClientsPressedPaint();
+	}
+	
+	public void releasedMouse(MouseEvent evt){
+		this.eventReleased = evt;
+		updateClientsReleasedPaint();
+	}
+	
+	public void draggedMouse(MouseEvent evt){
+		this.eventDragged = evt;
+		updateClientsDraggedPaint();
+	}
+	
+	public void disconnectPaint(String clientName) {
+		try{
+			paintOutput.get(clientName).close(); // close output stream
+			paintOutput.remove(clientName); // remove from map
+			
 		} 
 		catch(Exception e){
 			e.printStackTrace();
 		}
 	}
 	
-	
-	//Maybe Need? need code--------------------------------------------------
-	
-	
-//	public void addObject(PaintObject object) {
-//		System.out.println(paintObjects.size());
-//		System.out.println("Adding new Object" + object.getClass().toString());
-//		paintObjects.add(object);
-//		System.out.println(paintObjects.size());
-//		updateClientsPaint();
-//	}
-//		
-//	public void removeObject(PaintObject object) {
-//		paintObjects.remove(object);
-//		updateClientsPaint();
-//	}	
-//	
-//	public List<PaintObject> getObjects() {
-//		return paintObjects;
-//	}
+	private class ClientAccepterPaint implements Runnable{
+		public void run() {
+			try{
+				while(true){
+					// accept a new client, get output & input streams
+					Socket s = paintSocket.accept();
+					
+					// grab the output and input streams for the new client
+					ObjectOutputStream output = new ObjectOutputStream(s.getOutputStream());
+					ObjectInputStream input = new ObjectInputStream(s.getInputStream());
+					
 
-			
-			
-			//Paint not use if no undo button
-//			public void undoLast(String clientName) {
-//				Deque<CommandPaint<Server>> commands = paintHistories.get(clientName);
-//				if (commands.isEmpty())
-//					return;
-//				commands.pop().undo(Server.this);
-//			}
-			
-//----------------------------------------------------------------------------------------------------
+					String name = (String)input.readObject();
 
+					// map client name to output stream
+					paintOutput.put(name, output);
+					
+					// spawn a thread to handle communication with this client
+					new Thread(new ClientHandlerPaint(input)).start();
+					//Put default image on newly opened window if there is any
+					if (((eventPressed != null) || (eventDragged != null) ||(eventReleased != null))){
+						pressedMouse(eventPressed);
+						draggedMouse(eventDragged);
+						releasedMouse(eventReleased);
+					}
 
+				}
+			}
+			catch(Exception e){
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	private class ClientHandlerPaint implements Runnable{
+		private ObjectInputStream input; // the input stream from the client
+
+		public ClientHandlerPaint(ObjectInputStream input){
+			this.input = input;
+		}
+
+		public void run() {
+			try{
+				while(true){
+					// read a command from the client, execute on the server
+					PaintCommand<PaintServer> command = (PaintCommand<PaintServer>)input.readObject();
+					command.execute(PaintServer.this);
+					
+					if (command instanceof DisconnectPaintCommand){
+						input.close();
+						return;
+					}
+				}
+			}
+			catch(Exception e){
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	
+	
 }

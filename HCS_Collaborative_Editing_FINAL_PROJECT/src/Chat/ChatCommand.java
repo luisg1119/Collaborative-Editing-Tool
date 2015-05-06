@@ -3,7 +3,8 @@ package Chat;
 import java.io.Serializable;
 
 /** Description of ChatCommand<T>:
-* This is an abstract class called ChatCommand<T> that implements Serializable and creates a final long with a serialVersionUID. 
+* This is an abstract class called ChatCommand<T> that implements Serializable and creates a final long with a serialVersionUID that creates the thread as a unique identifier.
+* It contains a abstract method called execute and a regular method called undo. 
 *@author HCS Group: Siddharth Sharma, Luis Guerrero, Maverick Tudisco, Chintan Patel
 *@version Final Version: May 6th, 2015
 */

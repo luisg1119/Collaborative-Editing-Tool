@@ -7,6 +7,9 @@ import Chat.ChatClientStart;
 
 /** Description of UpdateChatCommand:
 * This class updates the text that the user is entering as a message to all the users on the document editor.
+* This class contains a unique final long serialVersionUID that creates the thread as a unique identifier and has a List of String
+* We have a constructor that makes a copy of the given list again
+* We then have an execute method that will update the messages.
 *@author HCS Group: Siddharth Sharma, Luis Guerrero, Maverick Tudisco, Chintan Patel
 *@version Final Version: May 6th, 2015
 */

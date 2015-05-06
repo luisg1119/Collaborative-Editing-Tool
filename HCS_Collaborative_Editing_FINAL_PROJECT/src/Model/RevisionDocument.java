@@ -9,6 +9,8 @@ import javax.swing.text.Document;
 
 /** Description of RevisionDocument:
 * This class is called RevisionDocument and it creates 3 things that are included in revisions, Calendar, Document, and a username.
+* The constructor contains those 3 elements and they are set to be the copies that are passed into the constructor.
+* The toString method returns the calendar instance.
 *@author HCS Group: Siddharth Sharma, Luis Guerrero, Maverick Tudisco, Chintan Patel
 *@version Final Version: May 6th, 2015
 */

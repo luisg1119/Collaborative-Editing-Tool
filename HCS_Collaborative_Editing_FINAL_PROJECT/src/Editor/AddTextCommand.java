@@ -4,6 +4,10 @@ import Server.EditorServer;
 
 /** Description of AddTextCommand:
 * This class adds the message using the EditorCommand<EditorSever>, prints with name of client followed by text written.
+* This class contains a final long serialVersionUID that creates the thread as a unique identifier as well as a String text that contains a text which is a message from client.
+* It also contains a String with the clientName as well as a String that represents text.
+* It contains a constructor that takes in the string name of the client followed by a string of the text entered.
+* It also has an execute method and adds a message to the server's chat log.
 *@author HCS Group: Siddharth Sharma, Luis Guerrero, Maverick Tudisco, Chintan Patel
 *@version Final Version: May 6th, 2015
 */

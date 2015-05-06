@@ -19,7 +19,7 @@ import java.util.HashSet;
 */
 
 public class LoginServer {
-	static HashMap<String, String> loginMap;
+	public static HashMap<String, String> loginMap;
 
 	public LoginServer() {
 		loginMap = new HashMap<String, String>();
@@ -63,7 +63,7 @@ public class LoginServer {
 	public String createUser(String username, String password) {
 		//populateMap();
 		if (loginMap.containsKey(username))
-			return "Username Already Exists!";
+			throw new UsernameAlreadyExistsException();
 		else {
 			loginMap.put(username, password);
 			return "Succesfully Created User, Please relogin!";
@@ -72,8 +72,15 @@ public class LoginServer {
 
 	public boolean login(String username, String password) {
 		//populateMap();
+		if(loginMap.containsKey(username) == false){
+			//throw new InvalidUsernameException();
+			return false;
+		}
 		if(loginMap.get(username).equals(password))
 			return true;
+		if(loginMap.get(username).equals(password) == false)
+			//throw new InvalidPasswordException();
+			return false;
 		return false;
 	}
 }

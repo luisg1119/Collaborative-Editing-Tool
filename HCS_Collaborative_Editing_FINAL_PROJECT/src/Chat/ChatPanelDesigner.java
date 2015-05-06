@@ -13,6 +13,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JButton;
+import javax.swing.JTextPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -26,7 +27,11 @@ import java.awt.SystemColor;
 import javax.swing.JLabel;
 
 /** Description of ChatPanelDesigner:
-* This class extend JPanel and it designs the ChatPanel, it contains a serialVersionUID and many components of a GUI.
+* This class extend JPanel and it designs the ChatPanel, it contains a serialVersionUID that creates the thread as a unique identifier and contains many components of a GUI.
+* This class has 3 JTextField fields that are used for textSend, textName, and textField. 
+* We then create an output steam for the server followed by a clientName and updatedText.
+* There is a JTextField called activeUserText that is a JLabel for the user.
+* Creates the GUI to update, etc.
 *@author HCS Group: Siddharth Sharma, Luis Guerrero, Maverick Tudisco, Chintan Patel
 *@version Final Version: May 6th, 2015
 */
@@ -81,7 +86,6 @@ public class ChatPanelDesigner extends JPanel {
 	public ChatPanelDesigner(String clientName, ObjectOutputStream output){
 		this.output = output;
 		this.clientName = clientName;
-		
 		setLayout(new BorderLayout(0, 0));
 		
 		textArea = new JTextArea();

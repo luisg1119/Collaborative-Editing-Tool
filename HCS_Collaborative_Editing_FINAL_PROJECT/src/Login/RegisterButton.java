@@ -35,7 +35,7 @@ public class RegisterButton extends JFrame {
 		setTitle("Register User for HCS: Document Editor\n");
 		setBounds(6, 118, 399, 193);
 		getContentPane().setLayout(null);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 
 		
 		JLabel lblUsername = new JLabel("Username:");

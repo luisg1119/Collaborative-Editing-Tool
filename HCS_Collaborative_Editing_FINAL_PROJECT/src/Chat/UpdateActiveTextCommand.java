@@ -5,6 +5,8 @@ import java.util.List;
 
 /** Description of UpdateActiveTextCommand:
 * The UpdateActiveTextCommand updates the text that a user is entering from their given server to display on everyones computer at the same time.
+* This class contains a final long serialVersionUID that creates the thread as a unique identifier and has a constructor that takes in the string message and makes a copy of the given list.
+* We also have a execute method that updated the messages.
 *@author HCS Group: Siddharth Sharma, Luis Guerrero, Maverick Tudisco, Chintan Patel
 *@version Final Version: May 6th, 2015
 */

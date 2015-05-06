@@ -18,6 +18,7 @@ import java.util.List;
 import javax.swing.Action;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import javax.swing.border.BevelBorder;
@@ -28,9 +29,13 @@ import javax.swing.text.StyledEditorKit;
 import GUI.MainGUI;
 import Model.RevisionDocument;
 import Model.User;
+import Paint.PaintClient;
 
-/** Description of EditorClientStart:
-* This class is called EditorClientStart that is a client that launches the editor panel.
+/** Description of EditorClient:
+* This class is called EditorClient that is a client that launches the editor panel.
+* It contains a String name that represents that clientName as well as a String host and an int that is the editorPort.
+* We create a private socket that is for the EditorClient only and this will host its own port, host ID and host name.
+* This also launches the main GUI for this portion of the edit.
 *@author HCS Group: Siddharth Sharma, Luis Guerrero, Maverick Tudisco, Chintan Patel
 *@version Final Version: May 6th, 2015
 */
@@ -41,7 +46,6 @@ public class EditorClient extends JPanel{
 	private int editorPort;
 	
 	public static MainTextPane edit;
-	//private MainGUI chat;
 
 	private Socket server; // connection to server
 	public ObjectOutputStream output; // output stream
@@ -49,6 +53,7 @@ public class EditorClient extends JPanel{
 	private JButton italicToggleButton_1;
 	private JButton underlineToggleButton_1;
 	private JToolBar toolBar;
+	public PaintClient paintGUI; 
 	
 	public EditorClient(int port1, String host1, String name){
 		
@@ -59,10 +64,6 @@ public class EditorClient extends JPanel{
 		toolBar = new JToolBar();
 		toolBar.setBounds(27, 7, 568, 28);
 		toolBar.setFloatable(false);
-		//docPanel.add(toolBar);
-
-		//final MainTextPane textPane = new MainTextPane();
-		//docPanel.add(textPane.getScroll());
 
 		/*
 		 * Sets the default fonts for user to use
@@ -116,6 +117,7 @@ public class EditorClient extends JPanel{
 					sizesInt[i]);
 
 		}
+		
 		sizeComboBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				for (int i = 0; i < fontSizeAction.length; i++) {
@@ -191,8 +193,24 @@ public class EditorClient extends JPanel{
 		/*
 		 * Paint Button
 		 */
-		JButton paintButton = new JButton("Paint");
+		JButton paintButton = new JButton("Whiteboard");
 		paintButton.setBounds(701, 7, 94, 28);
+		paintButton.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (MainGUI.paintGuiCount > 0){
+					return;
+				}
+				else{
+					MainGUI.paintGuiCount++;
+					paintGUI = new PaintClient(Login.LoginWindow.getHost(),
+					Integer.parseInt(Login.LoginWindow.getPort()), MainGUI.username);
+					paintGUI.setVisible(true);
+				}
+			}
+			
+		});
 		toolBar.add(paintButton);
 		//docPanel.add(paintButton);
 
@@ -207,7 +225,6 @@ public class EditorClient extends JPanel{
 		btnMyAccount.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		btnMyAccount.setBounds(605, 7, 96, 28);
 		toolBar.add(btnMyAccount);
-//		docPanel.add(btnMyAccount);
 		try{
 			// Open a connection to the server
 			server = new Socket(host, editorPort);
@@ -252,16 +269,11 @@ public class EditorClient extends JPanel{
 		this.add(edit, BorderLayout.CENTER);
 		this.add(toolBar, BorderLayout.NORTH);
 		this.setVisible(true);
-		//this.setSize(800,600);
 		this.setBorder((new BevelBorder(BevelBorder.LOWERED, null, null,null, null)));		
 	}
 	
 	public void update(String text, String name){
 		edit.updateDocument(text, name);
-	}
-	
-	public void updateSave(List<String> texts){
-		edit.updateSave(texts);
 	}
 	
 	public ObjectOutputStream returnOutput(){
@@ -273,7 +285,7 @@ public class EditorClient extends JPanel{
 	}
 	
 	public RevisionDocument getRevisionDocument(){
-		Document thisDoc =  edit.getDocument();
+		Document thisDoc =  MainTextPane.edit.getDocument();
 		Calendar cal = Calendar.getInstance();
 		String username = MainGUI.username;
 		RevisionDocument newRevisedDocument = new RevisionDocument(cal,thisDoc, username);
@@ -281,11 +293,11 @@ public class EditorClient extends JPanel{
 	}
 	
 	public String getTextContent(){
-		return edit.getText();
+		return  MainTextPane.edit.getText();
 	}
 	
 	public void setTextContent(String text){
-		edit.setText(text);
+		MainTextPane.edit.setText(text);
 	}
 	
 

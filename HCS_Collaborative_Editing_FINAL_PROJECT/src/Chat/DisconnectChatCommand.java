@@ -4,6 +4,7 @@ import Server.ChatServer;
 
 /** Description of DisconnectChatCommand:
 * This class is responsible for taking the actions of the user to disconnect the chat server when prompted to do so.
+* This class contains a final long serialVersionUID that creates the thread as a unique identifier and a method called DisconnectChatCommand as well as execut that disconnects the client.
 *@author HCS Group: Siddharth Sharma, Luis Guerrero, Maverick Tudisco, Chintan Patel
 *@version Final Version: May 6th, 2015
 */

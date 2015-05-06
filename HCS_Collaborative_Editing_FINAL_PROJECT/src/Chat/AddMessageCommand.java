@@ -3,7 +3,9 @@ package Chat;
 import Server.ChatServer;
 
 /** Description of AddMessageCommand:
-* This is where one can send a message using the ChatCommand to send messages through the ChatServer.
+* This is where one can send messages using the ChatCommand to send messages through the ChatServer. 
+* This class extends ChatCommand<ChatServer> and creates a final long serialVersionUID that creates the thread as a unique identifier and creates a String of the unique message. 
+* It then adds the message to the servers chat log.
 *@author HCS Group: Siddharth Sharma, Luis Guerrero, Maverick Tudisco, Chintan Patel
 *@version Final Version: May 6th, 2015
 */

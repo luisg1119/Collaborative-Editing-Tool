@@ -56,7 +56,7 @@ public class LoginWindow extends JFrame {
 		getContentPane().setLayout(null);
 		setBounds(100, 100, 400, 227);
 
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 
 		
 		txtA = new JTextField();
@@ -115,7 +115,7 @@ public class LoginWindow extends JFrame {
 				
 			}
 		});
-		btnLogin.setBounds(35, 152, 117, 29);
+		btnLogin.setBounds(12, 152, 117, 29);
 		getContentPane().add(btnLogin);
 		
 		JButton registerButton = new JButton("Register");
@@ -125,7 +125,7 @@ public class LoginWindow extends JFrame {
 				newRegButton.setVisible(true);
 			}
 		});
-		registerButton.setBounds(148, 152, 117, 29);
+		registerButton.setBounds(121, 152, 117, 29);
 		getContentPane().add(registerButton);
 		
 		JLabel hostLabel = new JLabel("Host/IP :");
@@ -156,8 +156,18 @@ public class LoginWindow extends JFrame {
 			}
 		});
 		btnForgotPassword.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
-		btnForgotPassword.setBounds(264, 153, 117, 29);
+		btnForgotPassword.setBounds(227, 153, 117, 29);
 		getContentPane().add(btnForgotPassword);
+		
+		JButton btnReset = new JButton("Reset");
+		btnReset.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ResetButton newReset = new ResetButton();
+				newReset.setVisible(true);
+			}
+		});
+		btnReset.setBounds(334, 152, 66, 28);
+		getContentPane().add(btnReset);
 		
 		
 		

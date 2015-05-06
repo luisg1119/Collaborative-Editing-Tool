@@ -12,7 +12,8 @@ import Editor.DisconnectEditorCommand;
 import Editor.EditorClient;
 import Editor.EditorCommand;
 import Editor.UpdateEditorCommand;
-import Editor.UpdateEditorSaveCommand;
+
+
 /** Description of EditorServer:
 * This class creates a EditorServer that contains a ServerSocket called "CollaborativeSocket", this is the server that sends all the collabrative things that users can do together.
 * It contains a collaborativePort, String name of Host, String name of clientName, and an arraylist of texts. 
@@ -43,8 +44,6 @@ public class EditorServer {
 		this.editorOutput = new HashMap<String, ObjectOutputStream>();
 		
 		try{
-			//this.revisions = new ArrayList<RevisionList>;
-			
 			//Start Collaborative Editing Sockets on its own port
 			this.CollaborativeSocket = new ServerSocket(collaborativePort);
 			System.out.println("The Collaborative Editing Server was started on port: " + collaborativePort);
@@ -59,12 +58,42 @@ public class EditorServer {
 			e.printStackTrace();
 		}
 	}
+
+		
+		public void addText(String text, String name){
+			updatedText = text;
+			tempName = name;
+			updateClientsEditor();
+		}
+		
+		public void updateClientsEditor() {
+			// make an UpdateClientCommmand, write to all connected users
+			UpdateEditorCommand update = new UpdateEditorCommand(updatedText, tempName); //this is a new class in model 
+			try{
+				for (ObjectOutputStream out : editorOutput.values())
+					out.writeObject(update);
+			}
+			catch(Exception e){
+				e.printStackTrace();
+			}
+		}
+		
+		public void disconnectEditor(String clientName) {
+			try{
+				editorOutput.get(clientName).close(); // close output stream
+				editorOutput.remove(clientName); // remove from map
+				
+			} 
+			catch(Exception e){
+				e.printStackTrace();
+			}
+		}
+		
 		
 		private class ClientAccepterEditor implements Runnable{
 			public void run() {
 				try{
 					while(true){
-						//System.out.println("We are in client acetor editor ");
 						// accept a new client, get output & input streams
 						Socket s = CollaborativeSocket.accept();
 						
@@ -105,7 +134,6 @@ public class EditorServer {
 						EditorCommand<EditorServer> command = (EditorCommand<EditorServer>)input.readObject();
 						command.execute(EditorServer.this);
 						
-						// terminate if client is disconnecting
 						if (command instanceof DisconnectEditorCommand){
 							input.close();
 							return;
@@ -113,54 +141,10 @@ public class EditorServer {
 					}
 				}
 				catch(Exception e){
-					//System.err.println("In Client Handler:");
 					e.printStackTrace();
 				}
 			}
 		}
-		
-		public void addText(String text, String name){
-			updatedText = text;
-			tempName = name;
-			updateClientsEditor();
-		}
-		
-		public void saveText(String text){
-			texts.add(text);
-			updateClients();
-		}
-		
-		public void updateClients(){
-			UpdateEditorSaveCommand update = new UpdateEditorSaveCommand(texts);
-		}
-		
-//		public static String getText(){
-//			return updatedText;
-//		}
-		
-		public void updateClientsEditor() {
-			// make an UpdateClientCommmand, write to all connected users
-			UpdateEditorCommand update = new UpdateEditorCommand(updatedText, tempName); //this is a new class in model 
-			try{
-				for (ObjectOutputStream out : editorOutput.values())
-					out.writeObject(update);
-			}
-			catch(Exception e){
-				e.printStackTrace();
-			}
-		}
-		
-		public void disconnectEditor(String clientName) {
-			try{
-				editorOutput.get(clientName).close(); // close output stream
-				editorOutput.remove(clientName); // remove from map
-				
-			} 
-			catch(Exception e){
-				e.printStackTrace();
-			}
-		}
-		
 		
 }
 

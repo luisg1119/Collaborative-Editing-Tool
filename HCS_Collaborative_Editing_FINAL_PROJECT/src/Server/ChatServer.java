@@ -59,7 +59,54 @@ public class ChatServer {
 	}
 	
 	
-	//The chat clientHandler
+	
+	
+	public void addMessage(String message){
+		messages.add(message);
+		updateClientsChat();
+	}
+	public void changeTextStatus(String message){
+		userWriting = message;
+		updateClientsChatText();
+	}
+	
+	public void updateClientsChatText(){
+		UpdateActiveTextCommand update = new UpdateActiveTextCommand(userWriting);
+		try{
+			for (ObjectOutputStream out : chatOutputs.values())
+				out.writeObject(update);
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	
+	public void updateClientsChat() {
+		// make an UpdateClientCommmand, write to all connected users
+		UpdateChatCommand update = new UpdateChatCommand(messages); //this is a new class in model 
+		try{
+			for (ObjectOutputStream out : chatOutputs.values())
+				out.writeObject(update);
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	
+	public void disconnectChat(String clientName) {
+		try{
+			chatOutputs.get(clientName).close(); // close output stream
+			chatOutputs.remove(clientName); // remove from map
+
+			// add notification message
+			addMessage(clientName + " disconnected");
+		} 
+		catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+
+//The chat clientHandler
 	private class ClientHandlerChat implements Runnable{
 		private ObjectInputStream input; // the input stream from the client
 
@@ -114,51 +161,6 @@ public class ChatServer {
 			catch(Exception e){
 				e.printStackTrace();
 			}
-		}
-	}
-	
-	public void addMessage(String message){
-		messages.add(message);
-		updateClientsChat();
-	}
-	public void changeTextStatus(String message){
-		userWriting = message;
-		updateClientsChatText();
-	}
-	
-	public void updateClientsChatText(){
-		UpdateActiveTextCommand update = new UpdateActiveTextCommand(userWriting);
-		try{
-			for (ObjectOutputStream out : chatOutputs.values())
-				out.writeObject(update);
-		}
-		catch(Exception e){
-			e.printStackTrace();
-		}
-	}
-	
-	public void updateClientsChat() {
-		// make an UpdateClientCommmand, write to all connected users
-		UpdateChatCommand update = new UpdateChatCommand(messages); //this is a new class in model 
-		try{
-			for (ObjectOutputStream out : chatOutputs.values())
-				out.writeObject(update);
-		}
-		catch(Exception e){
-			e.printStackTrace();
-		}
-	}
-	
-	public void disconnectChat(String clientName) {
-		try{
-			chatOutputs.get(clientName).close(); // close output stream
-			chatOutputs.remove(clientName); // remove from map
-
-			// add notification message
-			addMessage(clientName + " disconnected");
-		} 
-		catch(Exception e){
-			e.printStackTrace();
 		}
 	}
 }

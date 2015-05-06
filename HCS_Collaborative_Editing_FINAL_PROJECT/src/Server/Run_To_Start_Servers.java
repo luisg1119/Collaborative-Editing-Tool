@@ -5,7 +5,9 @@ import javax.swing.JOptionPane;
 import GUI.MainGUI;
 
 /** Description of Run_To_Start_Servers:
-* This is what runs the servers and starts their commands. 
+* This is what runs the servers and starts their commands.
+* This class contains a String that represents the host followed by a String that represents a userName
+* It also has an int that represents the port.
 *@author HCS Group: Siddharth Sharma, Luis Guerrero, Maverick Tudisco, Chintan Patel
 *@version Final Version: May 6th, 2015
 */
@@ -17,70 +19,16 @@ public class Run_To_Start_Servers {
 	
 	//create something to save the port last used on the computer, and read in here to not use same ports
 	public Run_To_Start_Servers(String newHost, String portString, String newUserName){
-		//Check if port has not been initiated already
-		System.out.println("Global Port is: "+port);
-		System.out.println("Parameter Port is : "+ portString);
-		if (port == Integer.parseInt(portString)){
-			System.out.println("Same Ports");
-			MainGUI frame = new MainGUI(portString);
-			frame.setVisible(true);
-		}
-		//check if there is not a host and there is a port
-		else if ((newHost == null) && (!portString.isEmpty())){ 
-			host = "localhost";
-			int tempPort = Integer.parseInt(portString);
+		host = newHost;
+		userName = newUserName;
+		port = Integer.parseInt(portString);
 			
-			if(tempPort == port){
-				
-			}
-			else{
-				port = tempPort;
-				//Start Servers and GUI
-				new ChatServer(host,port, userName);
-				MainGUI frame = new MainGUI();
-			}
-		}
-		//Check if there is a host and there is not a port
-		else if ((!newHost.isEmpty()) && (portString == null)){
-			host = newHost;
-			port = 9001;
-			
-			//Start Servers and GUI
-			new ChatServer(host,port, userName);
-			MainGUI frame = new MainGUI();
-		}
-		
-		else if (newHost.isEmpty() && portString.isEmpty()){
-			host = "localhost";
-			port = 9001;
-			
-			new EditorServer(host, port, userName);
-			new ChatServer(host,port, userName);
-			MainGUI frame = new MainGUI();
-			frame.setVisible(true);
-		}
-		
-		else{
-			System.out.println("First Run of ports");
-			host = newHost;//JOptionPane.showInputDialog("Enter a Host Address: ");
-			userName = newUserName;//JOptionPane.showInputDialog("Enter a User Name: ");
-			port = Integer.parseInt(portString);
-			
-			new EditorServer(host, port, userName);
-			new ChatServer(host,port, userName);
-			MainGUI frame = new MainGUI();
-			frame.setVisible(true);
-		}
-		
-//		new ChatServer(host,port, userName);
-//		MainGUI frame = new MainGUI();
-//		frame.setVisible(true);
-		
-		// new CollaborativeEditingServer(port)		
-
-		//new PaintServer(port);
-		
-
+		new EditorServer(host, port, userName);
+		new ChatServer(host,port, userName);
+		new PaintServer(host,port,userName);
+		MainGUI frame = new MainGUI();
+		frame.setVisible(true);
+	
 		
 		//Print out Friendly User Warning on console. There are checks that will not allow, just a friendly reminder
 		System.out.println("------------------------------------------------¡WARNING!------------------------------------------------");
@@ -92,6 +40,5 @@ public class Run_To_Start_Servers {
 		System.out.println("Paint Server                  : " + port);
 		System.out.println("---------------------------------------------------------------------------------------------------------");
 		
-
 	}
 }
