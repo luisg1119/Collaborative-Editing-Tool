@@ -41,9 +41,11 @@ import java.awt.event.WindowEvent;
 import Chat.ChatClientStart;
 import Chat.ChatPanelDesigner;
 import Chat.DisconnectChatCommand;
+import Editor.AddTextCommand;
 import Editor.DisconnectEditorCommand;
 import Editor.EditorClient;
 import Editor.MainTextPane;
+import Editor.RevisionCommand;
 import Login.LoginServer;
 import Model.RevisionDocument;
 import Model.User;
@@ -73,14 +75,18 @@ import java.awt.FlowLayout;
 
 import javax.swing.JLabel;
 
-/** Description of MainGUI:
-* The MainGUI is what creates a mainPanel and the comboBox with different fonts, as well as a lot of the functions of bold, italics, etc.
-* This class creates the two JButtons which have the functionality of Italic and Bold. They also contain a static username and password.
-* It has a built in chatPane as well and it has different menu items and one of those is save.
-* There is also a String that is the docName.
-*@author HCS Group: Siddharth Sharma, Luis Guerrero, Maverick Tudisco, Chintan Patel
-*@version Final Version: May 6th, 2015
-*/
+/**
+ * Description of MainGUI: The MainGUI is what creates a mainPanel and the
+ * comboBox with different fonts, as well as a lot of the functions of bold,
+ * italics, etc. This class creates the two JButtons which have the functionality
+ * of Italic and Bold. They also contain a static username and password. It has
+ * a built in chatPane as well and it has different menu items and one of those
+ * is save. There is also a String that is the docName.
+ *
+ * @author HCS Group: Siddharth Sharma, Luis Guerrero, Maverick Tudisco, Chintan
+ *         Patel
+ * @version Final Version: May 6th, 2015
+ */
 
 public class MainGUI extends JFrame {
 	private JPanel mainPanel;
@@ -90,7 +96,7 @@ public class MainGUI extends JFrame {
 	public static String username;
 	public static String password;
 	private ChatClientStart chatPane;
-	private int counter;
+	private static int counter;
 	public static EditorClient docPanel;
 	public static JMenuItem saveDoc;
 	public static JLabel lastUpdatedLabel;
@@ -100,7 +106,9 @@ public class MainGUI extends JFrame {
 	private User thisUser;
 	static String docName;
 	public static int paintGuiCount;
-	public static int lengthOfList = 1; // lengthOfList = change number in lengthOfList.txt update in Save
+	public static int lengthOfList = 1;
+	public static DefaultListModel<RevisionDocument> model;
+	private static ArrayList<String> stringHolder;
 
 	// public JPanel chatPane;
 
@@ -108,8 +116,8 @@ public class MainGUI extends JFrame {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		//getLengthOfList();
-		
+		// getLengthOfList();
+
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -168,8 +176,7 @@ public class MainGUI extends JFrame {
 			}
 		});
 	}
-	
-	
+
 	private void closePaint() {
 		// add a listener that sends a disconnect command to everything when
 		// closing
@@ -190,22 +197,21 @@ public class MainGUI extends JFrame {
 		});
 	}
 
-
 	/**
 	 * Create the frame.
 	 */
 	public MainGUI() {
+		stringHolder = new ArrayList<String>();
 		final JFrame thisFrame = this;
 		paintGuiCount = 0;
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1200, 700);
 		getContentPane().setLayout(new BorderLayout());
-		final User thisUser = new User(username,password);
-		setDocumentName(this,thisUser);
+		final User thisUser = new User(username, password);
+		setDocumentName(this, thisUser);
 		mainPanel = new JPanel();
 		mainPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
-		// setContentPane(mainPanel);
 		mainPanel.setLayout(null);
 		// Instantiate a new ChatClient
 		chatPane = new ChatClientStart(Login.LoginWindow.getHost(),
@@ -230,23 +236,12 @@ public class MainGUI extends JFrame {
 				.getPort()), Login.LoginWindow.getHost(), username);
 		docPanel.setBounds(137, 23, 805, 632);
 		docPanel.setForeground(Color.LIGHT_GRAY);
-		// Blue is the middle panel
-		// docPanel.setBackground(Color.BLUE);
 		getContentPane().add(docPanel);
 		getContentPane().add(mainPanel);
 		closeEditor();
 		closePaint();
 		// scroll enabled
 		docPanel.add(EditorClient.edit.getScroll());
-
-		// Old Stuff
-		// JPanel docPanel = new JPanel();
-		// docPanel.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null,
-		// null, null));
-		// docPanel.setBounds(137, 23, 805, 632);
-		// mainPanel.add(docPanel);
-
-		// docPanel.setLayout(null);
 
 		JMenuBar menuBar = new JMenuBar();
 		menuBar.setBorderPainted(false);
@@ -260,11 +255,38 @@ public class MainGUI extends JFrame {
 		file.add(newDoc);
 
 		JMenuItem openDoc = new JMenuItem("Open");
+		openDoc.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				Document doc = MainTextPane.edit.getDocument();
+				JFileChooser chooser = new JFileChooser();
+				int returnVal = chooser.showOpenDialog(null); // replace null
+																// with your
+																// swing
+																// container
+				File file = null;
+				if (returnVal == JFileChooser.APPROVE_OPTION)
+					file = chooser.getSelectedFile();
+				BufferedReader in;
+				try {
+					in = new BufferedReader(new FileReader(file));
+					String line = in.readLine();
+					MainTextPane.edit.setText("");
+					while (line != null) {
+						doc.insertString(doc.getLength(), (line + "\n"), null);
+						line = in.readLine();
+					}
+				} catch (BadLocationException | IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+			}
+		});
 		file.add(openDoc);
 
 		JMenu jMenuFont = new JMenu("Colors");
 
-		final DefaultListModel<RevisionDocument> model = new DefaultListModel();
+		model = new DefaultListModel();
 
 		revisionPane.setLayout(null);
 		final JList list = new JList(model);
@@ -273,35 +295,6 @@ public class MainGUI extends JFrame {
 		/*
 		 * Update the initial revisionHistory
 		 */
-		// try {
-		// FileReader fr = new FileReader(
-		// System.getProperty("user.dir")
-		// + "/SavedDocuments" + "/" + docName + "_" + (model.getSize() -
-		// (theList.locationToIndex(mouseEvent.getPoint())) - 1) + ".html"); //
-		// incase anyone fucks
-		// // this up -
-		// //
-		// "C:\\Users\\Maverick\\Dropbox\\335 Code\\HCS_Collaborative_Editing_FINAL_PROJECT\\SavedDocuments\\"
-		// // + "edit_" +
-		// //
-		// (model.getSize()-(theList.locationToIndex(mouseEvent.getPoint()))-1)
-		// // + ".html"
-		// BufferedReader br = new BufferedReader(fr);
-		// StringBuilder content = new StringBuilder(1024);
-		// String str = br.readLine();
-		// while ((str = br.readLine()) != null) {
-		// content.append(str);
-		// }
-		// Editor.MainTextPane.edit.setText("" + content);
-		// br.close();
-		// fr.close();
-		// } catch (FileNotFoundException e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// } catch (IOException e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// }
 
 		list.addListSelectionListener(new ListSelectionListener() {
 
@@ -311,11 +304,11 @@ public class MainGUI extends JFrame {
 					RevisionDocument revisionPaneRevision = (RevisionDocument) list
 							.getSelectedValue();
 
-					// textPane.setDocument(revisionPaneRevision.doc);
 				}
 			}
 
 		});
+
 		list.setBounds(0, 0, 137, 632);
 		revisionPane.add(list);
 
@@ -323,42 +316,31 @@ public class MainGUI extends JFrame {
 		revisionPane.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null,
 				null, null));
 		revisionPane.setForeground(Color.LIGHT_GRAY);
-		
-		
+
 		/*
-		 * Save Button - saves a document to revision history and updates length of list to file lengthOfList.txt
-		 * 
-		 * */
+		 * Save Button - saves a document to revision history and updates length
+		 * of list to file lengthOfList.txt
+		 */
 		saveDoc = new JMenuItem("Save");
 
 		saveDoc.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				model.addElement(MainGUI.docPanel.getRevisionDocument());
-
 				try {
-					FileWriter out2 = new FileWriter(new File(System.getProperty("user.dir") + "/SavedDocuments", "lengthOfList.txt" ));
-					FileWriter out = new FileWriter(new File(System
-							.getProperty("user.dir") + "/SavedDocuments",
-							docName + counter + ".html"));
-					counter++;
-					out.write(Editor.MainTextPane.edit.getText());
-					System.out.println(lengthOfList);
-					out2.write("" + lengthOfList);
-					out2.close();
-					lengthOfList++;
-					out.close();
+					System.out.println("I am in textListener");
+					docPanel.returnOutput().writeObject(
+							new RevisionCommand(Editor.MainTextPane.edit
+									.getText()));
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-
 			}
 		});
+		// TOok THe document revsison from here
 		file.add(saveDoc);
-		
+
 		/*
 		 * Click Event for JList items
-		 * */
+		 */
 		MouseListener mouseListener = new MouseAdapter() {
 			public void mouseClicked(MouseEvent mouseEvent) {
 				JList theList = (JList) mouseEvent.getSource();
@@ -369,7 +351,7 @@ public class MainGUI extends JFrame {
 						Object o = theList.getModel().getElementAt(index);
 
 						try {
-							
+
 							FileReader fr = new FileReader(
 									System.getProperty("user.dir")
 											+ "/SavedDocuments"
@@ -380,8 +362,7 @@ public class MainGUI extends JFrame {
 															.locationToIndex(mouseEvent
 																	.getPoint())) - 1)
 											+ ".html");
-							
-							
+
 							BufferedReader br = new BufferedReader(fr);
 							StringBuilder content = new StringBuilder(1024);
 							String str = br.readLine();
@@ -431,9 +412,6 @@ public class MainGUI extends JFrame {
 		JMenu edit = new JMenu("Edit");
 		menuBar.add(edit);
 
-		// HTMLEditorKit.InsertHTMLTextAction bulletAction = new
-		// HTMLEditorKit.InsertHTMLTextAction(
-		// "Insert Bullets", "<li> </li>", HTML.Tag.UL, HTML.Tag.LI);
 		JMenuItem bulletItem = new JMenuItem("Insert Bullet");
 		edit.add(bulletItem);
 		bulletItem.addActionListener(new ActionListener() {
@@ -460,14 +438,14 @@ public class MainGUI extends JFrame {
 
 		edit.add(selectAllDoc);
 
-		newDoc.addActionListener(new ActionListener(){
+		newDoc.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				setDocumentName(thisFrame,thisUser);
+				setDocumentName(thisFrame, thisUser);
 				MainTextPane.edit.setText("");
 				model.clear();
 			}
-			
+
 		});
 		JMenuItem cutDoc = new JMenuItem(new DefaultEditorKit.CutAction());
 		cutDoc.setText("Cut");
@@ -508,19 +486,6 @@ public class MainGUI extends JFrame {
 		lastUpdatedLabel.setBounds(151, 663, 289, 15);
 		mainPanel.add(lastUpdatedLabel);
 
-		// JButton btnNewButton = new JButton("Run Chat Client");
-		// btnNewButton.setFont(new Font("Menlo", Font.PLAIN, 24));
-		// btnNewButton.addActionListener(new ActionListener() {
-		// public void actionPerformed(ActionEvent e) {
-		// ChatClientStart chat = new ChatClientStart(LoginWindow
-		// .getHost(), Integer.parseInt(LoginWindow.getPort()),
-		// LoginWindow.getUsername());
-		// chat.setGUI();
-		// }
-		// });
-		// btnNewButton.setBounds(944, 28, 240, 644);
-		// mainPanel.add(btnNewButton);
-
 		jMenuFont1.add(new JMenuItem(new StyledEditorKit.ForegroundAction(
 				("Aqua"), new Color(0, 255, 255))));
 		jMenuFont1.add(new JMenuItem(new StyledEditorKit.ForegroundAction(
@@ -546,35 +511,33 @@ public class MainGUI extends JFrame {
 
 		JMenu mnPermissions = new JMenu("Permissions");
 		menuBar.add(mnPermissions);
-		
-		
 
 		JMenuItem addPermissions = new JMenuItem("Add permissions");
 		mnPermissions.add(addPermissions);
-		
-		addPermissions.addActionListener(new ActionListener(){
+
+		addPermissions.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String tempUser = JOptionPane.showInputDialog("Please enter username to grant permissions to a user to edit");
-				if(LoginServer.loginMap.containsKey(tempUser)){
-					JOptionPane.showMessageDialog(null, tempUser + " now has permissions to edit your document");
+				String tempUser = JOptionPane
+						.showInputDialog("Please enter username to grant permissions to a user to edit");
+				if (LoginServer.loginMap.containsKey(tempUser)) {
+					JOptionPane.showMessageDialog(null, tempUser
+							+ " now has permissions to edit your document");
 					thisUser.addToShareList(tempUser);
 					MainTextPane.edit.setEditable(true);
-					}
-				else{
-					JOptionPane.showMessageDialog(null, "Error "+tempUser + " not found");
+				} else {
+					JOptionPane.showMessageDialog(null, "Error " + tempUser
+							+ " not found");
 					thisUser.addToShareList(tempUser);
 				}
 			}
-			
+
 		});
-		
-		
 
 		JMenuItem removePermissions = new JMenuItem("Remove permissions");
 		mnPermissions.add(removePermissions);
-		removePermissions.addActionListener( new ActionListener(){
+		removePermissions.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -604,67 +567,35 @@ public class MainGUI extends JFrame {
 	public static void setDocumentName(JFrame thisFrame, User thisUser) {
 		docName = JOptionPane.showInputDialog("Please enter a Document Name");
 		thisFrame.setTitle(docName);
-		User.myDocModel.addElement(docName);
 	}
-	
-//	public static void getLengthOfList(JList aList, DefaultListModel model){
-//		// reads the lengthOfList
-//		try {
-//			FileReader fr2;
-//			fr2 = new FileReader(
-//					System.getProperty("user.dir")
-//					+ "/SavedDocuments"
-//					+ "/"
-//					+ "lengthOfList"
-//					+ ".txt");
-//			BufferedReader br2 = new BufferedReader(fr2);
-//			StringBuilder content2 = new StringBuilder(1024);
-//			String str2 = br2.readLine();
-//			if(str2 == null){
-//				lengthOfList = 1;
-//				br2.close();
-//				fr2.close();
-//			}else{
-//				lengthOfList = Integer.parseInt(str2);
-//				
-//				//System.out.println(lengthOfList);
-//				
-//				br2.close();
-//				fr2.close();
-//			}
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		
-//		// Reads the files to the revision history
-//		try {
-//			FileReader fr;
-//			for(int i = 0; i < lengthOfList; i++){
-//				fr = new FileReader("user.dir/SavedDocuments/" + docName + i + ".html");
-//				model.addElement(MainGUI.docPanel.getRevisionDocument());
-//			}
-//			
-//			
-//			BufferedReader br = new BufferedReader(fr);
-//			StringBuilder content = new StringBuilder(1024);
-//			String str = br.readLine();
-//			while ((str = br.readLine()) != null) {
-//				content.append(str);
-//			}
-//			Editor.MainTextPane.edit.setText("" + content);
-//			br.close();
-//			fr.close();
-//		} catch (FileNotFoundException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		
-//		
-//	}
 
-	}// end of class
+	public static void addToRevisionDoc(String text) {
+		if (stringHolder.contains(text)) {
+			return;
+		} else {
+			stringHolder.add(text);
+			model.addElement(MainGUI.docPanel.getRevisionDocument());
+
+			try {
+				FileWriter out2 = new FileWriter(new File(
+						System.getProperty("user.dir") + "/SavedDocuments",
+						"lengthOfList.txt"));
+				FileWriter out = new FileWriter(new File(
+						System.getProperty("user.dir") + "/SavedDocuments",
+						docName + counter + ".html"));
+				counter++;
+				out.write(Editor.MainTextPane.edit.getText());
+				System.out.println(lengthOfList);
+				out2.write("" + lengthOfList);
+				out2.close();
+				lengthOfList++;
+				out.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+
+	}
+
+}// end of class
 

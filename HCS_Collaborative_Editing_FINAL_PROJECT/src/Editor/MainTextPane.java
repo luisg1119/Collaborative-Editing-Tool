@@ -110,7 +110,7 @@ public class MainTextPane extends JPanel{
 			int temp = edit.getCaretPosition();
 
 			edit.setText(text);
-			edit.setCaretPosition(temp); 
+			edit.setCaretPosition(temp);//edit.getDocument().getLength()); 
 			
 			repaint();
 			}

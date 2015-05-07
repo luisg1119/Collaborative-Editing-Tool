@@ -276,6 +276,10 @@ public class EditorClient extends JPanel{
 		edit.updateDocument(text, name);
 	}
 	
+	public void editorRevisionUpdate(String text){
+		MainGUI.addToRevisionDoc(text);
+	}
+	
 	public ObjectOutputStream returnOutput(){
 		return output;	
 	}

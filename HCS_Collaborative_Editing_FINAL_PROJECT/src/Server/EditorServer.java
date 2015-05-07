@@ -12,6 +12,7 @@ import Editor.DisconnectEditorCommand;
 import Editor.EditorClient;
 import Editor.EditorCommand;
 import Editor.UpdateEditorCommand;
+import Editor.UpdateEditorRevisionCommand;
 
 
 /** Description of EditorServer:
@@ -30,6 +31,8 @@ public class EditorServer {
 	public  String updatedText; //static?
 	private List<String> texts;
 	private String tempName;
+	private String lastRevision;
+	private ArrayList<String> revisionHolder;
 
 	
 	public EditorServer(String host, int collaborativePort, String clientName){
@@ -40,6 +43,8 @@ public class EditorServer {
 		this.clientName = clientName;
 		this.updatedText = "";
 		this.tempName ="";
+		this.lastRevision ="";
+		revisionHolder = new ArrayList<String>();
 		
 		this.editorOutput = new HashMap<String, ObjectOutputStream>();
 		
@@ -66,6 +71,23 @@ public class EditorServer {
 			updateClientsEditor();
 		}
 		
+		public void editorRevision(String text){
+			this.lastRevision = text;
+			this.revisionHolder.add(text);
+			updateRevisionEditor();
+		}
+		
+		public void updateRevisionEditor(){
+			UpdateEditorRevisionCommand update = new UpdateEditorRevisionCommand(lastRevision);
+			try{
+				for (ObjectOutputStream out : editorOutput.values())
+					out.writeObject(update);
+			}
+			catch(Exception e){
+				e.printStackTrace();
+			}
+		}
+		
 		public void updateClientsEditor() {
 			// make an UpdateClientCommmand, write to all connected users
 			UpdateEditorCommand update = new UpdateEditorCommand(updatedText, tempName); //this is a new class in model 
@@ -77,6 +99,7 @@ public class EditorServer {
 				e.printStackTrace();
 			}
 		}
+		
 		
 		public void disconnectEditor(String clientName) {
 			try{
@@ -111,7 +134,9 @@ public class EditorServer {
 						new Thread(new ClientHandlerEditor(input)).start();
 						//Put default text on newly opened window if there is any
 						addText(updatedText, tempName);
-
+						for(String text: revisionHolder){
+							editorRevision(text);
+						}
 					}
 				}
 				catch(Exception e){

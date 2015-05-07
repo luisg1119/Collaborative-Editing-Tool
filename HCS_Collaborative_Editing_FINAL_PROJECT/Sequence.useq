@@ -1,2 +1,664 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<sequence-diagram version="1.1.8" icons="true" automaticImage="PNG"/>
+<sequence-diagram version="1.1.8" icons="true" automaticImage="PNG">  
+  <object id="1" language="java" name="GUI.MainGUI" project="HCS_Collaborative_Editing_FINAL_PROJECT" 
+    file="/HCS_Collaborative_Editing_FINAL_PROJECT/src/GUI/MainGUI.java" binary="false" label="mainGUI" type="class" 
+    autoSize="true">    
+    <position height="-1" width="-1" x="675" y="0"/>    
+    <execution id="2">      
+      <position height="21" width="81" x="625" y="281"/>    
+    </execution>    
+    <execution id="3">      
+      <position height="63" width="81" x="625" y="154"/>    
+    </execution>    
+    <execution id="6">      
+      <position height="63" width="81" x="625" y="403"/>    
+    </execution>    
+    <execution id="9">      
+      <position height="63" width="81" x="625" y="561"/>    
+    </execution>    
+    <execution id="12">      
+      <position height="63" width="81" x="625" y="704"/>    
+    </execution>    
+    <execution id="15">      
+      <position height="63" width="81" x="625" y="99"/>    
+    </execution>    
+    <execution id="18">      
+      <position height="63" width="81" x="625" y="350"/>    
+    </execution>    
+    <execution id="21">      
+      <position height="63" width="81" x="625" y="514"/>    
+    </execution>    
+    <execution id="24">      
+      <position height="63" width="81" x="5" y="237"/>    
+    </execution>    
+    <execution id="27">      
+      <position height="63" width="81" x="5" y="99"/>    
+    </execution>    
+    <execution id="30">      
+      <position height="63" width="81" x="5" y="488"/>    
+    </execution>    
+    <execution id="33">      
+      <position height="63" width="81" x="5" y="99"/>    
+    </execution>    
+    <execution id="36">      
+      <position height="63" width="81" x="5" y="636"/>    
+    </execution>    
+    <execution id="39">      
+      <position height="63" width="81" x="5" y="328"/>    
+    </execution>    
+    <execution id="42">      
+      <position height="63" width="81" x="5" y="226"/>    
+    </execution>    
+    <execution id="45">      
+      <position height="63" width="81" x="5" y="99"/>    
+    </execution>    
+    <execution id="48">      
+      <position height="63" width="81" x="5" y="256"/>    
+    </execution>    
+    <execution id="51">      
+      <position height="63" width="81" x="5" y="477"/>    
+    </execution>    
+    <execution id="54">      
+      <position height="63" width="81" x="5" y="99"/>    
+    </execution>    
+    <execution id="57">      
+      <position height="63" width="81" x="5" y="99"/>    
+    </execution>    
+    <execution id="60">      
+      <position height="63" width="81" x="5" y="99"/>    
+    </execution>    
+    <execution id="63">      
+      <position height="63" width="81" x="5" y="99"/>    
+    </execution>    
+    <execution id="66">      
+      <position height="63" width="81" x="5" y="99"/>    
+    </execution>    
+    <execution id="69">      
+      <position height="63" width="81" x="5" y="99"/>    
+    </execution>    
+    <execution id="72">      
+      <position height="63" width="81" x="5" y="115"/>    
+    </execution>    
+    <execution id="75">      
+      <position height="63" width="81" x="5" y="99"/>    
+    </execution>    
+    <execution id="78">      
+      <position height="63" width="81" x="5" y="99"/>    
+    </execution>    
+    <execution id="81">      
+      <position height="63" width="81" x="5" y="99"/>    
+    </execution>    
+    <execution id="84">      
+      <position height="63" width="81" x="5" y="99"/>    
+    </execution>    
+    <execution id="87">      
+      <position height="63" width="81" x="5" y="99"/>    
+    </execution>    
+    <execution id="90">      
+      <position height="63" width="81" x="5" y="99"/>    
+    </execution>  
+  </object>  
+  <object id="93" language="java" name="Model.RevisionDocument" project="HCS_Collaborative_Editing_FINAL_PROJECT" 
+    file="/HCS_Collaborative_Editing_FINAL_PROJECT/src/Model/RevisionDocument.java" binary="false" 
+    label="revisionDocument" type="class" autoSize="true">    
+    <position height="-1" width="-1" x="108" y="0"/>    
+    <execution id="59">      
+      <position height="21" width="153" x="90" y="120"/>    
+    </execution>  
+  </object>  
+  <object id="94" language="java" name="Paint.DisconnectPaintCommand" project="HCS_Collaborative_Editing_FINAL_PROJECT" 
+    file="/HCS_Collaborative_Editing_FINAL_PROJECT/src/Paint/DisconnectPaintCommand.java" binary="false" 
+    label="disconnectPaintCommand" type="class" autoSize="true">    
+    <position height="-1" width="-1" x="258" y="0"/>  
+  </object>  
+  <object id="95" language="java" name="Chat.AddMessageCommand" project="HCS_Collaborative_Editing_FINAL_PROJECT" 
+    file="/HCS_Collaborative_Editing_FINAL_PROJECT/src/Chat/AddMessageCommand.java" binary="false" 
+    label="addMessageCommand" type="class" autoSize="true">    
+    <position height="-1" width="-1" x="3" y="0"/>    
+    <execution id="26">      
+      <position height="21" width="181" x="90" y="258"/>    
+    </execution>    
+    <execution id="29">      
+      <position height="21" width="181" x="90" y="120"/>    
+    </execution>  
+  </object>  
+  <object id="96" language="java" name="Login.ForgotPasswordButton" project="HCS_Collaborative_Editing_FINAL_PROJECT" 
+    file="/HCS_Collaborative_Editing_FINAL_PROJECT/src/Login/ForgotPasswordButton.java" binary="false" 
+    label="forgotPasswordButton" type="class" autoSize="true">    
+    <position height="-1" width="-1" x="20" y="0"/>    
+    <execution id="97">      
+      <position height="21" width="183" x="5" y="206"/>    
+    </execution>  
+  </object>  
+  <object id="98" language="java" name="Login.LoginWindow" project="HCS_Collaborative_Editing_FINAL_PROJECT" 
+    file="/HCS_Collaborative_Editing_FINAL_PROJECT/src/Login/LoginWindow.java" binary="false" label="loginWindow" 
+    type="class" autoSize="true">    
+    <position height="-1" width="-1" x="80" y="0"/>    
+    <execution id="99">      
+      <position height="63" width="118" x="5" y="335"/>    
+    </execution>    
+    <execution id="102">      
+      <position height="63" width="118" x="192" y="185"/>    
+    </execution>    
+    <execution id="104">      
+      <position height="63" width="118" x="192" y="455"/>    
+    </execution>    
+    <execution id="107">      
+      <position height="63" width="118" x="192" y="729"/>    
+    </execution>    
+    <execution id="110">      
+      <position height="63" width="118" x="192" y="636"/>    
+    </execution>    
+    <execution id="113">      
+      <position height="63" width="118" x="192" y="557"/>    
+    </execution>    
+    <execution id="116">      
+      <position height="63" width="118" x="192" y="100"/>    
+    </execution>    
+    <execution id="119">      
+      <position height="63" width="118" x="192" y="99"/>    
+    </execution>    
+    <execution id="122">      
+      <position height="63" width="118" x="192" y="291"/>    
+    </execution>  
+  </object>  
+  <object id="125" language="java" name="Server.Run_To_Start_Servers" project="HCS_Collaborative_Editing_FINAL_PROJECT" 
+    file="/HCS_Collaborative_Editing_FINAL_PROJECT/src/Server/Run_To_Start_Servers.java" binary="false" 
+    label="run_To_Start_Servers" type="class" autoSize="true">    
+    <position height="-1" width="-1" x="302" y="0"/>    
+    <execution id="101">      
+      <position height="21" width="176" x="127" y="356"/>    
+    </execution>    
+    <execution id="126">      
+      <position height="63" width="176" x="127" y="661"/>    
+    </execution>    
+    <execution id="129">      
+      <position height="63" width="176" x="127" y="589"/>    
+    </execution>    
+    <execution id="132">      
+      <position height="63" width="176" x="127" y="512"/>    
+    </execution>    
+    <execution id="135">      
+      <position height="63" width="176" x="127" y="260"/>    
+    </execution>  
+  </object>  
+  <object id="137" language="java" name="Server.PaintServer" project="HCS_Collaborative_Editing_FINAL_PROJECT" 
+    file="/HCS_Collaborative_Editing_FINAL_PROJECT/src/Server/PaintServer.java" binary="false" label="paintServer" 
+    type="class" autoSize="true">    
+    <position height="-1" width="-1" x="458" y="0"/>    
+    <execution id="128">      
+      <position height="21" width="101" x="625" y="682"/>    
+    </execution>  
+  </object>  
+  <object id="138" language="java" name="Server.EditorServer" project="HCS_Collaborative_Editing_FINAL_PROJECT" 
+    file="/HCS_Collaborative_Editing_FINAL_PROJECT/src/Server/EditorServer.java" binary="false" label="editorServer" 
+    type="class" autoSize="true">    
+    <position height="-1" width="-1" x="458" y="0"/>    
+    <execution id="131">      
+      <position height="21" width="107" x="412" y="610"/>    
+    </execution>  
+  </object>  
+  <object id="139" language="java" name="Server.ChatServer" project="HCS_Collaborative_Editing_FINAL_PROJECT" 
+    file="/HCS_Collaborative_Editing_FINAL_PROJECT/src/Server/ChatServer.java" binary="false" label="chatServer" 
+    type="class" autoSize="true">    
+    <position height="-1" width="-1" x="458" y="0"/>    
+    <execution id="134">      
+      <position height="21" width="98" x="523" y="533"/>    
+    </execution>  
+  </object>  
+  <object id="140" language="java" name="Editor.UpdateEditorCommand" project="HCS_Collaborative_Editing_FINAL_PROJECT" 
+    file="/HCS_Collaborative_Editing_FINAL_PROJECT/src/Editor/UpdateEditorCommand.java" binary="false" 
+    label="updateEditorCommand" type="class" autoSize="true">    
+    <position height="-1" width="-1" x="714" y="0"/>    
+    <execution id="5">      
+      <position height="21" width="182" x="710" y="175"/>    
+    </execution>  
+  </object>  
+  <object id="141" language="java" name="Editor.MainTextPane" project="HCS_Collaborative_Editing_FINAL_PROJECT" 
+    file="/HCS_Collaborative_Editing_FINAL_PROJECT/src/Editor/MainTextPane.java" binary="false" label="mainTextPane" 
+    type="class" autoSize="true">    
+    <position height="-1" width="-1" x="714" y="0"/>    
+    <execution id="8">      
+      <position height="21" width="120" x="896" y="424"/>    
+    </execution>  
+  </object>  
+  <object id="142" language="java" name="Editor.EditorCommand" project="HCS_Collaborative_Editing_FINAL_PROJECT" 
+    file="/HCS_Collaborative_Editing_FINAL_PROJECT/src/Editor/EditorCommand.java" binary="false" label="editorCommand" 
+    type="class" autoSize="true">    
+    <position height="-1" width="-1" x="714" y="0"/>    
+    <execution id="11">      
+      <position height="21" width="158" x="1020" y="582"/>    
+    </execution>  
+  </object>  
+  <object id="143" language="java" name="Editor.EditorClient.ServerHandler" 
+    project="HCS_Collaborative_Editing_FINAL_PROJECT" 
+    file="/HCS_Collaborative_Editing_FINAL_PROJECT/src/Editor/EditorClient.java" binary="false" label="serverHandler" 
+    type="class" autoSize="true">    
+    <position height="-1" width="-1" x="714" y="0"/>    
+    <execution id="14">      
+      <position height="21" width="119" x="1182" y="725"/>    
+    </execution>  
+  </object>  
+  <object id="144" language="java" name="Editor.EditorClient" project="HCS_Collaborative_Editing_FINAL_PROJECT" 
+    file="/HCS_Collaborative_Editing_FINAL_PROJECT/src/Editor/EditorClient.java" binary="false" label="editorClient" 
+    type="class" autoSize="true">    
+    <position height="-1" width="-1" x="714" y="0"/>    
+    <execution id="17">      
+      <position height="21" width="104" x="1305" y="120"/>    
+    </execution>  
+  </object>  
+  <object id="145" language="java" name="Editor.DisconnectEditorCommand" 
+    project="HCS_Collaborative_Editing_FINAL_PROJECT" 
+    file="/HCS_Collaborative_Editing_FINAL_PROJECT/src/Editor/DisconnectEditorCommand.java" binary="false" 
+    label="disconnectEditorCommand" type="class" autoSize="true">    
+    <position height="-1" width="-1" x="714" y="0"/>    
+    <execution id="20">      
+      <position height="21" width="211" x="1413" y="371"/>    
+    </execution>  
+  </object>  
+  <object id="146" language="java" name="Login.ResetButton" project="HCS_Collaborative_Editing_FINAL_PROJECT" 
+    file="/HCS_Collaborative_Editing_FINAL_PROJECT/src/Login/ResetButton.java" binary="false" label="resetButton" 
+    type="class" autoSize="true">    
+    <position height="-1" width="-1" x="20" y="0"/>    
+    <execution id="106">      
+      <position height="21" width="109" x="1815" y="476"/>    
+    </execution>  
+  </object>  
+  <object id="147" language="java" name="Login.RegisterButton" project="HCS_Collaborative_Editing_FINAL_PROJECT" 
+    file="/HCS_Collaborative_Editing_FINAL_PROJECT/src/Login/RegisterButton.java" binary="false" label="registerButton" 
+    type="class" autoSize="true">    
+    <position height="-1" width="-1" x="20" y="0"/>    
+    <execution id="109">      
+      <position height="21" width="127" x="1928" y="750"/>    
+    </execution>  
+  </object>  
+  <object id="148" language="java" name="Login.LoginServerTest" project="HCS_Collaborative_Editing_FINAL_PROJECT" 
+    file="/HCS_Collaborative_Editing_FINAL_PROJECT/src/Login/LoginServerTest.java" binary="false" 
+    label="loginServerTest" type="class" autoSize="true">    
+    <position height="-1" width="-1" x="20" y="0"/>    
+    <execution id="121">      
+      <position height="21" width="136" x="2059" y="120"/>    
+    </execution>  
+  </object>  
+  <object id="149" language="java" name="Login.LoginServer" project="HCS_Collaborative_Editing_FINAL_PROJECT" 
+    file="/HCS_Collaborative_Editing_FINAL_PROJECT/src/Login/LoginServer.java" binary="false" label="loginServer" 
+    type="class" autoSize="true">    
+    <position height="-1" width="-1" x="20" y="0"/>    
+    <execution id="124">      
+      <position height="21" width="106" x="2199" y="312"/>    
+    </execution>  
+  </object>  
+  <object id="150" language="java" name="Login.InvalidPasswordException" 
+    project="HCS_Collaborative_Editing_FINAL_PROJECT" 
+    file="/HCS_Collaborative_Editing_FINAL_PROJECT/src/Login/InvalidPasswordException.java" binary="false" 
+    label="invalidPasswordException" type="class" autoSize="true">    
+    <position height="-1" width="-1" x="20" y="0"/>    
+    <execution id="118">      
+      <position height="21" width="205" x="2309" y="121"/>    
+    </execution>  
+  </object>  
+  <object id="151" language="java" name="Login.UsernameAlreadyExistsException" 
+    project="HCS_Collaborative_Editing_FINAL_PROJECT" 
+    file="/HCS_Collaborative_Editing_FINAL_PROJECT/src/Login/UsernameAlreadyExistsException.java" binary="false" 
+    label="usernameAlreadyExistsException" type="class" autoSize="true">    
+    <position height="-1" width="-1" x="20" y="0"/>    
+    <execution id="112">      
+      <position height="21" width="254" x="2518" y="657"/>    
+    </execution>  
+  </object>  
+  <object id="152" language="java" name="Login.InvalidUsernameException" 
+    project="HCS_Collaborative_Editing_FINAL_PROJECT" 
+    file="/HCS_Collaborative_Editing_FINAL_PROJECT/src/Login/InvalidUsernameException.java" binary="false" 
+    label="invalidUsernameException" type="class" autoSize="true">    
+    <position height="-1" width="-1" x="20" y="0"/>    
+    <execution id="115">      
+      <position height="21" width="206" x="2776" y="578"/>    
+    </execution>  
+  </object>  
+  <object id="153" language="java" name="Chat.UserTextStatusCommand" project="HCS_Collaborative_Editing_FINAL_PROJECT" 
+    file="/HCS_Collaborative_Editing_FINAL_PROJECT/src/Chat/UserTextStatusCommand.java" binary="false" 
+    label="userTextStatusCommand" type="class" autoSize="true">    
+    <position height="-1" width="-1" x="3" y="0"/>    
+    <execution id="32">      
+      <position height="21" width="197" x="3171" y="509"/>    
+    </execution>  
+  </object>  
+  <object id="154" language="java" name="Chat.UpdateChatCommand" project="HCS_Collaborative_Editing_FINAL_PROJECT" 
+    file="/HCS_Collaborative_Editing_FINAL_PROJECT/src/Chat/UpdateChatCommand.java" binary="false" 
+    label="updateChatCommand" type="class" autoSize="true">    
+    <position height="-1" width="-1" x="3" y="0"/>    
+    <execution id="35">      
+      <position height="21" width="173" x="3372" y="120"/>    
+    </execution>  
+  </object>  
+  <object id="155" language="java" name="Chat.UpdateActiveTextCommand" project="HCS_Collaborative_Editing_FINAL_PROJECT" 
+    file="/HCS_Collaborative_Editing_FINAL_PROJECT/src/Chat/UpdateActiveTextCommand.java" binary="false" 
+    label="updateActiveTextCommand" type="class" autoSize="true">    
+    <position height="-1" width="-1" x="3" y="0"/>    
+    <execution id="56">      
+      <position height="21" width="214" x="3549" y="120"/>    
+    </execution>  
+  </object>  
+  <object id="156" language="java" name="Chat.DisconnectChatCommand" project="HCS_Collaborative_Editing_FINAL_PROJECT" 
+    file="/HCS_Collaborative_Editing_FINAL_PROJECT/src/Chat/DisconnectChatCommand.java" binary="false" 
+    label="disconnectChatCommand" type="class" autoSize="true">    
+    <position height="-1" width="-1" x="3" y="0"/>    
+    <execution id="53">      
+      <position height="21" width="202" x="3767" y="498"/>    
+    </execution>  
+  </object>  
+  <object id="157" language="java" name="Chat.ChatPanelDesigner.EnterListener" 
+    project="HCS_Collaborative_Editing_FINAL_PROJECT" 
+    file="/HCS_Collaborative_Editing_FINAL_PROJECT/src/Chat/ChatPanelDesigner.java" binary="false" label="enterListener" 
+    type="class" autoSize="true">    
+    <position height="-1" width="-1" x="3" y="0"/>    
+    <execution id="50">      
+      <position height="21" width="115" x="3973" y="277"/>    
+    </execution>  
+  </object>  
+  <object id="158" language="java" name="Chat.ChatPanelDesigner" project="HCS_Collaborative_Editing_FINAL_PROJECT" 
+    file="/HCS_Collaborative_Editing_FINAL_PROJECT/src/Chat/ChatPanelDesigner.java" binary="false" 
+    label="chatPanelDesigner" type="class" autoSize="true">    
+    <position height="-1" width="-1" x="3" y="0"/>    
+    <execution id="47">      
+      <position height="21" width="154" x="4092" y="120"/>    
+    </execution>  
+  </object>  
+  <object id="159" language="java" name="Chat.ChatCommand" project="HCS_Collaborative_Editing_FINAL_PROJECT" 
+    file="/HCS_Collaborative_Editing_FINAL_PROJECT/src/Chat/ChatCommand.java" binary="false" label="chatCommand" 
+    type="class" autoSize="true">    
+    <position height="-1" width="-1" x="3" y="0"/>    
+    <execution id="44">      
+      <position height="21" width="149" x="4250" y="247"/>    
+    </execution>  
+  </object>  
+  <object id="160" language="java" name="Chat.ChatClientStart.ServerHandler" 
+    project="HCS_Collaborative_Editing_FINAL_PROJECT" 
+    file="/HCS_Collaborative_Editing_FINAL_PROJECT/src/Chat/ChatClientStart.java" binary="false" label="serverHandler1" 
+    type="class" autoSize="true">    
+    <position height="-1" width="-1" x="3" y="0"/>    
+    <execution id="41">      
+      <position height="21" width="119" x="4403" y="349"/>    
+    </execution>  
+  </object>  
+  <object id="161" language="java" name="Chat.ChatClientStart" project="HCS_Collaborative_Editing_FINAL_PROJECT" 
+    file="/HCS_Collaborative_Editing_FINAL_PROJECT/src/Chat/ChatClientStart.java" binary="false" label="chatClientStart" 
+    type="class" autoSize="true">    
+    <position height="-1" width="-1" x="3" y="0"/>    
+    <execution id="38">      
+      <position height="21" width="127" x="4526" y="657"/>    
+    </execution>  
+  </object>  
+  <object id="162" language="java" name="Model.User" project="HCS_Collaborative_Editing_FINAL_PROJECT" 
+    file="/HCS_Collaborative_Editing_FINAL_PROJECT/src/Model/User.java" binary="false" label="user" type="class" 
+    autoSize="true">    
+    <position height="-1" width="-1" x="108" y="0"/>    
+    <execution id="62">      
+      <position height="21" width="54" x="4814" y="120"/>    
+    </execution>  
+  </object>  
+  <object id="163" language="java" name="Paint.UpdatePaintReleasedCommand" 
+    project="HCS_Collaborative_Editing_FINAL_PROJECT" 
+    file="/HCS_Collaborative_Editing_FINAL_PROJECT/src/Paint/UpdatePaintReleasedCommand.java" binary="false" 
+    label="updatePaintReleasedCommand" type="class" autoSize="true">    
+    <position height="-1" width="-1" x="258" y="0"/>    
+    <execution id="65">      
+      <position height="21" width="239" x="5081" y="120"/>    
+    </execution>  
+  </object>  
+  <object id="164" language="java" name="Paint.UpdatePaintPressedCommand" 
+    project="HCS_Collaborative_Editing_FINAL_PROJECT" 
+    file="/HCS_Collaborative_Editing_FINAL_PROJECT/src/Paint/UpdatePaintPressedCommand.java" binary="false" 
+    label="updatePaintPressedCommand" type="class" autoSize="true">    
+    <position height="-1" width="-1" x="258" y="0"/>    
+    <execution id="68">      
+      <position height="21" width="231" x="5324" y="120"/>    
+    </execution>  
+  </object>  
+  <object id="165" language="java" name="Paint.UpdatePaintDraggedCommand" 
+    project="HCS_Collaborative_Editing_FINAL_PROJECT" 
+    file="/HCS_Collaborative_Editing_FINAL_PROJECT/src/Paint/UpdatePaintDraggedCommand.java" binary="false" 
+    label="updatePaintDraggedCommand" type="class" autoSize="true">    
+    <position height="-1" width="-1" x="258" y="0"/>    
+    <execution id="71">      
+      <position height="21" width="234" x="5559" y="120"/>    
+    </execution>  
+  </object>  
+  <object id="166" language="java" name="Paint.ReleasedCommand" project="HCS_Collaborative_Editing_FINAL_PROJECT" 
+    file="/HCS_Collaborative_Editing_FINAL_PROJECT/src/Paint/ReleasedCommand.java" binary="false" 
+    label="releasedCommand" type="class" autoSize="true">    
+    <position height="-1" width="-1" x="258" y="0"/>    
+    <execution id="74">      
+      <position height="21" width="155" x="5797" y="136"/>    
+    </execution>  
+  </object>  
+  <object id="167" language="java" name="Paint.PressedCommand" project="HCS_Collaborative_Editing_FINAL_PROJECT" 
+    file="/HCS_Collaborative_Editing_FINAL_PROJECT/src/Paint/PressedCommand.java" binary="false" label="pressedCommand" 
+    type="class" autoSize="true">    
+    <position height="-1" width="-1" x="258" y="0"/>    
+    <execution id="77">      
+      <position height="21" width="147" x="5956" y="120"/>    
+    </execution>  
+  </object>  
+  <object id="168" language="java" name="Paint.PaintPanel" project="HCS_Collaborative_Editing_FINAL_PROJECT" 
+    file="/HCS_Collaborative_Editing_FINAL_PROJECT/src/Paint/PaintPanel.java" binary="false" label="paintPanel" 
+    type="class" autoSize="true">    
+    <position height="-1" width="-1" x="258" y="0"/>    
+    <execution id="80">      
+      <position height="21" width="96" x="6107" y="120"/>    
+    </execution>  
+  </object>  
+  <object id="169" language="java" name="Paint.PaintCommand" project="HCS_Collaborative_Editing_FINAL_PROJECT" 
+    file="/HCS_Collaborative_Editing_FINAL_PROJECT/src/Paint/PaintCommand.java" binary="false" label="paintCommand" 
+    type="class" autoSize="true">    
+    <position height="-1" width="-1" x="258" y="0"/>    
+    <execution id="83">      
+      <position height="21" width="152" x="6207" y="120"/>    
+    </execution>  
+  </object>  
+  <object id="170" language="java" name="Paint.PaintClient.ServerHandler" 
+    project="HCS_Collaborative_Editing_FINAL_PROJECT" 
+    file="/HCS_Collaborative_Editing_FINAL_PROJECT/src/Paint/PaintClient.java" binary="false" label="serverHandler2" 
+    type="class" autoSize="true">    
+    <position height="-1" width="-1" x="258" y="0"/>    
+    <execution id="86">      
+      <position height="21" width="119" x="6363" y="120"/>    
+    </execution>  
+  </object>  
+  <object id="171" language="java" name="Paint.PaintClient" project="HCS_Collaborative_Editing_FINAL_PROJECT" 
+    file="/HCS_Collaborative_Editing_FINAL_PROJECT/src/Paint/PaintClient.java" binary="false" label="paintClient" 
+    type="class" autoSize="true">    
+    <position height="-1" width="-1" x="258" y="0"/>    
+    <execution id="89">      
+      <position height="21" width="98" x="6486" y="120"/>    
+    </execution>  
+  </object>  
+  <object id="172" language="java" name="Paint.DraggedCommand" project="HCS_Collaborative_Editing_FINAL_PROJECT" 
+    file="/HCS_Collaborative_Editing_FINAL_PROJECT/src/Paint/DraggedCommand.java" binary="false" label="draggedCommand" 
+    type="class" autoSize="true">    
+    <position height="-1" width="-1" x="258" y="0"/>    
+    <execution id="92">      
+      <position height="21" width="150" x="6588" y="120"/>    
+    </execution>  
+  </object>  
+  <object id="173" language="java" name="Editor.AddTextCommand" project="HCS_Collaborative_Editing_FINAL_PROJECT" 
+    file="/HCS_Collaborative_Editing_FINAL_PROJECT/src/Editor/AddTextCommand.java" binary="false" label="addTextCommand" 
+    type="class" autoSize="true">    
+    <position height="-1" width="-1" x="714" y="0"/>    
+    <execution id="23">      
+      <position height="21" width="150" x="1628" y="535"/>    
+    </execution>  
+  </object>  
+  <message id="4">    
+    <end type="SOURCE" refId="3"/>    
+    <end type="TARGET" refId="5"/>  
+  </message>  
+  <message id="7">    
+    <end type="SOURCE" refId="6"/>    
+    <end type="TARGET" refId="8"/>  
+  </message>  
+  <message id="10">    
+    <end type="SOURCE" refId="9"/>    
+    <end type="TARGET" refId="11"/>  
+  </message>  
+  <message id="13">    
+    <end type="SOURCE" refId="12"/>    
+    <end type="TARGET" refId="14"/>  
+  </message>  
+  <message id="16">    
+    <end type="SOURCE" refId="15"/>    
+    <end type="TARGET" refId="17"/>  
+  </message>  
+  <message id="19">    
+    <end type="SOURCE" refId="18"/>    
+    <end type="TARGET" refId="20"/>  
+  </message>  
+  <message id="22">    
+    <end type="SOURCE" refId="21"/>    
+    <end type="TARGET" refId="23"/>  
+  </message>  
+  <message id="25">    
+    <end type="SOURCE" refId="24"/>    
+    <end type="TARGET" refId="26"/>  
+  </message>  
+  <message id="28">    
+    <end type="SOURCE" refId="27"/>    
+    <end type="TARGET" refId="29"/>  
+  </message>  
+  <message id="31">    
+    <end type="SOURCE" refId="30"/>    
+    <end type="TARGET" refId="32"/>  
+  </message>  
+  <message id="34">    
+    <end type="SOURCE" refId="33"/>    
+    <end type="TARGET" refId="35"/>  
+  </message>  
+  <message id="37">    
+    <end type="SOURCE" refId="36"/>    
+    <end type="TARGET" refId="38"/>  
+  </message>  
+  <message id="40">    
+    <end type="SOURCE" refId="39"/>    
+    <end type="TARGET" refId="41"/>  
+  </message>  
+  <message id="43">    
+    <end type="SOURCE" refId="42"/>    
+    <end type="TARGET" refId="44"/>  
+  </message>  
+  <message id="46">    
+    <end type="SOURCE" refId="45"/>    
+    <end type="TARGET" refId="47"/>  
+  </message>  
+  <message id="49">    
+    <end type="SOURCE" refId="48"/>    
+    <end type="TARGET" refId="50"/>  
+  </message>  
+  <message id="52">    
+    <end type="SOURCE" refId="51"/>    
+    <end type="TARGET" refId="53"/>  
+  </message>  
+  <message id="55">    
+    <end type="SOURCE" refId="54"/>    
+    <end type="TARGET" refId="56"/>  
+  </message>  
+  <message id="58">    
+    <end type="SOURCE" refId="57"/>    
+    <end type="TARGET" refId="59"/>  
+  </message>  
+  <message id="61">    
+    <end type="SOURCE" refId="60"/>    
+    <end type="TARGET" refId="62"/>  
+  </message>  
+  <message id="64">    
+    <end type="SOURCE" refId="63"/>    
+    <end type="TARGET" refId="65"/>  
+  </message>  
+  <message id="67">    
+    <end type="SOURCE" refId="66"/>    
+    <end type="TARGET" refId="68"/>  
+  </message>  
+  <message id="70">    
+    <end type="SOURCE" refId="69"/>    
+    <end type="TARGET" refId="71"/>  
+  </message>  
+  <message id="73">    
+    <end type="SOURCE" refId="72"/>    
+    <end type="TARGET" refId="74"/>  
+  </message>  
+  <message id="76">    
+    <end type="SOURCE" refId="75"/>    
+    <end type="TARGET" refId="77"/>  
+  </message>  
+  <message id="79">    
+    <end type="SOURCE" refId="78"/>    
+    <end type="TARGET" refId="80"/>  
+  </message>  
+  <message id="82">    
+    <end type="SOURCE" refId="81"/>    
+    <end type="TARGET" refId="83"/>  
+  </message>  
+  <message id="85">    
+    <end type="SOURCE" refId="84"/>    
+    <end type="TARGET" refId="86"/>  
+  </message>  
+  <message id="88">    
+    <end type="SOURCE" refId="87"/>    
+    <end type="TARGET" refId="89"/>  
+  </message>  
+  <message id="91">    
+    <end type="SOURCE" refId="90"/>    
+    <end type="TARGET" refId="92"/>  
+  </message>  
+  <message id="100">    
+    <end type="SOURCE" refId="99"/>    
+    <end type="TARGET" refId="101"/>  
+  </message>  
+  <message id="103">    
+    <end type="SOURCE" refId="102"/>    
+    <end type="TARGET" refId="97"/>  
+  </message>  
+  <message id="105">    
+    <end type="SOURCE" refId="104"/>    
+    <end type="TARGET" refId="106"/>  
+  </message>  
+  <message id="108">    
+    <end type="SOURCE" refId="107"/>    
+    <end type="TARGET" refId="109"/>  
+  </message>  
+  <message id="111">    
+    <end type="SOURCE" refId="110"/>    
+    <end type="TARGET" refId="112"/>  
+  </message>  
+  <message id="114">    
+    <end type="SOURCE" refId="113"/>    
+    <end type="TARGET" refId="115"/>  
+  </message>  
+  <message id="117">    
+    <end type="SOURCE" refId="116"/>    
+    <end type="TARGET" refId="118"/>  
+  </message>  
+  <message id="120">    
+    <end type="SOURCE" refId="119"/>    
+    <end type="TARGET" refId="121"/>  
+  </message>  
+  <message id="123">    
+    <end type="SOURCE" refId="122"/>    
+    <end type="TARGET" refId="124"/>  
+  </message>  
+  <message id="127">    
+    <end type="SOURCE" refId="126"/>    
+    <end type="TARGET" refId="128"/>  
+  </message>  
+  <message id="130">    
+    <end type="SOURCE" refId="129"/>    
+    <end type="TARGET" refId="131"/>  
+  </message>  
+  <message id="133">    
+    <end type="SOURCE" refId="132"/>    
+    <end type="TARGET" refId="134"/>  
+  </message>  
+  <message id="136">    
+    <end type="SOURCE" refId="135"/>    
+    <end type="TARGET" refId="2"/>  
+  </message>
+</sequence-diagram>
